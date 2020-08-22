@@ -1,12 +1,10 @@
-'use strict'
-
 class Reset {
-  get rules () {
+  get rules() {
     return {
       token: 'required',
       password: 'required|confirmed',
-    }
+    };
   }
 }
 
-module.exports = Reset
+module.exports = Reset;

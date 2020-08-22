@@ -1,11 +1,9 @@
-'use strict'
-
 class Forgot {
-  get rules () {
+  get rules() {
     return {
       email: 'email|required',
-    }
+    };
   }
 }
 
-module.exports = Forgot
+module.exports = Forgot;

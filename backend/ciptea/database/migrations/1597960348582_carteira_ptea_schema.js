@@ -17,6 +17,7 @@ class CarteiraPteaSchema extends Schema {
       table.string('nomeResponsavel', 80).notNullable()
       table.string('cpfResponsavel', 14).notNullable().unique()
       table.string('rgResponsavel', 20).notNullable()
+      table.string('nomeTitular', 80).notNullable()
       table.string('cpfTitular', 14).notNullable().unique()
       table.string('rgTitular', 20).notNullable()
       table.string('dataNascimento', 10).notNullable()

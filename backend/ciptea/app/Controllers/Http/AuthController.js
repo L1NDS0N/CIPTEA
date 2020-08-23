@@ -9,7 +9,7 @@ class AuthController {
       'nomeCompleto',
       'matricula',
     ]);
-
+// Passar para lower case o email do login
     const user = await User.create(data);
 
     return user;

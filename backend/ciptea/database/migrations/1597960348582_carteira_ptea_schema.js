@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 'use strict'
 
 /** @type {import('@adonisjs/lucid/src/Schema')} */

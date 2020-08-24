@@ -14,11 +14,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-
-
-
-
-
+Route.get('/files/:file', 'FileController.show');
 Route.post('/register', 'AuthController.register');
 Route.post('/authenticate', 'AuthController.authenticate').validator('Auth');
 

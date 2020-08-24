@@ -2,7 +2,8 @@ const CarteiraPtea = use('App/Models/CarteiraPtea');
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
-
+/** @type {import('@adonisjs/ignitor/src/Helpers')} */
+const Helpers = use('Helpers');
 /**
  * Resourceful controller for interacting with carteirapteas
  */
@@ -47,6 +48,19 @@ class CarteiraPteaController {
    */
   async store({ request, auth }) {
     const data = request.all();
+
+    const fotoRostoPath = request.file('fotoRostoPath', {
+      types: ['image'],
+      size: '2mb',
+    });
+
+    await fotoRostoPath.move(Helpers.tmpPath('uploads'), {
+      name: `${new Date().getTime()}.${fotoRostoPath.subtype}`,
+    });
+
+    if (!fotoRostoPath.moved()) {
+      return fotoRostoPath.error();
+    }
 
     const carteira = await CarteiraPtea.create({
       usuarioRecepcionista_id: auth.user.id,

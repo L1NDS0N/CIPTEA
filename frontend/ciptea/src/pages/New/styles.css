@@ -1,0 +1,34 @@
+label#foto3x4 {
+    margin-bottom: 20px;
+    border: 1px dashed #ddd;
+    background-size: cover;
+    cursor: pointer;
+    height: 160px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+label#foto3x4 input {
+    display: none;
+}
+
+label#foto3x4 span {
+    margin-bottom: 10px;
+    font-weight: normal;
+    color: #999;
+}
+
+label#foto3x4.has-fotoRosto {
+    border: 0;
+}
+
+label#foto3x4.has-fotoRosto span {
+    display: none;
+}
+
+label#foto3x4.has-fotoRosto div {
+    display: none;
+}

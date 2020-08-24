@@ -1,0 +1,35 @@
+ul.lista-registros {
+    width: 100%;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+    margin-bottom: 30px;
+}
+
+ul.lista-registros li {
+    display: flex;
+    flex-direction: column;
+
+}
+
+ul.lista-registros li header {
+    cursor: pointer;
+    width: 80%;
+    height: 200px;
+    background-size: cover;
+    border-radius: 4px;
+    box-shadow: 0 0 5px;
+    background: no-repeat center;    
+}
+
+ul.lista-registros li strong {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #444;
+}
+
+ul.lista-registros li span {
+    font-size: 15px;
+    color: #999;
+}

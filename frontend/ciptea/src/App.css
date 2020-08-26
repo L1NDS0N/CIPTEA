@@ -60,7 +60,6 @@ p.subtitle{
   border-radius: 4px;
   padding: 30px;
   opacity: 93%;
-  overflow-y: scroll;
 }
 
 .content > p {

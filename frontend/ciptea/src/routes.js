@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route} from 'react-router-dom';
+
 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import New from './pages/New';
 
-export default function Routes(){
+import { PrivateRoute } from './helpers/PrivateRoute';
+
+export default class Routes extends Component {
+    
+    constructor(props){
+        super(props);
+        this.state = { value: ""}
+    }
+
+    render() {
     return (
         <BrowserRouter>
             <Switch>
                 {/* Vide: Autenticação para rotas */}
-                <Route path="/" exact component={Login}/>
-                <Route path="/dashboard" component={Dashboard}/>
-                <Route path="/new" component={New}/>
+                <Route exact path="/login" component={Login}/>
+                <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+                <PrivateRoute path="/new" component={New}/>
             </Switch>
         </BrowserRouter>
     );
+}
 }

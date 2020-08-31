@@ -13,7 +13,9 @@ class CarteiraPtea extends Model {
   }
 
   getFotoRostoUrl({ fotoRostoPath }) {
-    return `${Env.get('APP_URL')}/files/${fotoRostoPath}`;
+    const url = `${Env.get('APP_URL')}/files/${fotoRostoPath}`;
+    console.log(url);
+    return url;
   }
 }
 

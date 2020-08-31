@@ -47,15 +47,39 @@ class CarteiraPteaController {
    * @param {Response} ctx.response
    */
   async store({ request, auth }) {
-    const data = request.all();
+    const data = request.only([
+      'nomeResponsavel',
+      'cpfResponsavel',
+      'rgResponsavel',
+      'nomeTitular',
+      'cpfTitular',
+      'rgTitular',
+      'dataNascimento',
+      'fotoRostoPath',
+      'laudoMedicoPath',
+      'exameSanguineoPath',
+      'docAutistaAssinaturaPath',
+      'emailContato',
+      'numeroContato',
+      'cep',
+      'logradouro',
+      'numeroResidencia',
+      'bairro',
+      'cidade',
+      'complemento',
+      'uf',
+    ]);
 
     const fotoRostoPath = request.file('fotoRostoPath', {
       types: ['image'],
-      size: '2mb',
+      size: '5mb',
     });
-
+    const fotoRostoPathName = `${new Date().getTime()}.${
+      fotoRostoPath.subtype
+    }`;
+    data.fotoRostoPath = fotoRostoPathName;
     await fotoRostoPath.move(Helpers.tmpPath('uploads'), {
-      name: `${new Date().getTime()}.${fotoRostoPath.subtype}`,
+      name: fotoRostoPathName,
     });
 
     if (!fotoRostoPath.moved()) {

@@ -16,8 +16,8 @@ const Route = use('Route');
 
 Route.get('/files/:file', 'FileController.show');
 Route.post('/register', 'AuthController.register');
-Route.post('/authenticate', 'AuthController.authenticate').validator('Auth');
 
+Route.post('/authenticate', 'AuthController.authenticate').validator('Auth');
 Route.post('/forgot', 'ForgotPasswordController.store').validator('Forgot');
 Route.post('/reset', 'ResetPasswordController.store').validator('Reset');
 

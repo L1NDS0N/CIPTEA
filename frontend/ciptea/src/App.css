@@ -23,25 +23,6 @@ body, input, button {
   font-size: 14px;
 }
 
-img#logo {
- 
-  width: auto;
-  height: 200px;
-  
-}
-
-h1.title{
-  color: #fff;
-  font-weight: bold;
-  font-size: xx-large;
-  opacity: 80%;
-}
-
-p.subtitle{
-  color: #fff;  
-  opacity: 80%;
-}
-
 .container {
   margin: 80px auto 0;
   max-width: 777px;
@@ -49,7 +30,6 @@ p.subtitle{
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 
 }
 
@@ -60,6 +40,7 @@ p.subtitle{
   border-radius: 4px;
   padding: 30px;
   opacity: 93%;
+  box-shadow: 0px 0px 10px 1px;
 }
 
 .content > p {
@@ -111,24 +92,3 @@ p.subtitle{
 
 }
 
-footer p a {
-  text-decoration: none;
-  color: #fff;
-}
-
-footer p {
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  font-family: 'Roboto';
-  color: #fff;
-  opacity: 70%;
-  
-}
-
-footer p.imageCredits {
-  align-items: right;
-  position: fixed;
-  right: 10px;
-  bottom: 10px;
-}

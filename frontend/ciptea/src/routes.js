@@ -21,8 +21,8 @@ export default class Routes extends Component {
             <Switch>
                 {/* Vide: Autenticação para rotas */}
                 <Route exact path="/login" component={Login}/>
-                <PrivateRoute exact path="/dashboard" component={Dashboard}/>
-                <PrivateRoute path="/new" component={New}/>
+                <PrivateRoute exact path="/" component={Dashboard}/>
+                <PrivateRoute exact path="/new" component={New}/>
             </Switch>
         </BrowserRouter>
     );

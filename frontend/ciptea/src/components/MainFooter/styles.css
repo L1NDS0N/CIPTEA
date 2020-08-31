@@ -1,0 +1,22 @@
+footer p a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  footer p {
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    font-family: 'Roboto';
+    color: #fff;
+    opacity: 70%;
+    
+  }
+  
+  footer p.imageCredits {
+    font-size: 8px;
+    align-items: right;
+    line-height: 50px;
+    position: relative;
+    right: 420px;
+  }

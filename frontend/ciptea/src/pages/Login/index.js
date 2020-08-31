@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+// import MainHeader from '../../components/MainHeader'
+
 import api from '../../services/api';
 
 export default function Login({ history }){
@@ -18,10 +20,11 @@ export default function Login({ history }){
 
         localStorage.setItem('userToken', token);
 
-        history.push('/dashboard')
+        history.push('/')
     }
     return (
         <>
+        {/* <MainHeader/> */}
             <p>Comece inserindo o seu endereço de <strong> e-mail </strong> e <strong>senha</strong > para adentrar à plataforma </p>
             <form onSubmit={ handleSubmit }>
                 <label htmlFor="email"> E-MAIL * </label> 

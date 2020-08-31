@@ -15,30 +15,32 @@ export default function New({ history }){
  const [dataNascimento, setDataNascimento] = useState('');
  const [emailContato, setEmailContato] = useState('');
  const [numeroContato, setNumeroContato] = useState('');
- const [fotoRosto, setFotoRosto] = useState(null);
+ const [fotoRostoPath, setFotoRostoPath] = useState(null);
     
 const preview = useMemo(() => {
-    return fotoRosto ? URL.createObjectURL(fotoRosto) : null;
-}, [fotoRosto])
+    return fotoRostoPath ? URL.createObjectURL(fotoRostoPath) : null;
+}, [fotoRostoPath])
 
  async function handleSubmit(event){
+    const token = localStorage.getItem('userToken');    
     event.preventDefault();
 
-    const token = localStorage.getItem('userToken');
-    await api.post('/carteiras', {
-        nomeResponsavel,
-        cpfResponsavel,
-        rgResponsavel,
-        nomeTitular,
-        cpfTitular,
-        rgTitular,
-        dataNascimento,
-        emailContato,
-        numeroContato,
-        fotoRostoPath: fotoRosto },
+    const data = new FormData();
+    data.append('nomeResponsavel', nomeResponsavel)
+    data.append('cpfResponsavel', cpfResponsavel)
+    data.append('rgResponsavel', rgResponsavel)
+    data.append('nomeTitular', nomeTitular)
+    data.append('cpfTitular', cpfTitular)
+    data.append('rgTitular', rgTitular)
+    data.append('dataNascimento', dataNascimento)
+    data.append('emailContato', emailContato)
+    data.append('numeroContato', numeroContato)
+    data.append('fotoRostoPath', fotoRostoPath)
+   
+    await api.post('/carteiras', data,
         { headers: { 'Authorization': 'Bearer ' + token } }
     )
-    history.push('/dashboard')
+    history.push('/')
 }
     return (
         <form onSubmit={handleSubmit}>
@@ -136,13 +138,13 @@ const preview = useMemo(() => {
                 htmlFor="previewFoto3x4"
                 id="foto3x4"
                 style={{ backgroundImage: `url(${preview})`}}
-                className={ fotoRosto ? 'has-fotoRosto' : '' }
+                className={ fotoRostoPath ? 'has-fotoRosto' : '' }
             >
                 <span>Selecione a foto 3x4</span>
                 <input 
                     id="previewFoto3x4"
                     type="file"
-                    onChange={event => setFotoRosto(event.target.files[0])}
+                    onChange={event => setFotoRostoPath(event.target.files[0])}
                     />
                 <div>
                     <FiCamera size={30} alt="Selecione a foto 3x4"/>

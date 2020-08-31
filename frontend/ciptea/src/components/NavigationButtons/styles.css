@@ -1,0 +1,37 @@
+.NavigationButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+.ArrowLeft {
+    color: #777;
+    padding: 8px 14px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    transition: .5s;
+    cursor: pointer;
+  }
+  
+  .ArrowLeft:hover {  
+    color: #444;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0px 3px;
+  }
+  
+  .LogOut {
+    color: #777;
+    padding: 8px 14px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    transition: .5s;
+    cursor: pointer;
+  }
+  .LogOut:hover {
+    color: #444;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0px 3px;
+  }

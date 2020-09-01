@@ -1,0 +1,136 @@
+:root {
+    --bg: #242526;
+    --bg-accent: #484a4d;
+    --text-color: #dadce1;
+    --nav-size: 60px;
+    --border: 1px solid #474a4d;
+    --border-radius: 8px;
+    --speed: 500ms;
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+ul.carteira {
+    width: 100%;
+    list-style: none;
+    display: grid;
+    padding: 0;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 30px;
+    
+}
+
+ul.carteira li {    
+    display: flex;
+    flex-direction: column;    
+}
+
+ul.carteira li header {
+    margin-left: 10%;
+    width: 80%;
+    height: 300px;
+    background-size: cover;
+    border-radius: 4px;
+    box-shadow: 0 0 5px;
+    background: no-repeat center;    
+}
+
+ul.carteira li strong {
+    margin-top: 3px;
+    font-size: 3em;
+    color: #444;
+}
+
+ul.carteira li span {
+    font-size: 12px;
+    color: #555;
+    margin-top: 3px;
+}
+
+.filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    opacity: .7;
+}
+
+table {
+    /* position: absolute; */
+    z-index: 2;  
+    /* transform: translate(-50%, -50%); */
+    left: 50%;
+    top: 50%;    
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(32, 32, 32, .3);
+    width: 100%;
+    background: #fafafa;
+    text-align: left;
+}
+
+th, td {
+    padding: 5px 10px;
+    
+}
+
+tr {
+    background: #fff;
+}
+td {
+    cursor: copy;
+}
+tr:hover {    
+    filter: invert(90%);
+}
+
+th {
+    background: #0B4C82;
+    color: #fafafa;
+    text-transform: uppercase;
+}
+
+tr:nth-child(odd){
+    background-color: #eeeeee;
+}
+
+td:nth-child(odd){
+    font-weight: 600;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    box-shadow: 0 2px 12px rgba(32, 32, 32, .3);
+}
+
+nav.DropDownMenu {
+    display: flex;
+    align-items: center;     
+    color: #444;
+    margin-top: 20px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    align-content: center;    
+    border: 50px;
+    border-radius: 2px;
+    height: 42px;
+    padding: 0 20px;
+    font-weight: bold;
+    background: #fff;
+    color: #444;
+}
+nav.DropDownMenu:hover {
+    background: #eeeeee;
+}
+

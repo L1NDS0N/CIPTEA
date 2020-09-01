@@ -9,6 +9,7 @@ import './styles.css';
 export default function Card(){
     
     const [carteira, setCarteira] = useState([]);
+    const [usuarioRecepcionista, setUsuarioRecepcionista] = useState([]);
     const  { carteiraId }  = useParams();
     useEffect(() => {
         async function carregarCarteira(){
@@ -16,7 +17,8 @@ export default function Card(){
             const response = await api.get(`/carteiras/${carteiraId}`, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
-            setCarteira(response.data)
+            setCarteira(response.data);
+            setUsuarioRecepcionista(response.data.usuarioRecepcionista)
         }
         carregarCarteira();
     }, [carteiraId]);
@@ -89,6 +91,9 @@ export default function Card(){
             <br/>
                 <footer>
                     <tr>
+                     <td>Criado por: {usuarioRecepcionista.nomeCompleto} - {usuarioRecepcionista.matricula}</td>
+                    </tr>
+                    <tr>
                         <td>Data de criação: {carteira.created_at} </td>
                     </tr>
                     <tr>
@@ -103,7 +108,7 @@ export default function Card(){
 }
 
 function DropDown(){
-    const [open, setOpen] = useState(false);    
+    const [open, setOpen] = useState(false);
     return (
         <div className="dropdown">
             <nav className="DropDownMenu" onClick={() => setOpen(!open)}>Anexos <FiChevronDown size={20}/>

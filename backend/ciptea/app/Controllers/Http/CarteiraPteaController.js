@@ -104,7 +104,12 @@ class CarteiraPteaController {
    * @param {View} ctx.view
    */
   async show({ params }) {
-    const carteira = await CarteiraPtea.findOrFail(params.id);
+    const carteira = await CarteiraPtea.query()
+      .where('id', params.id)
+      .with('usuarioRecepcionista', (builder) => {
+        builder.select(['id', 'nomeCompleto', 'matricula']);
+      })
+      .first();
 
     return carteira;
   }

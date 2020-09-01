@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { FiPrinter, FiCornerLeftUp, FiChevronDown, FiUserCheck, FiMail, FiPhone } from 'react-icons/fi'
+import { FiPrinter, FiList, FiCornerLeftUp, FiChevronDown, FiUserCheck, FiMail, FiPhone } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
+import { format, parseISO } from 'date-fns';
+import { ptBR }  from 'date-fns/locale';
+
 import api from '../../services/api';
 
 import './styles.css';
 
 
 export default function Card(){
-    
+
     const [carteira, setCarteira] = useState([]);
     const [usuarioRecepcionista, setUsuarioRecepcionista] = useState([]);
+
+    const [dataFormatada, setDataFormatada] = useState([]);
+    const [dataCriacao, setDataCriacao] = useState([]);
     const  { carteiraId }  = useParams();
+
+    
     useEffect(() => {
         async function carregarCarteira(){
             const token = localStorage.getItem('userToken');
@@ -18,10 +26,28 @@ export default function Card(){
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             setCarteira(response.data);
-            setUsuarioRecepcionista(response.data.usuarioRecepcionista)
+            setUsuarioRecepcionista(response.data.usuarioRecepcionista);
+            setDataCriacao(response.data.created_at);
+            
+            handleDateFormat();
         }
-        carregarCarteira();
-    }, [carteiraId]);
+
+        async function handleDateFormat(){
+            var str = dataCriacao.toString();
+            var parts = str.slice().split(' ');            
+            var dateCpnt = parts[0]+"T";
+            var timeCpnt = parts[1];
+            var readyToISO = dateCpnt + timeCpnt;
+            const formattedDate = format(
+                parseISO(readyToISO),
+                "'Dia' dd 'de' MMMM' de 'yyyy', às 'HH:mm'h'", { locale: ptBR }
+            );
+            setDataFormatada(formattedDate);
+        } 
+        carregarCarteira();        
+    }, [carteiraId, dataCriacao]);     
+            
+//   ____________________________________________________________________________________________________________
     return (
         <>
             <ul className="carteira">
@@ -54,8 +80,8 @@ export default function Card(){
             <blockquote>
 
             <table>
-                    <th><h2>#</h2></th>
-                    <th><h2>Valor</h2></th>
+                    
+            <th colSpan="2"><h2><FiList/> Ficha completa de {carteira.nomeTitular}</h2></th>
                 <tr>
                     <td>Nome do Titular</td>
                     <td>{carteira.nomeTitular}</td>
@@ -94,10 +120,10 @@ export default function Card(){
                      <td>Criado por: {usuarioRecepcionista.nomeCompleto} - {usuarioRecepcionista.matricula}</td>
                     </tr>
                     <tr>
-                        <td>Data de criação: {carteira.created_at} </td>
+                        <td>Data de criação: { dataFormatada } </td>                        
                     </tr>
                     <tr>
-                        <td>Última atualização em: {carteira.updated_at} </td>
+                        <td>Última atualização: { carteira.updated_at === carteira.created_at ? 'Nunca atualizado antes' : carteira.updated_at }</td>
                     </tr>
                 </footer>
             <br/>

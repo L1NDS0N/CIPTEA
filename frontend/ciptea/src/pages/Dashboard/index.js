@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
+import { FiSearch } from 'react-icons/fi';
 
+import api from '../../services/api';
 import './styles.css';
 
 export default function Dashboard() {
     const [registros, setRegistros] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('');
+    const [filteredSearch, setFilteredSearch] = useState([]);
 
     useEffect(() => {
         async function carregarRegistros() {
@@ -14,13 +18,51 @@ export default function Dashboard() {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             setRegistros(response.data)
+            setLoading(false);
         }
         carregarRegistros();
     }, []);
+
+
+
+    useEffect(() => {
+        setFilteredSearch(
+            registros.filter(registro => {
+                if (registro.nomeTitular === undefined) {
+                    return <p>erro</p>
+                }
+                if (!isNaN(search)) {
+                    return registro.cpfTitular.toLowerCase().includes(search.toLowerCase())
+                }
+                return registro.nomeTitular.toLowerCase().includes(search.toLowerCase())
+            })
+        )
+
+    }, [search, registros])
+
+    if (loading) {
+        return (
+            <ul className="lista-registros">
+                <li>Carregando registros...</li>
+            </ul>
+        )
+    }
+
+
     return (
         <>
+            <label className="search-box" htmlFor="search-txt">
+                <input 
+                id="search-txt"
+                type="text" 
+                placeholder="Pesquisar por nome ou cpf" 
+                className="search-txt"
+                onChange={e => setSearch(e.target.value)} />
+                <FiSearch className="search-btn" />
+            </label>
+
             <ul className="lista-registros">
-                {registros.map(registro => (
+                {filteredSearch.map(registro => (
                     <li key={registro.id}>
                         {/* ver configuração de upload de imagens */}
                         {/* <header style={{ backgroundImage: 'url(https://blog.influx.com.br/storage/app/uploads/public/67d/18f/2fd/67d18f2fdf601e40e21e8dc4e70247ca62c6ac83.jpg)'}}></header> */}

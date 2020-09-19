@@ -33,3 +33,59 @@ ul.lista-registros li span {
     font-size: 15px;
     color: #999;
 }
+
+.search-box {
+    background: #2f3640;
+    margin-bottom: 20px;
+    margin-right: 40px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 30px;    
+    float: right;
+    cursor: pointer;
+    width: 60px;
+    transition: 0.4s;
+}
+.search-box:hover {
+    width: 280px;
+}
+
+.search-box:hover > .search-txt{
+    width: 200px;
+    padding: 0 6px;
+    color: #fff;
+}
+
+.search-btn {
+    color: #dadada;
+    float: right;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #2f3640;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+.search-box:hover > .search-btn{
+    color: #2f3640;
+    background: #ffff;
+}
+
+.search-txt {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    color: white;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    padding: 0;
+    width: 0px;
+    transition: 0.4s;
+}
+
+
+

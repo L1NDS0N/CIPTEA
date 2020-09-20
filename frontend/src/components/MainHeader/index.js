@@ -16,7 +16,7 @@ export default function MainHeader(){
                 </a>        
                     
                 <h1 className="title">CIPTEA</h1>
-                <p className="subtitle">
+                <p className="subtitle anim-typewriter">
                 Carteira de Identificação da Pessoa com Espectro Autista
                 </p>
             </div>

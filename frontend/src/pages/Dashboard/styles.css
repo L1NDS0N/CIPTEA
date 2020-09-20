@@ -52,13 +52,12 @@ ul.lista-registros li span {
     border-radius: 50%;
     background: #0B4C82;
     display: flex;
-    transition: .6s ease-out;    
+    transition: .4s ease-out;    
     background: #0B4C82;
 }
 
 .create-box:hover>.create-btn {
-    color: #0B4C82;
-    background: #fafafa;
+    color: #fff;
 }
 
 .create-txt {

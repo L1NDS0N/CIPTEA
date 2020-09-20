@@ -5,12 +5,16 @@ import { withRouter } from 'react-router-dom';
 
 import './styles.css'
 
-function NavigationButtons({ history }){
+function NavigationButtons({ history }) {
     return (
         <>
             <div className="NavigationButtons">
-                <div className="ArrowLeft" onClick={() => history.goBack()}><FiArrowLeft size={33}/></div>
-                <div className="LogOut"><FiLogOut size={33}/></div>
+                <div className="ArrowLeft" onClick={() => history.goBack()}>
+                    <FiArrowLeft className="ArrowLeftBtn" size={33} />
+                </div>
+                <div className="LogOut">
+                    <FiLogOut className="LogOutBtn" size={33} />
+                </div>
             </div>
         </>
     )

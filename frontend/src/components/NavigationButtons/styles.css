@@ -1,40 +1,76 @@
 .NavigationButtons {
-    display: flex;
-    justify-content: space-between;
-  }
+  display: flex;
+  justify-content: space-between;
+}
 
 .ArrowLeft {
-    color: #777;
-    padding: 8px 14px;
-    margin-bottom: 20px;
-    align-items: center;
-    justify-content: center;
-    transition: .5s;
-    cursor: pointer;
-    line-height: 20%;
-  }
-  
-  .ArrowLeft:hover {  
-    color: #444;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0px 3px;
-    line-height: 30%;
+  color: #777;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  transition: .5s;
+  cursor: pointer;
+  line-height: 20%;
+}
 
+.ArrowLeft:hover {
+  color: #444;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  line-height: 30%;
+}
+
+.ArrowLeft:hover>.ArrowLeftBtn {
+  animation: aponta-esquerda .7s ease-in-out infinite alternate;
+}
+
+.LogOut {
+  color: #777;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  transition: .5s;
+  cursor: pointer;
+}
+
+.LogOut:hover {
+  color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #b83243;
+}
+
+.LogOut:hover>.LogOutBtn {
+  animation: aponta-direita 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes aponta-esquerda {
+  from {
+    transform: translateX(-33%);
   }
-  
-  .LogOut {
-    color: #777;
-    padding: 8px 14px;
-    margin-bottom: 20px;
-    align-items: center;
-    justify-content: center;
-    transition: .5s;
-    cursor: pointer;
+  to {
+    transform: translateX(33%);
   }
-  .LogOut:hover {
-    color: #444;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0px 3px;
+}
+
+@keyframes aponta-direita {
+  0% {
+    transform: translateX(-33%);
+    transform: rotateZ(0deg);
   }
+  25% {
+    transform: translateX(33%);
+  }
+  50% {
+    transform: translateX(-33%);
+    transform: rotateZ(0deg);
+  }
+  75% {
+    transform: translateX(33%);
+  }
+  100% {
+    transform: translateX(-33%);
+  }
+}

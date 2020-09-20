@@ -24,6 +24,10 @@ img#logo {
     height: 150px;
 }
 
+img#logo:hover {
+    animation: logo-danca 1s ease-in-out infinite alternate;
+}
+
 h1.title {
     color: #fff;
     font-weight: bold;
@@ -45,9 +49,31 @@ p.subtitle {
 }
 
 /* Animation */
+
 .anim-typewriter {
-    animation: typewriter 5s steps(56) 3s 1 normal both,
-    blinkTextCursor 900ms steps(56) infinite normal;
+    animation: typewriter 5s steps(56) 3s 1 normal both, blinkTextCursor 900ms steps(56) infinite normal;
+}
+
+@keyframes logo-danca {
+    0% {
+        transform: rotateZ(-7deg);
+    }
+    20% {
+        transform: rotateZ(7deg);
+    }
+    40% {
+        transform: rotateZ(-7deg);
+        transform: translateY(2%);
+    }
+    60% {
+        transform: rotateX(-20deg);
+    }
+    80% {
+        transform: translateY(-20%);
+    }
+    100% {
+        transform: translateY(-21%);
+    }
 }
 
 @keyframes typewriter {
@@ -63,7 +89,7 @@ p.subtitle {
     from {
         border-right-color: rgba(255, 255, 255, 0.75);
     }
-    to { 
+    to {
         border-right-color: transparent;
     }
 }

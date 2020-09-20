@@ -2,50 +2,53 @@ import React, { useState, useMemo } from 'react';
 import MaskedInput from 'react-text-mask';
 import { FiCamera } from 'react-icons/fi';
 
+import NavigationButtons from '../../components/NavigationButtons';
 import api from '../../services/api';
 import './styles.css'
 
-export default function New({ history }){
- const [nomeResponsavel, setNomeResponsavel] = useState('');
- const [cpfResponsavel, setCpfResponsavel] = useState('');
- const [rgResponsavel, setRgResponsavel] = useState('');
- const [nomeTitular, setNomeTitular] = useState('');
- const [cpfTitular, setCpfTitular] = useState('');
- const [rgTitular, setRgTitular] = useState('');
- const [dataNascimento, setDataNascimento] = useState('');
- const [emailContato, setEmailContato] = useState('');
- const [numeroContato, setNumeroContato] = useState('');
- const [fotoRostoPath, setFotoRostoPath] = useState(null);
-    
-const preview = useMemo(() => {
-    return fotoRostoPath ? URL.createObjectURL(fotoRostoPath) : null;
-}, [fotoRostoPath])
+export default function New({ history }) {
+    const [nomeResponsavel, setNomeResponsavel] = useState('');
+    const [cpfResponsavel, setCpfResponsavel] = useState('');
+    const [rgResponsavel, setRgResponsavel] = useState('');
+    const [nomeTitular, setNomeTitular] = useState('');
+    const [cpfTitular, setCpfTitular] = useState('');
+    const [rgTitular, setRgTitular] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
+    const [emailContato, setEmailContato] = useState('');
+    const [numeroContato, setNumeroContato] = useState('');
+    const [fotoRostoPath, setFotoRostoPath] = useState(null);
 
- async function handleSubmit(event){
-    const token = localStorage.getItem('userToken');    
-    event.preventDefault();
+    const preview = useMemo(() => {
+        return fotoRostoPath ? URL.createObjectURL(fotoRostoPath) : null;
+    }, [fotoRostoPath])
 
-    const data = new FormData();
-    data.append('nomeResponsavel', nomeResponsavel)
-    data.append('cpfResponsavel', cpfResponsavel)
-    data.append('rgResponsavel', rgResponsavel)
-    data.append('nomeTitular', nomeTitular)
-    data.append('cpfTitular', cpfTitular)
-    data.append('rgTitular', rgTitular)
-    data.append('dataNascimento', dataNascimento)
-    data.append('emailContato', emailContato)
-    data.append('numeroContato', numeroContato)
-    data.append('fotoRostoPath', fotoRostoPath)
-   
-    await api.post('/carteiras', data,
-        { headers: { 'Authorization': 'Bearer ' + token } }
-    )
-    history.push('/')
-}
+    async function handleSubmit(event) {
+        const token = localStorage.getItem('userToken');
+        event.preventDefault();
+
+        const data = new FormData();
+        data.append('nomeResponsavel', nomeResponsavel)
+        data.append('cpfResponsavel', cpfResponsavel)
+        data.append('rgResponsavel', rgResponsavel)
+        data.append('nomeTitular', nomeTitular)
+        data.append('cpfTitular', cpfTitular)
+        data.append('rgTitular', rgTitular)
+        data.append('dataNascimento', dataNascimento)
+        data.append('emailContato', emailContato)
+        data.append('numeroContato', numeroContato)
+        data.append('fotoRostoPath', fotoRostoPath)
+
+        await api.post('/carteiras', data,
+            { headers: { 'Authorization': 'Bearer ' + token } }
+        )
+        history.push('/')
+    }
     return (
+        <>
+        <NavigationButtons/>
         <form onSubmit={handleSubmit}>
             <label htmlFor="nomeResponsavel">Nome do responsável *</label>
-            <input 
+            <input
                 maxLength="250"
                 required
                 id="nomeResponsavel"
@@ -76,7 +79,7 @@ const preview = useMemo(() => {
             />
 
             <label htmlFor="nomeTitular">Nome do titular *</label>
-            <input 
+            <input
                 maxLength="250"
                 required
                 id="nomeTitular"
@@ -118,7 +121,7 @@ const preview = useMemo(() => {
 
             <label htmlFor="emailContato">Email</label>
             <input
-                type="emailContato"                
+                type="emailContato"
                 id="emailContato"
                 placeholder="Insira um e-mail para contato"
                 value={emailContato}
@@ -134,20 +137,20 @@ const preview = useMemo(() => {
                 onChange={event => setNumeroContato(event.target.value)}
             />
 
-            <label 
+            <label
                 htmlFor="previewFoto3x4"
                 id="foto3x4"
-                style={{ backgroundImage: `url(${preview})`}}
-                className={ fotoRostoPath ? 'has-fotoRosto' : '' }
+                style={{ backgroundImage: `url(${preview})` }}
+                className={fotoRostoPath ? 'has-fotoRosto' : ''}
             >
                 <span>Selecione a foto 3x4</span>
-                <input 
+                <input
                     id="previewFoto3x4"
                     type="file"
                     onChange={event => setFotoRostoPath(event.target.files[0])}
-                    />
+                />
                 <div>
-                    <FiCamera size={30} alt="Selecione a foto 3x4"/>
+                    <FiCamera size={30} alt="Selecione a foto 3x4" />
                 </div>
             </label>
 
@@ -157,8 +160,9 @@ const preview = useMemo(() => {
                 guide={false}
                 id="cpf"
             /> */}
-            
+
             <button className="btn" type="submit">Cadastrar</button>
         </form>
+        </>
     )
 }

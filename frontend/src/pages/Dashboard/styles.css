@@ -10,7 +10,6 @@ ul.lista-registros {
 ul.lista-registros li {
     display: flex;
     flex-direction: column;
-
 }
 
 ul.lista-registros li header {
@@ -20,7 +19,7 @@ ul.lista-registros li header {
     background-size: cover;
     border-radius: 4px;
     box-shadow: 0 0 5px;
-    background: no-repeat center;    
+    background: no-repeat center;
 }
 
 ul.lista-registros li strong {
@@ -34,23 +33,61 @@ ul.lista-registros li span {
     color: #999;
 }
 
+.create-box {
+    background: #0B4C82;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    height: 60px;
+    width: 60px;
+    padding: 10px;
+    border-radius: 30px;
+    float: left;
+    cursor: pointer;
+}
+
+.create-btn {
+    color: #dadada;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #0B4C82;
+    display: flex;
+    transition: .6s ease-out;    
+    background: #0B4C82;
+}
+
+.create-box:hover>.create-btn {
+    color: #0B4C82;
+    background: #fafafa;
+}
+
+.create-txt {
+    float: left;
+    align-self: center;
+    justify-self: center;
+    border: none;
+    background: none;
+    outline: none;
+}
+
 .search-box {
-    background: #2f3640;
+    background: #0B4C82;
     margin-bottom: 20px;
     margin-right: 40px;
     height: 60px;
     padding: 10px;
-    border-radius: 30px;    
+    border-radius: 30px;
     float: right;
     cursor: pointer;
     width: 60px;
     transition: 0.4s;
 }
+
 .search-box:hover {
     width: 280px;
 }
 
-.search-box:hover > .search-txt{
+.search-box:hover>.search-txt {
     width: 200px;
     padding: 0 6px;
     color: #fff;
@@ -62,15 +99,17 @@ ul.lista-registros li span {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    background: #2f3640;
+    background: #0B4C82;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.4s;
+    transition: .6s ease-out;
 }
-.search-box:hover > .search-btn{
-    color: #2f3640;
+
+.search-box:hover>.search-btn {
+    color: #0B4C82;
     background: #ffff;
+    animation: lupa 1s alternate;
 }
 
 .search-txt {
@@ -78,8 +117,8 @@ ul.lista-registros li span {
     background: none;
     outline: none;
     float: left;
-    color: white;
-    font-size: 16px;
+    color: #fff;
+    font-size: 15px;
     transition: 0.4s;
     line-height: 40px;
     padding: 0;
@@ -87,5 +126,15 @@ ul.lista-registros li span {
     transition: 0.4s;
 }
 
+.search-txt::placeholder {
+    color: #fff;
+}
 
-
+@keyframes lupa {
+    from {
+        transform: rotateZ(360deg);
+    }
+    to {
+        transform: rotateZ(0deg);
+    }
+}

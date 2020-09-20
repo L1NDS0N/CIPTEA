@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch, FiUserPlus } from 'react-icons/fi';
 
 import api from '../../services/api';
 import './styles.css';
@@ -51,13 +51,23 @@ export default function Dashboard() {
 
     return (
         <>
+            <Link to={'/new'}>
+                <label className="create-box" htmlFor="create-txt" title="Criar nova carteira">
+                    <button
+                        id="create-txt"
+                        className="create-txt"
+                    />
+                    <FiUserPlus className="create-btn" />
+                </label>
+            </Link>
+
             <label className="search-box" htmlFor="search-txt">
-                <input 
-                id="search-txt"
-                type="text" 
-                placeholder="Pesquisar por nome ou cpf" 
-                className="search-txt"
-                onChange={e => setSearch(e.target.value)} />
+                <input
+                    id="search-txt"
+                    type="text"
+                    placeholder="Pesquisar por nome ou cpf"
+                    className="search-txt"
+                    onChange={e => setSearch(e.target.value)} />
                 <FiSearch className="search-btn" />
             </label>
 

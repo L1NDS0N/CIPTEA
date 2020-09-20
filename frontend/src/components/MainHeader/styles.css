@@ -22,6 +22,7 @@
 img#logo {
     width: auto;
     height: 150px;
+    cursor: grab;
 }
 
 img#logo:hover {
@@ -63,10 +64,12 @@ p.subtitle {
     }
     40% {
         transform: rotateZ(-7deg);
-        transform: translateY(2%);
+    }
+    50% {
+        transform: rotateX(-20deg);
     }
     60% {
-        transform: rotateX(-20deg);
+        transform: translateY(2%);
     }
     80% {
         transform: translateY(-20%);

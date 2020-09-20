@@ -9,10 +9,10 @@ function NavigationButtons({ history }) {
     return (
         <>
             <div className="NavigationButtons">
-                <div className="ArrowLeft" onClick={() => history.goBack()}>
+                <div className="ArrowLeft" title="Página anterior" onClick={() => history.goBack()}>
                     <FiArrowLeft className="ArrowLeftBtn" size={33} />
                 </div>
-                <div className="LogOut">
+                <div className="LogOut" title="Sair do sistema">
                     <FiLogOut className="LogOutBtn" size={33} />
                 </div>
             </div>

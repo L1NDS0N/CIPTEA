@@ -14,7 +14,8 @@ html, body, #root {
 
 body {
   background: #000 url('./assets/background.jpg') no-repeat;
-  background-size: cover;
+  background-attachment: fixed;
+  background-size: 100vw 100%;
   -webkit-font-smoothing: antialiased !important;
 }
 

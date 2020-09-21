@@ -73,15 +73,15 @@ export default function Dashboard() {
 
             <ul className="lista-registros">
                 {filteredSearch.map(registro => (
-                    <li key={registro.id}>
-                        {/* ver configuração de upload de imagens */}
-                        {/* <header style={{ backgroundImage: 'url(https://blog.influx.com.br/storage/app/uploads/public/67d/18f/2fd/67d18f2fdf601e40e21e8dc4e70247ca62c6ac83.jpg)'}}></header> */}
-                        <Link to={`/card/${registro.id}`}>
+                    <Link to={`/card/${registro.id}`}>
+                        <li key={registro.id}>
+                            {/* ver configuração de upload de imagens */}
+                            {/* <header style={{ backgroundImage: 'url(https://blog.influx.com.br/storage/app/uploads/public/67d/18f/2fd/67d18f2fdf601e40e21e8dc4e70247ca62c6ac83.jpg)'}}></header> */}
                             <header style={{ backgroundImage: `url(http://localhost:3333/files/${registro.fotoRostoPath})` }}></header>
-                        </Link>
-                        <strong>{registro.nomeTitular}</strong>
-                        <span>{registro.cpfTitular ? `${registro.cpfTitular}` : `${registro.rgTitular}`}</span>
-                    </li>
+                            <strong>{registro.nomeTitular}</strong>
+                            <span>{registro.cpfTitular ? `${registro.cpfTitular}` : `${registro.rgTitular}`}</span>
+                        </li>
+                    </Link>
                 ))}
             </ul>
 

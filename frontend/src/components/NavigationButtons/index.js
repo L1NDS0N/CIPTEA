@@ -12,12 +12,16 @@ function NavigationButtons({ history }) {
                 <div className="ArrowLeft" title="Página anterior" onClick={() => history.goBack()}>
                     <FiArrowLeft className="ArrowLeftBtn" size={33} />
                 </div>
-                <div className="LogOut" title="Sair do sistema">
+                <div className="LogOut" title="Sair do sistema" onClick={handleLogout}>
                     <FiLogOut className="LogOutBtn" size={33} />
                 </div>
             </div>
         </>
     )
+    function handleLogout(){
+        localStorage.removeItem('userToken');
+        history.push('/');
+    }
 }
 
 export default withRouter(NavigationButtons);

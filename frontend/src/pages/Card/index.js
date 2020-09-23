@@ -3,6 +3,7 @@ import { FiPrinter, FiList, FiCornerLeftUp, FiChevronDown, FiUserCheck, FiMail, 
 import { useParams } from 'react-router-dom'
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -46,10 +47,10 @@ export default function Card() {
     //   ____________________________________________________________________________________________________________
     return (
         <>
-        <NavigationButtons></NavigationButtons>
+            <NavigationButtons></NavigationButtons>
             <ul className="carteira">
                 <li key={carteira.id}>
-                    <header style={{ backgroundImage: `url(http://192.168.5.234:3333/files/${carteira.fotoRostoPath})` }} title="Foto de rosto, 3x4"></header>
+                    <header style={{ backgroundImage: `url(http://localhost:3333/files/${carteira.fotoRostoPath})` }} title="Foto de rosto, 3x4"></header>
                 </li>
                 <li>
                     <strong>{carteira.nomeTitular}</strong>
@@ -69,9 +70,11 @@ export default function Card() {
 
                 </li>
                 <li></li>
-                <button className="btnPrinter">
-                    <FiCornerLeftUp size={14} /> Imprimir <FiPrinter size={14} />
-                </button>
+                <Link to={`/card/print/${carteiraId}`}>
+                    <button className="btnPrinter">
+                        <FiCornerLeftUp size={14} /> Imprimir <FiPrinter size={14} />
+                    </button>
+                </Link>
 
             </ul>
             <blockquote>

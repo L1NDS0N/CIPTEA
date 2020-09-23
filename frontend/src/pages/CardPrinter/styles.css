@@ -1,0 +1,118 @@
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        text-shadow: none !important;
+        filter: none !important;
+        -ms-filter: none !important;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        line-height: 1.4em;
+    }
+    h1, span, nav, footer, video, audio, object, embed {
+        display: none;
+    }
+}
+
+.cardImg {
+    width: 100%;
+}
+
+card.carteiras {
+    display: inline-block;
+    position: static;
+    height: 100vh;
+}
+
+card.frenteCarteira {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 400px !important;
+    height: 254px !important;
+}
+
+campoFoto {
+    display: flex;
+    position: absolute;
+    width: 85px !important;
+    margin-left: 27.6px;
+    height: 122px !important;
+    margin-top: 58px;
+    border-radius: 4px;
+}
+
+campoFoto img {
+    width: 100%;
+    border-radius: 4px;
+}
+
+nomeTitular {
+    display: flex;
+    position: absolute;
+    width: 224px;
+    height: 21px;
+    margin-top: 58px;
+    margin-left: 158px;
+    font-weight: 500;
+}
+
+nomeResponsavel {
+    display: flex;
+    position: absolute;
+    width: 194px;
+    height: 21px;
+    margin-top: 86px;
+    margin-left: 188px;
+    font-weight: 500;
+}
+
+cpfTitular {
+    display: flex;
+    position: absolute;
+    width: 232px;
+    height: 21px;
+    margin-top: 114.5px;
+    margin-left: 150px;
+    font-weight: 500;
+}
+
+rgTitular {
+    display: flex;
+    position: absolute;
+    width: 232px;
+    height: 21px;
+    margin-top: 143px;
+    margin-left: 150px;
+    font-weight: 500;
+}
+
+dataNascimento {
+    display: flex;
+    position: absolute;
+    width: 162px;
+    height: 21px;
+    margin-top: 171.2px;
+    margin-left: 220px;
+    font-weight: 500;
+}
+
+dataEmissao {
+    display: flex;
+    position: absolute;
+    width: 178px;
+    height: 21px;
+    margin-top: 199.6px;
+    margin-left: 204px;
+    font-weight: 500;
+}
+
+card.fundoCarteira {
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    width: 400px !important;
+    height: 254px !important;
+}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-// import MainHeader from '../../components/MainHeader'
-
+// TODO: Fazer validação baseada na resposta da api para informar no form
 import api from '../../services/api';
 
 export default function Login({ history }){
@@ -24,7 +23,6 @@ export default function Login({ history }){
     }
     return (
         <>
-        {/* <MainHeader/> */}
             <p>Comece inserindo o seu endereço de <strong> e-mail </strong> e <strong>senha</strong > para adentrar à plataforma </p>
             <form onSubmit={ handleSubmit }>
                 <label htmlFor="email"> E-MAIL * </label> 

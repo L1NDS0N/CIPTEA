@@ -1,14 +1,24 @@
-label#foto3x4 {
-    margin-bottom: 20px;
-    border: 1px dashed #ddd;
-    background-size: cover;
-    cursor: pointer;
-    height: 160px;
+.anexosCadastro {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
 
+label#foto3x4, label#laudoMedico {
+    margin-left: 10px;
+    margin-bottom: 20px;
+    border: 2px dashed #ddd;
+    background-attachment: scroll;
+    background: no-repeat;
+    background-size: 100% 100%;
+    cursor: pointer;
+    height: 200px;
+    width: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
 }
 
 label#foto3x4 input {
@@ -16,7 +26,7 @@ label#foto3x4 input {
 }
 
 label#foto3x4 span {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     font-weight: normal;
     color: #999;
 }
@@ -31,4 +41,31 @@ label#foto3x4.has-fotoRosto span {
 
 label#foto3x4.has-fotoRosto div {
     display: none;
+}
+
+label#laudoMedico input {
+    display: none;
+}
+
+label#laudoMedico span {
+    font-weight: normal;
+    color: #999;
+}
+
+label#laudoMedico.has-laudoMedico span {
+    display: none;
+}
+
+label#laudoMedico.has-laudoMedico div {
+    display: none;
+}
+
+a.pathLink {
+    color: #999;
+    font-weight: 400;
+}
+
+p.nomeDoArquivo {
+    color: #093b64;
+    font-weight: bold;
 }

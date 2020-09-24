@@ -6,6 +6,8 @@ import { ptBR } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
+import { useBetween } from 'use-between';
+import { useLoadState } from '../../App';
 
 import NavigationButtons from '../../components/NavigationButtons';
 
@@ -13,7 +15,7 @@ import './styles.css';
 
 
 export default function Card() {
-
+    const { setLoading } = useBetween(useLoadState);
     const [carteira, setCarteira] = useState([]);
     const [usuarioRecepcionista, setUsuarioRecepcionista] = useState([]);
 
@@ -22,10 +24,12 @@ export default function Card() {
 
     useEffect(() => {
         async function carregarCarteira() {
+            setLoading(true)
             const token = localStorage.getItem('userToken');
             const response = await api.get(`/carteiras/${carteiraId}`, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
+            setLoading(false)
             setCarteira(response.data);
             setUsuarioRecepcionista(response.data.usuarioRecepcionista);
             // Tratar data de criação para legibilidade do usuário
@@ -40,7 +44,6 @@ export default function Card() {
             );
             setDataFormatada(formattedDate);
         }
-
         carregarCarteira();
     }, [carteiraId]);
 

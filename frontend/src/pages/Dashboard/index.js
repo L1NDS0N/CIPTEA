@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useBetween } from 'use-between';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiUserPlus } from 'react-icons/fi';
 
+import { useLoadState } from '../../App';
 import api from '../../services/api';
 import './styles.css';
 
 export default function Dashboard() {
     const [registros, setRegistros] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [filteredSearch, setFilteredSearch] = useState([]);
+    // Atenção para chaves abaixo porque é oriundo do Hook useBetween
+    const { loading, setLoading } = useBetween(useLoadState);
 
     useEffect(() => {
         async function carregarRegistros() {
+            setLoading(true);
             const token = localStorage.getItem('userToken');
             const response = await api.get('/carteiras', {
                 headers: { 'Authorization': 'Bearer ' + token }
@@ -21,7 +25,7 @@ export default function Dashboard() {
             setLoading(false);
         }
         carregarRegistros();
-    }, []);
+    }, [setLoading]);
 
     useEffect(() => {
         setFilteredSearch(
@@ -41,11 +45,10 @@ export default function Dashboard() {
     if (loading) {
         return (
             <ul className="lista-registros">
-                <li>Carregando registros...</li>
+                Carregando carteirinhas...
             </ul>
         )
     }
-
 
     return (
         <>
@@ -74,7 +77,6 @@ export default function Dashboard() {
                     <Link key={registro.id} to={`/card/${registro.id}`}>
                         <li>
                             {/* ver configuração de upload de imagens */}
-                            {/* <header style={{ backgroundImage: 'url(https://blog.influx.com.br/storage/app/uploads/public/67d/18f/2fd/67d18f2fdf601e40e21e8dc4e70247ca62c6ac83.jpg)'}}></header> */}
                             <header style={{ backgroundImage: `url(http://localhost:3333/files/${registro.fotoRostoPath})` }}></header>
                             <strong>{
                                 registro.nomeTitular.trim().split(' ').slice(0, 1) +

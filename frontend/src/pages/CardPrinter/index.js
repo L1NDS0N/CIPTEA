@@ -59,6 +59,7 @@ export default function Card() {
                     <img className="cardImg" src={fundoCiptea} alt="" />
                 </card>
             </card>
+    <button className="btn" onClick={() => window.print()}>Imprimir a carteirinha de {carteira.nomeTitular}</button>
         </>
     )
 }

@@ -45,7 +45,7 @@ export default function Card() {
             setDataFormatada(formattedDate);
         }
         carregarCarteira();
-    }, [carteiraId]);
+    }, [carteiraId, setLoading]);
 
     //   ____________________________________________________________________________________________________________
     return (

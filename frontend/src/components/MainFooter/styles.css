@@ -10,13 +10,17 @@ footer p a {
     font-family: 'Roboto';
     color: #fff;
     opacity: 70%;
-    
+    cursor: default;
   }
   
   footer p.imageCredits {
     font-size: 8px;
     align-items: right;
     line-height: 50px;
-    position: relative;
-    right: 420px;
+    position: absolute;
+    left: 0;
+    transition: .7s;
+  }
+  footer p.imageCredits:hover {
+    font-size: 1em;
   }

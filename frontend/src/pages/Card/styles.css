@@ -14,30 +14,27 @@ a {
 }
 
 ul.carteira {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 350px);
+    grid-gap: 10px;
+    margin-bottom: 20px;
     width: 100%;
     list-style: none;
-    display: grid;
-    padding: 0;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-    margin-bottom: 30px;
-    
 }
 
-ul.carteira li {    
+ul.carteira li {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
 }
 
 ul.carteira li header {
     margin-left: 2%;
+    border-radius: 4px;
     width: 300px;
     height: 400px;
-    background-size: cover;
-    border-radius: 4px;
-    box-shadow: 0 0 5px;
-    background: no-repeat center;    
-    opacity: 1;
+    background-size: 300px 400px;
+    background: center no-repeat;
+    box-shadow: 0 4px 10px;
 }
 
 ul.carteira li strong {
@@ -63,11 +60,9 @@ ul.carteira li span {
 }
 
 table {
-    /* position: absolute; */
-    z-index: 2;  
-    /* transform: translate(-50%, -50%); */
+    z-index: 2;
     left: 50%;
-    top: 50%;    
+    top: 50%;
     border-collapse: collapse;
     border-spacing: 0;
     border-radius: 12px 12px 0 0;
@@ -78,19 +73,28 @@ table {
     text-align: left;
 }
 
+table.cardInfos {
+    border-radius: 0;
+}
+
 th, td {
     padding: 5px 10px;
-    
 }
 
 tr {
     background: #fff;
 }
+
 td {
     cursor: copy;
 }
-tr:hover {    
+
+tr:hover {
     filter: invert(90%);
+}
+
+thead tr:first-child {
+    filter: none;
 }
 
 th {
@@ -99,30 +103,23 @@ th {
     text-transform: uppercase;
 }
 
-tr:nth-child(odd){
+tr:nth-child(odd) {
     background-color: #eeeeee;
 }
 
-td:nth-child(odd){
+td:nth-child(odd) {
     font-weight: 600;
-}
-
-footer {
-    display: flex;
-    flex-direction: column;
-    align-content: flex-end;
-    box-shadow: 0 2px 12px rgba(32, 32, 32, .3);
 }
 
 nav.DropDownMenu {
     display: flex;
-    align-items: center;     
+    align-items: center;
     color: #444;
     margin-top: 20px;
     width: 100%;
     cursor: pointer;
     font-size: 16px;
-    align-content: center;    
+    align-content: center;
     border: 50px;
     border-radius: 2px;
     height: 42px;
@@ -131,6 +128,7 @@ nav.DropDownMenu {
     background: #fff;
     color: #444;
 }
+
 nav.DropDownMenu:hover {
     background: #eeeeee;
 }
@@ -149,6 +147,7 @@ nav.DropDownMenu:hover {
     transition: .4s;
     box-shadow: 0px 1px 2px;
 }
+
 .btnPrinter:hover {
     background: #266396;
     color: #fff;

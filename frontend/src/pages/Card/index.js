@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiPrinter, FiList, FiCornerLeftUp, FiChevronDown, FiUserCheck, FiMail, FiPhone } from 'react-icons/fi'
+import { FiPrinter, FiList, FiCornerLeftUp, FiChevronDown, FiUserCheck, FiMail, FiPhone, FiInfo } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -60,15 +60,21 @@ export default function Card() {
                     <span style={carteira.cep ? { display: 'initial' } : { display: 'none' }}>{carteira.logradouro}, {carteira.numeroResidencia}, {carteira.complemento}, {carteira.bairro}, {carteira.cidade} - {carteira.uf} - {carteira.cep}.</span>
                     <br />
                     <table>
-                        <th colSpan="2"><FiUserCheck /> Informações para contato:</th>
-                        <tr>
-                            <td><FiMail /> E-mail:</td>
-                            <td>{carteira.emailContato}</td>
-                        </tr>
-                        <tr>
-                            <td><FiPhone /> Telefone:</td>
-                            <td>{carteira.numeroContato}</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th colSpan="2"><FiUserCheck /> Informações para contato:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><FiMail /> E-mail:</td>
+                                <td>{carteira.emailContato}</td>
+                            </tr>
+                            <tr>
+                                <td><FiPhone /> Telefone:</td>
+                                <td>{carteira.numeroContato}</td>
+                            </tr>
+                        </tbody>
                     </table>
 
                 </li>
@@ -78,57 +84,67 @@ export default function Card() {
                         <FiCornerLeftUp size={14} /> Imprimir <FiPrinter size={14} />
                     </button>
                 </Link>
-
             </ul>
             <blockquote>
 
                 <table>
-
-                    <th colSpan="2"><h2><FiList /> Ficha completa de {carteira.nomeTitular}</h2></th>
-                    <tr>
-                        <td>Nome do Titular</td>
-                        <td>{carteira.nomeTitular}</td>
-                    </tr>
-                    <tr>
-                        <td>CPF do Titular</td>
-                        <td>{carteira.cpfTitular ? `${carteira.cpfTitular}` : `${carteira.rgTitular}`}</td>
-                    </tr>
-                    <tr>
-                        <td>RG do Titular</td>
-                        <td>{carteira.rgTitular}</td>
-                    </tr>
-                    <tr>
-                        <td>Data de Nascimento</td>
-                        <td>{carteira.dataNascimento}</td>
-                    </tr>
-                    <tr>
-                        <td>Nome do Responsável</td>
-                        <td>{carteira.nomeResponsavel}</td>
-                    </tr>
-                    <tr>
-                        <td>RG do Responsável</td>
-                        <td>{carteira.rgResponsavel}</td>
-                    </tr>
-                    <tr>
-                        <td>CPF do Responsável</td>
-                        <td>{carteira.cpfResponsavel}</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th colSpan="2"><h2><FiList /> Ficha completa de {carteira.nomeTitular}</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nome do Titular</td>
+                            <td>{carteira.nomeTitular}</td>
+                        </tr>
+                        <tr>
+                            <td>CPF do Titular</td>
+                            <td>{carteira.cpfTitular ? `${carteira.cpfTitular}` : `${carteira.rgTitular}`}</td>
+                        </tr>
+                        <tr>
+                            <td>RG do Titular</td>
+                            <td>{carteira.rgTitular}</td>
+                        </tr>
+                        <tr>
+                            <td>Data de Nascimento</td>
+                            <td>{carteira.dataNascimento}</td>
+                        </tr>
+                        <tr>
+                            <td>Nome do Responsável</td>
+                            <td>{carteira.nomeResponsavel}</td>
+                        </tr>
+                        <tr>
+                            <td>RG do Responsável</td>
+                            <td>{carteira.rgResponsavel}</td>
+                        </tr>
+                        <tr>
+                            <td>CPF do Responsável</td>
+                            <td>{carteira.cpfResponsavel}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </blockquote>
             <br />
-
             <br />
-            <footer>
-                <tr>
-                    <td>Criado por: {usuarioRecepcionista.nomeCompleto} - {usuarioRecepcionista.matricula}</td>
-                </tr>
-                <tr>
-                    <td>Data de criação: {dataFormatada} </td>
-                </tr>
-                <tr>
-                    <td>Última atualização: {carteira.updated_at === carteira.created_at ? 'Nunca atualizado antes' : carteira.updated_at}</td>
-                </tr>
-            </footer>
+            <table className="cardInfos">
+                <thead>
+                    <tr>
+                        <th><FiInfo/> Informações adicionais</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Criado por: {usuarioRecepcionista.nomeCompleto} - {usuarioRecepcionista.matricula}</td>
+                    </tr>
+                    <tr>
+                        <td>Data de criação: {dataFormatada} </td>
+                    </tr>
+                    <tr>
+                        <td>Última atualização: {carteira.updated_at === carteira.created_at ? 'Nunca atualizado antes' : carteira.updated_at}</td>
+                    </tr>
+                </tbody>
+            </table>
             <br />
 
             <DropDown />

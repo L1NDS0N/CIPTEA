@@ -32,8 +32,8 @@ ul.carteira li header {
     border-radius: 4px;
     width: 300px;
     height: 400px;
-    background-size: 300px 400px;
     background: center no-repeat;
+    background-size: 300px 400px;
     box-shadow: 0 4px 10px;
 }
 

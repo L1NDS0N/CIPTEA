@@ -4,7 +4,21 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 5px;
+}
 
+.meio-a-meio {
+    flex-direction: row;
+    display: flex-box; 
+}
+
+label.dataNascimento, label.sexo {
+    position: absolute;
+}
+
+#dataNascimento, #sexo {
+    width: 45% !important;    
+    margin-top: 20px;
+    margin-right: 10px;
 }
 
 label#foto3x4, label#laudoMedico {

@@ -115,17 +115,26 @@ export default function New({ history }) {
                     value={rgTitular}
                     onChange={event => setRgTitular(event.target.value)}
                 />
-
-                <label htmlFor="dataNascimento">Data de nascimento *</label>
-                <input
-                    type="date"
-                    required
-                    id="dataNascimento"
-                    placeholder="Insira a Data de Nascimento do Titular"
-                    value={dataNascimento}
-                    onChange={event => setDataNascimento(event.target.value)}
-                />
-
+                <div className="meio-a-meio">
+                    <label className="dataNascimento" htmlFor="dataNascimento">Data de nascimento *</label>
+                    <input
+                        type="date"
+                        required
+                        id="dataNascimento"
+                        placeholder="Insira a Data de Nascimento do Titular"
+                        value={dataNascimento}
+                        onChange={event => setDataNascimento(event.target.value)}
+                    />
+                    <label className="sexo" htmlFor="sexo">Sexo *</label>
+                    <input
+                        type="select"
+                        required
+                        id="sexo"
+                        placeholder="Insira a Data de Nascimento do Titular"
+                        value={dataNascimento}
+                        onChange={event => setDataNascimento(event.target.value)}
+                    />
+                </div>
                 <label htmlFor="emailContato">Email</label>
                 <input
                     type="emailContato"
@@ -191,7 +200,6 @@ export default function New({ history }) {
                             : ''}
                     </label>
                 </div>
-
 
                 <button className="btn" type="submit">Cadastrar</button>
             </form>

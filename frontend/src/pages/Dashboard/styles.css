@@ -31,11 +31,11 @@ ul.lista-registros li:hover {
 ul.lista-registros li header {
     cursor: pointer;
     height: 260px;
-    width: auto;
-    background-size: cover;
+    width: 192px;
     border-radius: 4px;
     box-shadow: 0 0 5px;
-    background: no-repeat center;
+    background: center no-repeat;
+    background-size: 192px 260px;
 }
 
 ul.lista-registros li strong {

@@ -1,0 +1,12 @@
+.imgcrp-container {
+    width: 354px;
+    height: 472px;
+    float: left;
+}
+
+.imgcrp-preview {
+    width: 150px;
+    height: 200px;
+    float: left;
+    margin-left: 10px;
+}

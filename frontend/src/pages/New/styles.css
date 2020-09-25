@@ -8,7 +8,7 @@
 
 .meio-a-meio {
     flex-direction: row;
-    display: flex-box; 
+    display: flex-box;
 }
 
 label.dataNascimento, label.sexo {
@@ -16,7 +16,7 @@ label.dataNascimento, label.sexo {
 }
 
 #dataNascimento, #sexo {
-    width: 45% !important;    
+    width: 45% !important;
     margin-top: 20px;
     margin-right: 10px;
 }
@@ -24,7 +24,7 @@ label.dataNascimento, label.sexo {
 label#foto3x4, label#laudoMedico {
     margin-bottom: 20px;
     border: 2px dashed #ddd;
-    background-attachment: scroll;
+    border-radius: 5px;
     background: no-repeat;
     background-size: 100% 100%;
     cursor: pointer;
@@ -42,7 +42,6 @@ label#foto3x4 input {
 }
 
 label#foto3x4 span {
-    /* margin-bottom: 10px; */
     font-weight: normal;
     color: #999;
 }

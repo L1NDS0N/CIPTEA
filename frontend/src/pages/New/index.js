@@ -3,6 +3,7 @@ import MaskedInput from 'react-text-mask';
 import { FiCamera, FiPaperclip } from 'react-icons/fi';
 
 import NavigationButtons from '../../components/NavigationButtons';
+
 import api from '../../services/api';
 import './styles.css'
 
@@ -200,7 +201,6 @@ export default function New({ history }) {
                             : ''}
                     </label>
                 </div>
-
                 <button className="btn" type="submit">Cadastrar</button>
             </form>
         </>

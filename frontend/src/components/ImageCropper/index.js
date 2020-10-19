@@ -7,7 +7,7 @@ export default class ImageCropper extends React.Component {
     constructor() {
         super();
         this.state = {
-            imageDestination: "",
+            imageDestination: null,
         }
 
         this.imageElement = React.createRef();
@@ -19,11 +19,11 @@ export default class ImageCropper extends React.Component {
             scalable: false,
             aspectRatio: 3 / 4,
             crop: () => {
-                const canvas = cropper.getCroppedCanvas();
+                const canvas = cropper.getCroppedCanvas().toDataURL("image/*");
                 this.setState({ imageDestination: canvas.toDataURL("image/png") });
             }
-
         });
+        console.log(cropper)
     }
 
     render() {
@@ -31,9 +31,9 @@ export default class ImageCropper extends React.Component {
             <>
                 <div>
                     <div className="imgcrp-container">
-                        <img ref={this.imageElement} src={this.props.src} alt="Source" />
+                        <img ref={this.imageElement} src={this.props.src} alt="Original" />
                     </div>
-                    <img className="imgcrp-preview" src={this.state.imageDestination} alt="Destination" />
+                    <img className="imgcrp-preview" src={this.state.imageDestination} alt="Imagem final" />
                 </div>
             </>
         )

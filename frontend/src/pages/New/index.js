@@ -3,6 +3,7 @@ import MaskedInput from 'react-text-mask';
 import { FiCamera, FiPaperclip } from 'react-icons/fi';
 
 import NavigationButtons from '../../components/NavigationButtons';
+import Modal from '../../components/Modal';
 
 import api from '../../services/api';
 import './styles.css'
@@ -19,6 +20,9 @@ export default function New({ history }) {
     const [numeroContato, setNumeroContato] = useState('');
     const [fotoRostoPath, setFotoRostoPath] = useState(null);
     const [laudoMedicoPath, setLaudoMedicoPath] = useState(null);
+
+    // Modal state
+    const [isOpen, setIsOpen] = useState(true);
 
     // Não permitir outros formatos senão imagem
     const previewFotoRosto = useMemo(() => {
@@ -171,7 +175,11 @@ export default function New({ history }) {
                             <FiCamera size={30} alt="Selecione a foto 3x4" />
                         </div>
                     </label>
+                    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                        Corpo do modal
+                    </Modal>
 
+                    {/*______________________________________________________________________________________________________________*/}
                     <label
                         htmlFor="previewLaudoMedico"
                         id="laudoMedico"

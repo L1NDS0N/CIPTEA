@@ -67,6 +67,10 @@ label#laudoMedico span {
     color: #999;
 }
 
+label#laudoMedico.has-laudoMedico {
+    background-color: #fff45728;
+}
+
 label#laudoMedico.has-laudoMedico span {
     display: none;
 }

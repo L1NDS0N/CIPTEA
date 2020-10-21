@@ -203,9 +203,12 @@ export default function New({ history }) {
                                 href={previewLaudoMedico}
                                 target="_blank"
                                 rel="noopener noreferrer">
-                                <p>
-                                    <p className="nomeDoArquivo">{laudoMedicoPath.name}</p>
-                                    foi selecionado, clique para visualizar em nova guia
+                                <p title="Clique em volta para carregar outro arquivo">
+                                    <p
+                                        className="nomeDoArquivo">
+                                        {laudoMedicoPath.name}
+                                    </p>
+                                        foi selecionado, clique aqui para visualizar em nova guia
                                 </p>
                             </a>
                             : ''}

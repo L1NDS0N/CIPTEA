@@ -22,11 +22,12 @@ export default function New({ history }) {
     const [laudoMedicoPath, setLaudoMedicoPath] = useState(null);
 
     // Modal state
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     // Não permitir outros formatos senão imagem
     const previewFotoRosto = useMemo(() => {
-        return fotoRostoPath ? URL.createObjectURL(fotoRostoPath) : null;
+
+        return fotoRostoPath ? (setIsOpen(true), URL.createObjectURL(fotoRostoPath)) : null;
     }, [fotoRostoPath])
 
     const previewLaudoMedico = useMemo(() => {
@@ -175,6 +176,7 @@ export default function New({ history }) {
                             <FiCamera size={30} alt="Selecione a foto 3x4" />
                         </div>
                     </label>
+
                     <Modal open={isOpen} onClose={() => setIsOpen(false)}>
                         Corpo do modal
                     </Modal>

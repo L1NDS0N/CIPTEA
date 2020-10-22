@@ -25,6 +25,13 @@ export default function New({ history }) {
     // Modal state
     const [isOpen, setIsOpen] = useState(false);
 
+    // Recorte state
+    const [recortado, setRecortado] = useState(null);
+    function quandoRecortado(valorGerado) {
+        setRecortado(valorGerado);
+        console.log(recortado)
+    }
+
     // Não permitir outros formatos senão imagem
     const previewFotoRosto = useMemo(() => {
 
@@ -178,11 +185,6 @@ export default function New({ history }) {
                         </div>
                     </label>
 
-                    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-                        <ImageCropper src={previewFotoRosto}></ImageCropper>
-                    </Modal>
-
-                    {/*______________________________________________________________________________________________________________*/}
                     <label
                         htmlFor="previewLaudoMedico"
                         id="laudoMedico"
@@ -217,6 +219,9 @@ export default function New({ history }) {
                 </div>
                 <button className="btn" type="submit">Cadastrar</button>
             </form>
+            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                <ImageCropper src={previewFotoRosto} recorteCallback={quandoRecortado}></ImageCropper>
+            </Modal>
         </>
     )
 }

@@ -2,6 +2,7 @@
     width: 354px;
     height: 472px;
     float: left;
+    z-index: 1000;
 }
 
 .img-preview {
@@ -9,4 +10,11 @@
     height: 200px;
     float: left;
     margin-left: 10px;
+}
+
+.cropper-footer {
+    position: absolute;
+    bottom: 10px;
+    width: 90%;
+    z-index: 1000;
 }

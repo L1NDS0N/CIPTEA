@@ -42,6 +42,9 @@ export default class ImageCropper extends React.Component {
                     {/* Essa eu preciso retornar na função */}
                     {/* <img src={this.state.imageURL} alt="Ota" /> */}
                 </div>
+                <footer className="cropper-footer">
+                    <button className="btn"> Recortar </button>
+                </footer>
             </>
         )
     }

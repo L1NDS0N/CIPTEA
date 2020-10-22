@@ -7,9 +7,10 @@ export default class ImageCropper extends React.Component {
     constructor() {
         super();
         this.state = {
-            imageDestination: null,
+            imageDestination: "",
+            imageBlob: "",
+            imageURL: "",
         }
-
         this.imageElement = React.createRef();
     }
 
@@ -18,22 +19,28 @@ export default class ImageCropper extends React.Component {
             zoomable: true,
             scalable: false,
             aspectRatio: 3 / 4,
-            crop: () => {
-                const canvas = cropper.getCroppedCanvas().toDataURL("image/*");
-                this.setState({ imageDestination: canvas.toDataURL("image/png") });
+            crop: async () => {
+                const canvas = cropper.getCroppedCanvas();
+                const base64Image = canvas.toDataURL("image/jpeg");
+                this.setState({ imageDestination: base64Image });
+                this.setState({ imageBlob: await fetch(base64Image).then((res) => res.blob()) });
+                this.setState({ imageURL: URL.createObjectURL(this.state.imageBlob) })
             }
         });
-        console.log(cropper)
     }
 
     render() {
         return (
             <>
                 <div>
-                    <div className="imgcrp-container">
-                        <img ref={this.imageElement} src={this.props.src} alt="Original" />
+                    <div className="img-container">
+                        <img ref={this.imageElement} src={this.props.src} alt="Foto original" />
                     </div>
-                    <img className="imgcrp-preview" src={this.state.imageDestination} alt="Imagem final" />
+                    <img className="img-preview" src={this.state.imageDestination} alt="Foto 3x4 acabada" />
+                </div>
+                <div>
+                    {/* Essa eu preciso retornar na função */}
+                    {/* <img src={this.state.imageURL} alt="Ota" /> */}
                 </div>
             </>
         )

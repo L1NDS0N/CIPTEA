@@ -4,6 +4,7 @@ import { FiCamera, FiPaperclip } from 'react-icons/fi';
 
 import NavigationButtons from '../../components/NavigationButtons';
 import Modal from '../../components/Modal';
+import ImageCropper from '../../components/ImageCropper';
 
 import api from '../../services/api';
 import './styles.css'
@@ -178,7 +179,7 @@ export default function New({ history }) {
                     </label>
 
                     <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-                        Corpo do modal
+                        <ImageCropper src={previewFotoRosto}></ImageCropper>
                     </Modal>
 
                     {/*______________________________________________________________________________________________________________*/}

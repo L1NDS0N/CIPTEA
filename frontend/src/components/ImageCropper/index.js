@@ -11,6 +11,8 @@ export default class ImageCropper extends React.Component {
             imageBlob: "",
             imageURL: "",
         }
+        // Isso resolveu o retorno undefined das props desta classe
+        this.devolveRecortadoParaComponentePai = this.devolveRecortadoParaComponentePai.bind(this);
         this.imageElement = React.createRef();
     }
 
@@ -28,6 +30,10 @@ export default class ImageCropper extends React.Component {
             }
         });
     }
+    devolveRecortadoParaComponentePai() {
+        this.props.recorteCallback(() => this.state.imageURL);
+    }
+
 
     render() {
         return (
@@ -43,7 +49,7 @@ export default class ImageCropper extends React.Component {
                     {/* <img src={this.state.imageURL} alt="Ota" /> */}
                 </div>
                 <footer className="cropper-footer">
-                    <button className="btn"> Recortar </button>
+                    <button className="btn" onClick={this.devolveRecortadoParaComponentePai}> Recortar </button>
                 </footer>
             </>
         )

@@ -27,9 +27,10 @@ export default function New({ history }) {
 
     // Recorte state
     const [recortado, setRecortado] = useState(null);
-    function quandoRecortado(valorGerado) {
-        setRecortado(valorGerado);
+    async function quandoRecortado(urlFotoRecortada) {
+        await setRecortado(urlFotoRecortada);
         console.log(recortado)
+        console.log(fotoRostoPath)
     }
 
     // Não permitir outros formatos senão imagem

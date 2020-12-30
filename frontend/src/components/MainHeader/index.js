@@ -25,7 +25,7 @@ export default function MainHeader() {
 
                     <h1 className="title">CIPTEA</h1>
                     <p className="subtitle anim-typewriter">
-                        Carteira de Identificação da Pessoa com Espectro Autista
+                        Carteira de Identificação da Pessoa com Transtorno do Espectro Autista
                 </p>
                 </div>
             </div>

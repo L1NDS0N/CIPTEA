@@ -25,7 +25,7 @@ export default function Login({ history }) {
     }
     return (
         <>
-            <p>Comece inserindo o seu endereço de <strong> e-mail </strong> e <strong>senha</strong > para adentrar à plataforma </p>
+            <p>Insira o seu endereço de <strong> e-mail </strong> e <strong>senha</strong > para aceder </p>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email"> E-MAIL * </label>
                 <input type="email"

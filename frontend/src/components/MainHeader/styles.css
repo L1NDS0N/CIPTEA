@@ -52,7 +52,7 @@ p.subtitle {
 /* Animation */
 
 .anim-typewriter {
-    animation: typewriter 5s steps(56) 3s 1 normal both, blinkTextCursor 900ms steps(56) infinite normal;
+    animation: typewriter 5s steps(70) 3s 1 normal both, blinkTextCursor 900ms steps(70) infinite normal;
 }
 
 @keyframes logo-danca {
@@ -84,7 +84,7 @@ p.subtitle {
         width: 0;
     }
     to {
-        width: 25.8em;
+        width: 32.1em;
     }
 }
 

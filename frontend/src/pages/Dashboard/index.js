@@ -8,6 +8,7 @@ import api from '../../services/api';
 import './styles.css';
 
 export default function Dashboard() {
+
     const [registros, setRegistros] = useState([]);
     const [search, setSearch] = useState('');
     const [filteredSearch, setFilteredSearch] = useState([]);
@@ -77,7 +78,7 @@ export default function Dashboard() {
                     <Link key={registro.id} to={`/card/${registro.id}`}>
                         <li>
                             {/* ver configuração de upload de imagens */}
-                            <header style={{ backgroundImage: `url(http://localhost:3333/files/${registro.fotoRostoPath})` }}></header>
+                            <header style={{ backgroundImage: `url(${process.env.API_URL}/files/${registro.fotoRostoPath})` }}></header>
                             <strong>{
                                 registro.nomeTitular.trim().split(' ').slice(0, 1) +
                                 " " + registro.nomeTitular.trim().split(' ').slice(-1)

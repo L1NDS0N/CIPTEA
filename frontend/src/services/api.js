@@ -1,7 +1,10 @@
 import axios from 'axios';
+require('dotenv').config()
 
 const api = axios.create({
-    baseURL: "http://localhost:3333",
-});
+    baseURL: 'https://3333-b90ff000-4b6c-4aab-80e8-00aea86fe36b.ws-us03.gitpod.io',
 
-export default api; 
+});
+        console.log(process.env.API_URL)
+
+export default api;

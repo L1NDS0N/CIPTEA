@@ -53,7 +53,7 @@ export default function Card() {
             <NavigationButtons></NavigationButtons>
             <ul className="carteira">
                 <li key={carteira.id}>
-                    <header style={{ backgroundImage: `url(http://localhost:3333/files/${carteira.fotoRostoPath})` }} title="Foto de rosto, 3x4"></header>
+                    <header style={{ backgroundImage: `url(https://3333-b90ff000-4b6c-4aab-80e8-00aea86fe36b.ws-us03.gitpod.io/files/${carteira.fotoRostoPath})` }} title="Foto de rosto, 3x4"></header>
                 </li>
                 <li>
                     <strong>{carteira.nomeTitular}</strong>

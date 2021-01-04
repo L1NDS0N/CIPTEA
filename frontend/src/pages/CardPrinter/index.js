@@ -45,7 +45,7 @@ export default function Card() {
                 <card className="frenteCarteira">
                     <img className="cardImg" src={frenteCiptea} alt={carteira.nomeTitular}/>
                     <campoFoto>
-                        <img src={`http://localhost:3333/files/${carteira.fotoRostoPath}`} alt="" />
+                        <img src={`https://3333-b90ff000-4b6c-4aab-80e8-00aea86fe36b.ws-us03.gitpod.io/files/${carteira.fotoRostoPath}`} alt="" />
                     </campoFoto>
                     <nomeTitular>{carteira.nomeTitular}</nomeTitular>
                     <nomeResponsavel>{carteira.nomeResponsavel}</nomeResponsavel>

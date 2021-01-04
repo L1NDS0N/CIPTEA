@@ -15,7 +15,7 @@ module.exports = {
   |
   */
   origin(currentOrigin) {
-    return currentOrigin === 'http://localhost:3000';
+    return currentOrigin === 'https://3000-b90ff000-4b6c-4aab-80e8-00aea86fe36b.ws-us03.gitpod.io';
   },
   /*
   |--------------------------------------------------------------------------

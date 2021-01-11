@@ -57,7 +57,9 @@ export default function Card() {
                 </li>
                 <li>
                     <strong>{carteira.nomeTitular}</strong>
-                    <span style={carteira.cep ? { display: 'initial' } : { display: 'none' }}>{carteira.logradouro}, {carteira.numeroResidencia}, {carteira.complemento}, {carteira.bairro}, {carteira.cidade} - {carteira.uf} - {carteira.cep}.</span>
+                    <span style={carteira.cep ? { display: 'initial' } : { display: 'none' }}>
+                        {carteira.logradouro}, {carteira.numeroResidencia}, {carteira.complemento}, {carteira.bairro}, {carteira.cidade} - {carteira.uf} - {carteira.cep}.
+                    </span>
                     <br />
                     <table>
                         <thead>
@@ -130,7 +132,7 @@ export default function Card() {
             <table className="cardInfos">
                 <thead>
                     <tr>
-                        <th><FiInfo/> Informações adicionais</th>
+                        <th><FiInfo /> Informações adicionais</th>
                     </tr>
                 </thead>
                 <tbody>

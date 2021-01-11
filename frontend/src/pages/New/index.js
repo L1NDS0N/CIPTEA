@@ -17,6 +17,7 @@ export default function New({ history }) {
     const [cpfTitular, setCpfTitular] = useState('');
     const [rgTitular, setRgTitular] = useState('');
     const [dataNascimento, setDataNascimento] = useState('');
+    const [sexoTitular, setSexoTitular] = useState('');
     const [emailContato, setEmailContato] = useState('');
     const [numeroContato, setNumeroContato] = useState('');
     const [fotoRostoPath, setFotoRostoPath] = useState(null);
@@ -55,10 +56,12 @@ export default function New({ history }) {
         data.append('cpfTitular', cpfTitular)
         data.append('rgTitular', rgTitular)
         data.append('dataNascimento', dataNascimento)
+        data.append('sexoTitular', sexoTitular)
         data.append('emailContato', emailContato)
         data.append('numeroContato', numeroContato)
         data.append('fotoRostoPath', fotoRostoPath)
         data.append('laudoMedicoPath', laudoMedicoPath)
+
 
         await api.post('/carteiras', data,
             { headers: { 'Authorization': 'Bearer ' + token } }
@@ -141,14 +144,26 @@ export default function New({ history }) {
                         onChange={event => setDataNascimento(event.target.value)}
                     />
                     <label className="sexo" htmlFor="sexo">Sexo *</label>
-                    <input
-                        type="select"
+                    <select
                         required
-                        id="sexo"
-                        placeholder="Insira a Data de Nascimento do Titular"
-                        value={dataNascimento}
-                        onChange={event => setDataNascimento(event.target.value)}
-                    />
+                        id="sexo">
+                        <option
+                            select
+                            disabled
+                            selected="true"
+                        > Selecione o sexo do Titular
+                        </option>
+                        <option
+                            value="Masculino"
+                            onChange={event => setSexoTitular(event.target.value)}>
+                            Masculino
+                        </option>
+                        <option
+                            value="Feminino"
+                            onChange={event => setSexoTitular(event.target.value)}>
+                            Feminino
+                        </option>
+                    </select>
                 </div>
                 <label htmlFor="emailContato">Email</label>
                 <input

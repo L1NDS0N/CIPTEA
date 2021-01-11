@@ -17,7 +17,7 @@ body {
   -webkit-font-smoothing: antialiased !important;
 }
 
-body, input, button {
+body, input, button, select {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
@@ -60,6 +60,15 @@ body, input, button {
 }
 
 .content form input {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  height: 45px;
+  padding: 0 15px;
+  font-size: 16px;
+}
+
+.content form select {
   margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 2px;

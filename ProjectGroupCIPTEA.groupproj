@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{69924BC3-1515-4F0A-B93D-ACDE27205F2C}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="src\ProjectCIPTEA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="src\Pages\Pages.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ProjectCIPTEA">
+        <MSBuild Projects="src\ProjectCIPTEA.dproj"/>
+    </Target>
+    <Target Name="ProjectCIPTEA:Clean">
+        <MSBuild Projects="src\ProjectCIPTEA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProjectCIPTEA:Make">
+        <MSBuild Projects="src\ProjectCIPTEA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Pages">
+        <MSBuild Projects="src\Pages\Pages.dproj"/>
+    </Target>
+    <Target Name="Pages:Clean">
+        <MSBuild Projects="src\Pages\Pages.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Pages:Make">
+        <MSBuild Projects="src\Pages\Pages.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ProjectCIPTEA;Pages"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ProjectCIPTEA:Clean;Pages:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ProjectCIPTEA:Make;Pages:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

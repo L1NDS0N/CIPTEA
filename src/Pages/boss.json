@@ -1,0 +1,11 @@
+{
+	"name": "Pages",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./",
+	"projects": [],
+	"dependencies": {
+		"github.com/bittencourtthulio/router4delphi": "^1.0.6"
+	}
+}

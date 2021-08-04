@@ -1,0 +1,44 @@
+object PageDashboard: TPageDashboard
+  Left = 0
+  Top = 0
+  Caption = 'Carteirinhas'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object lytDashboard: TLayout
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Layout1: TLayout
+      Align = Top
+      Size.Width = 640.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object Label1: TLabel
+        Align = HorzCenter
+        Position.X = 285.000000000000000000
+        Size.Width = 69.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Dashboard'
+        TabOrder = 0
+      end
+    end
+    object btnNew: TButton
+      Align = Bottom
+      Position.Y = 432.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Nova Carteira'
+      OnClick = btnNewClick
+    end
+  end
+end

@@ -18,9 +18,6 @@ type
     { Public declarations }
   end;
 
-var
-  ServiceConnection: TServiceConnection;
-
 implementation
 
 {%CLASSGROUP 'System.Classes.TPersistent'}

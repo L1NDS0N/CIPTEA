@@ -1,9 +1,11 @@
 object ServiceCarteiraPTEA: TServiceCarteiraPTEA
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 186
-  Width = 156
+  OnDestroy = DataModuleDestroy
+  Height = 145
+  Width = 144
   object qryCadastroCarteiraPTEA: TFDQuery
+    CachedUpdates = True
     Connection = ServiceConnection.FDConnection
     SQL.Strings = (
       'select * from carteiraptea')

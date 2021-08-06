@@ -17,7 +17,15 @@ uses
   FireDAC.DApt,
   Data.DB,
   FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client,
+  FireDAC.UI.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Phys,
+  FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef,
+  Services.Connection,
+  FireDAC.VCLUI.Wait;
 
 type
   TServiceCarteiraPTEA = class(TDataModule)
@@ -50,7 +58,9 @@ type
     qryPesquisaCarteiraPTEACriadoEm: TSQLTimeStampField;
     qryPesquisaCarteiraPTEAAlteradoEm: TSQLTimeStampField;
     procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
     private
+      ServiceConnection: TServiceConnection;
     public
       function ListAll: TFDQuery;
       function Append(const AJson: TJSONObject): Boolean;
@@ -59,14 +69,10 @@ type
       function GetById(const AId: string): TFDQuery;
   end;
 
-var
-  ServiceCarteiraPTEA: TServiceCarteiraPTEA;
-
 implementation
 
 uses
-  DataSet.Serialize,
-  Services.Connection;
+  DataSet.Serialize;
 
 {%CLASSGROUP 'System.Classes.TPersistent'}
 {$R *.dfm}
@@ -82,8 +88,14 @@ end;
 
 procedure TServiceCarteiraPTEA.DataModuleCreate(Sender: TObject);
 begin
+  ServiceConnection := TServiceConnection.Create(nil);
   qryCadastroCarteiraPTEA.Active := True;
   qryPesquisaCarteiraPTEA.Active := True;
+end;
+
+procedure TServiceCarteiraPTEA.DataModuleDestroy(Sender: TObject);
+begin
+ServiceConnection.Free;
 end;
 
 procedure TServiceCarteiraPTEA.Delete(AId: integer);
@@ -106,6 +118,7 @@ function TServiceCarteiraPTEA.ListAll: TFDQuery;
 begin
   qryPesquisaCarteiraPTEA.Open();
   Result := qryPesquisaCarteiraPTEA;
+
 end;
 
 function TServiceCarteiraPTEA.Update(const AJson: TJSONObject; AId: integer): Boolean;

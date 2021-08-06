@@ -14,8 +14,7 @@ procedure Registry;
 implementation
 
 uses
-  Services.CarteiraPTEA,
-  Services.Connection;
+  Services.CarteiraPTEA;
 
 procedure DoList(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
@@ -97,10 +96,7 @@ begin
 end;
 
 procedure Registry;
-var
-  LConnection: TServiceConnection;
 begin
-  LConnection := TServiceConnection.Create(nil);
   THorse.Get('/carteiras', DoList);
   THorse.Get('/carteiras/:id', DoGet);
   THorse.Post('/carteiras', DoPost);

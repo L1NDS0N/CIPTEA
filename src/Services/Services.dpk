@@ -1,4 +1,4 @@
-package Pages;
+package Services;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -29,22 +29,14 @@ package Pages;
 
 requires
   rtl,
-  xmlrtl,
-  fmx,
-  soaprtl,
   dbrtl,
-  DbxCommonDriver,
-  FireDAC,
-  FireDACCommonDriver,
-  FireDACCommon,
   bindengine,
   bindcomp,
-  bindcompfmx;
+  FireDAC,
+  FireDACCommonDriver,
+  FireDACCommon;
 
 contains
-  Pages.Dashboard in 'Pages.Dashboard.pas' {PageDashboard},
-  Pages.Principal in 'Pages.Principal.pas' {PagePrincipal},
-  Pages.New in 'Pages.New.pas' {PageNew},
-  Services.New in '..\Services\Services.New.pas' {ServiceNew: TDataModule};
+  Services.New in 'Services.New.pas' {ServiceNew: TDataModule};
 
 end.

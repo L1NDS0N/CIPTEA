@@ -39,7 +39,7 @@ var
 begin
   SetLength(APackage, 0);
 
-  sFile := ExtractFilePath(ParamStr(0)) + '\' + Pacote + '\bin\' + Pacote + '.bpl';
+  sFile := ExtractFilePath(ParamStr(0)) + Pacote + '\bin\' + Pacote + '.bpl';
 
   if FileExists(sFile) then
   begin
@@ -47,7 +47,7 @@ begin
     APackage[Length(APackage) - 1] := LoadPackage(sFile);
   end
   else
-    ShowMessage('Package não encontrado (' + sFile);
+    ShowMessage('Package não encontrado ' + sFile);
 end;
 
 end.

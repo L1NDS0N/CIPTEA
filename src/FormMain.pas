@@ -20,7 +20,8 @@ uses
   FMX.Layouts,
   System.ImageList,
   FMX.ImgList,
-  FMX.Edit, FMX.Ani;
+  FMX.Edit,
+  FMX.Ani;
 
 type
   TfrmMain = class(TForm)

@@ -3,6 +3,7 @@ unit Pages.New;
 interface
 
 uses
+  Services.New,
   Router4D.Interfaces,
   System.SysUtils,
   System.Types,
@@ -59,7 +60,8 @@ type
     procedure rctLaudoMedicoClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     private
-      { Private declarations }
+      serviceNew: TServiceNew;
+      procedure listarCarteiras;
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -71,6 +73,7 @@ var
 implementation
 
 uses
+  Pages.Dashboard,
   Router4D;
 
 {$R *.fmx}
@@ -78,12 +81,51 @@ uses
 
 procedure TPageNew.btnSalvarClick(Sender: TObject);
 begin
-  TRouter4D.Link.&To('Dashboard');
+  try
+    serviceNew := TServiceNew.Create(nil);
+    try
+      if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
+        serviceNew.mtCadastroCarteiraPTEA.Edit
+      else
+        serviceNew.mtCadastroCarteiraPTEA.Append;
+
+      serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEADataNascimento.Value := edtDataNascimento.Date;
+      serviceNew.mtCadastroCarteiraPTEACpfResponsavel.Value := edtCpfResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEANumeroContato.Value := edtNumeroContato.Text;
+      serviceNew.mtCadastroCarteiraPTEARgResponsavel.Value := edtRgResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEAEmailContato.Value := edtEmailContato.Text;
+      serviceNew.mtCadastroCarteiraPTEANomeTitular.Value := edtNomeTitular.Text;
+      serviceNew.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
+      serviceNew.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
+      serviceNew.Salvar;
+    except
+      on E: Exception do
+        raise Exception.Create('Error Message: ' + E.Message);
+    end;
+  finally
+    serviceNew.Free;
+    TRouter4D.Link.&To('Dashboard');
+  end;
+
 end;
 
 procedure TPageNew.btnVoltarClick(Sender: TObject);
 begin
   TRouter4D.Link.&To('Dashboard');
+end;
+
+procedure TPageNew.listarCarteiras;
+var
+  pageDashboard: TPageDashboard;
+begin
+  try
+    pageDashboard := TPageDashboard.Create(nil);
+    pageDashboard.listarCarteiras;
+  finally
+    pageDashboard.Free;
+  end;
+
 end;
 
 procedure TPageNew.rctFotoRostoClick(Sender: TObject);

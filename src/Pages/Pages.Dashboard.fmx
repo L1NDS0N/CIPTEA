@@ -7,6 +7,7 @@ object PageDashboard: TPageDashboard
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   DesignerMasterStyle = 0
   object lytDashboard: TLayout
     Align = Client
@@ -39,6 +40,44 @@ object PageDashboard: TPageDashboard
       TabOrder = 1
       Text = 'Nova Carteira'
       OnClick = btnNewClick
+    end
+    object Grid1: TGrid
+      Align = Client
+      CanFocus = True
+      ClipChildren = True
+      Margins.Left = 20.000000000000000000
+      Margins.Top = 20.000000000000000000
+      Margins.Right = 20.000000000000000000
+      Margins.Bottom = 20.000000000000000000
+      Size.Width = 600.000000000000000000
+      Size.Height = 342.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Viewport.Width = 580.000000000000000000
+      Viewport.Height = 301.000000000000000000
+    end
+  end
+  object DataSource: TDataSource
+    DataSet = ServiceNew.mtPesquisaCarteiraPTEA
+    Left = 384
+    Top = 224
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSource = DataSource
+    ScopeMappings = <>
+    Left = 304
+    Top = 224
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 20
+    Top = 5
+    object LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      GridControl = Grid1
+      Columns = <>
     end
   end
 end

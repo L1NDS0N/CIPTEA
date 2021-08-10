@@ -131,6 +131,16 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="Providers\Frames.DashboardDetail.pas">
+            <Form>FrameDashboardDetail</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Providers\Providers.Types.pas"/>
+        <DCCReference Include="Pages.Update.pas">
+            <Form>PageUpdate</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

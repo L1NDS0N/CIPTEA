@@ -45,6 +45,9 @@ contains
   Pages.Dashboard in 'Pages.Dashboard.pas' {PageDashboard},
   Pages.Principal in 'Pages.Principal.pas' {PagePrincipal},
   Pages.New in 'Pages.New.pas' {PageNew},
-  Services.New in '..\Services\Services.New.pas' {ServiceNew: TDataModule};
+  Services.New in '..\Services\Services.New.pas' {ServiceNew: TDataModule},
+  Frames.DashboardDetail in 'Providers\Frames.DashboardDetail.pas' {FrameDashboardDetail: TFrame},
+  Providers.Types in 'Providers\Providers.Types.pas',
+  Pages.Update in 'Pages.Update.pas' {PageUpdate};
 
 end.

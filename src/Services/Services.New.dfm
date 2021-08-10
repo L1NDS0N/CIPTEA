@@ -4,22 +4,24 @@ object ServiceNew: TServiceNew
   Height = 139
   Width = 150
   object mtPesquisaCarteiraPTEA: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
     ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.AssignedValues = [uvUpdateChngFields, uvUpdateMode, uvLockMode, uvLockPoint, uvLockWait, uvRefreshMode, uvFetchGeneratorsPoint, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable, uvAutoCommitUpdates]
+    UpdateOptions.UpdateMode = upWhereChanged
+    UpdateOptions.LockWait = True
+    UpdateOptions.RefreshMode = rmAll
+    UpdateOptions.FetchGeneratorsPoint = gpNone
     UpdateOptions.CheckRequired = False
+    UpdateOptions.CheckReadOnly = False
+    UpdateOptions.CheckUpdatable = False
     UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
     Left = 56
     Top = 72
-    object mtPesquisaCarteiraPTEAid: TFDAutoIncField
-      AutoGenerateValue = arNone
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ClientAutoIncrement = False
-    end
     object mtPesquisaCarteiraPTEANomeResponsavel: TStringField
       FieldName = 'NomeResponsavel'
       Origin = 'NomeResponsavel'
@@ -87,6 +89,9 @@ object ServiceNew: TServiceNew
       FieldName = 'AlteradoEm'
       Origin = 'AlteradoEm'
     end
+    object mtPesquisaCarteiraPTEAid: TIntegerField
+      FieldName = 'id'
+    end
   end
   object mtCadastroCarteiraPTEA: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -98,11 +103,6 @@ object ServiceNew: TServiceNew
     UpdateOptions.AutoCommitUpdates = True
     Left = 56
     Top = 16
-    object mtCadastroCarteiraPTEAid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-    end
     object mtCadastroCarteiraPTEANomeResponsavel: TStringField
       FieldName = 'NomeResponsavel'
       Origin = 'NomeResponsavel'
@@ -152,6 +152,9 @@ object ServiceNew: TServiceNew
       FieldName = 'NumeroContato'
       Origin = 'NumeroContato'
       Size = 10
+    end
+    object mtCadastroCarteiraPTEAid: TIntegerField
+      FieldName = 'id'
     end
   end
 end

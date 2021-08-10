@@ -21,7 +21,6 @@ uses
 type
   TServiceNew = class(TDataModule)
     mtPesquisaCarteiraPTEA: TFDMemTable;
-    mtPesquisaCarteiraPTEAid: TFDAutoIncField;
     mtPesquisaCarteiraPTEANomeResponsavel: TStringField;
     mtPesquisaCarteiraPTEACpfResponsavel: TStringField;
     mtPesquisaCarteiraPTEARgResponsavel: TStringField;
@@ -35,7 +34,6 @@ type
     mtPesquisaCarteiraPTEACriadoEm: TSQLTimeStampField;
     mtPesquisaCarteiraPTEAAlteradoEm: TSQLTimeStampField;
     mtCadastroCarteiraPTEA: TFDMemTable;
-    mtCadastroCarteiraPTEAid: TFDAutoIncField;
     mtCadastroCarteiraPTEANomeResponsavel: TStringField;
     mtCadastroCarteiraPTEACpfResponsavel: TStringField;
     mtCadastroCarteiraPTEARgResponsavel: TStringField;
@@ -46,6 +44,8 @@ type
     mtCadastroCarteiraPTEAfotoRostoPath: TStringField;
     mtCadastroCarteiraPTEAEmailContato: TStringField;
     mtCadastroCarteiraPTEANumeroContato: TStringField;
+    mtPesquisaCarteiraPTEAid: TIntegerField;
+    mtCadastroCarteiraPTEAid: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     private const
       baseURL = 'http://localhost:9000';
@@ -56,11 +56,16 @@ type
       procedure GetById(const AId: string);
   end;
 
+var
+  ServiceNew: TServiceNew;
+
 implementation
 
 uses
   DataSet.Serialize,
-  RESTRequest4D;
+  RESTRequest4D,
+  FMX.Dialogs,
+  Pages.Dashboard;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -68,8 +73,8 @@ uses
 
 procedure TServiceNew.DataModuleCreate(Sender: TObject);
 begin
-  mtPesquisaCarteiraPTEA.Active := true;
-  mtCadastroCarteiraPTEA.Active := true;
+  mtPesquisaCarteiraPTEA.Open;
+  mtCadastroCarteiraPTEA.Open;
 end;
 
 procedure TServiceNew.Delete(const AId: string);
@@ -101,7 +106,6 @@ begin
   LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').DataSetAdapter(mtPesquisaCarteiraPTEA).Get;
   if not(LResponse.StatusCode = 200) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-
 end;
 
 procedure TServiceNew.Salvar;
@@ -111,13 +115,20 @@ var
 begin
   LRequest := TRequest.New.baseURL(baseURL).Resource('carteiras').AddBody(mtCadastroCarteiraPTEA.ToJSONObject);
   if (mtCadastroCarteiraPTEAid.AsInteger > 0) then
-    LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put
+  begin
+    ShowMessage('vai dar put: ' + mtCadastroCarteiraPTEAid.AsString);
+    LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put;
+  end
   else
+  begin
+    ShowMessage('vai dar post: ' + mtCadastroCarteiraPTEAid.AsString);
     LResponse := LRequest.Post;
+  end;
+
   if not(LResponse.StatusCode in [200, 201, 204]) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-  mtCadastroCarteiraPTEA.EmptyDataSet;
 
+  mtCadastroCarteiraPTEA.EmptyDataSet;
 end;
 
 end.

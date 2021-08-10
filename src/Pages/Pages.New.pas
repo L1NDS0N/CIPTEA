@@ -59,9 +59,12 @@ type
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     private
       serviceNew: TServiceNew;
-      procedure listarCarteiras;
+      procedure LimparCampos;
+
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -82,7 +85,6 @@ uses
 procedure TPageNew.btnSalvarClick(Sender: TObject);
 begin
   try
-    serviceNew := TServiceNew.Create(nil);
     try
       if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
         serviceNew.mtCadastroCarteiraPTEA.Edit
@@ -104,7 +106,7 @@ begin
         raise Exception.Create('Error Message: ' + E.Message);
     end;
   finally
-    serviceNew.Free;
+    Self.LimparCampos;
     TRouter4D.Link.&To('Dashboard');
   end;
 
@@ -115,17 +117,27 @@ begin
   TRouter4D.Link.&To('Dashboard');
 end;
 
-procedure TPageNew.listarCarteiras;
-var
-  pageDashboard: TPageDashboard;
+procedure TPageNew.FormCreate(Sender: TObject);
 begin
-  try
-    pageDashboard := TPageDashboard.Create(nil);
-    pageDashboard.listarCarteiras;
-  finally
-    pageDashboard.Free;
-  end;
+  serviceNew := TServiceNew.Create(Self);
+end;
 
+procedure TPageNew.FormDestroy(Sender: TObject);
+begin
+  serviceNew.Free;
+end;
+
+procedure TPageNew.LimparCampos;
+begin
+  edtEmailContato.Text := EmptyStr;
+  edtNomeTitular.Text := EmptyStr;
+  edtCpfResponsavel.Text := EmptyStr;
+  edtNomeResponsavel.Text := EmptyStr;
+  edtRgResponsavel.Text := EmptyStr;
+  edtCpfTitular.Text := EmptyStr;
+  edtRgTitular.Text := EmptyStr;
+  edtDataNascimento.Date := Now;
+  edtNumeroContato.Text := EmptyStr;
 end;
 
 procedure TPageNew.rctFotoRostoClick(Sender: TObject);

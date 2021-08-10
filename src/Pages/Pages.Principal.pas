@@ -17,7 +17,8 @@ uses
   FMX.Controls.Presentation,
   FMX.StdCtrls,
   FMX.Objects,
-  FMX.Layouts;
+  FMX.Layouts,
+  Router4D.History;
 
 type
   TPagePrincipal = class(TForm)
@@ -31,7 +32,7 @@ type
     private
       procedure Router;
     public
-      { Public declarations }
+      procedure Animation(aLayout: TFMXObject);
   end;
 
 var
@@ -43,7 +44,8 @@ uses
   Router4D.Interfaces,
   Router4D,
   Pages.Dashboard,
-  Pages.New;
+  Pages.New,
+  Pages.Update;
 
 {$R *.fmx}
 
@@ -55,9 +57,16 @@ end;
 procedure TPagePrincipal.Router;
 begin
   TRouter4D.Switch.Router('Dashboard', TPageDashboard);
+  TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);
-
   TRouter4D.Render<TPageDashboard>.SetElement(lytMaster, lytMaster);
+  TRouter4D.Link.Animation(Animation);
+end;
+
+procedure TPagePrincipal.Animation(aLayout: TFMXObject);
+begin
+  TLayout(aLayout).Opacity := 0;
+  TLayout(aLayout).AnimateFloat('Opacity', 1, 0.9);
 end;
 
 Initialization

@@ -1,0 +1,341 @@
+object PageUpdate: TPageUpdate
+  Left = 0
+  Top = 0
+  Caption = 'Atualizar Carteirinha'
+  ClientHeight = 787
+  ClientWidth = 922
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object dlgLaudoMedico: TOpenDialog
+    Left = 352
+    Top = 636
+  end
+  object lytUpdate: TLayout
+    Align = Client
+    Size.Width = 922.000000000000000000
+    Size.Height = 787.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object lytInterno: TLayout
+      Align = Client
+      Padding.Left = 50.000000000000000000
+      Padding.Top = 20.000000000000000000
+      Padding.Right = 50.000000000000000000
+      Padding.Bottom = 50.000000000000000000
+      Size.Width = 922.000000000000000000
+      Size.Height = 725.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnClick = lytInternoClick
+      object VertScrollBox: TVertScrollBox
+        Align = Client
+        Size.Width = 822.000000000000000000
+        Size.Height = 655.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        ShowScrollBars = False
+        Viewport.Width = 822.000000000000000000
+        Viewport.Height = 655.000000000000000000
+        object edtCpfResponsavel: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 0
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 339.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtCpfTitular: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 1
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 392.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtDataNascimento: TDateEdit
+          Date = 44412.000000000000000000
+          Align = Top
+          Margins.Right = 500.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 445.000000000000000000
+          Size.Width = 322.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+          TabOrder = 2
+          TextSettings.Font.Family = 'Fira Code Retina'
+        end
+        object edtEmailContato: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 3
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 22.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtNomeResponsavel: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 4
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 233.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtNomeTitular: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 5
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 286.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtNumeroContato: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 6
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 75.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtRgResponsavel: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 7
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 127.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object edtRgTitular: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 8
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 180.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+        object lblcpfResponsavel: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 317.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'CPF do Respons'#225'vel'
+          TabOrder = 9
+        end
+        object lblcpfTitular: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 370.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'CPF do Titular'
+          TabOrder = 10
+        end
+        object lbldataNascimento: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 423.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Data de Nascimento'
+          TabOrder = 11
+        end
+        object lblemailContato: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Email para Contato'
+          TabOrder = 12
+        end
+        object lblnomeResponsavel: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 211.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Nome do Respons'#225'vel'
+          TabOrder = 13
+        end
+        object lblnomeTitular: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 264.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Nome do Titular'
+          TabOrder = 14
+        end
+        object lblnumeroContato: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 53.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Numero para Contato'
+          TabOrder = 15
+        end
+        object lblRgResponsavel: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 106.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 16.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'RG do Respons'#225'vel'
+          TabOrder = 16
+        end
+        object lblrgTitular: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 158.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'RG do Titular'
+          TabOrder = 17
+        end
+        object lytAnexos: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Position.Y = 481.000000000000000000
+          Size.Width = 822.000000000000000000
+          Size.Height = 200.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 18
+          object rctFotoRosto: TRectangle
+            Align = Left
+            Cursor = crHandPoint
+            Fill.Color = claWhite
+            Margins.Right = 20.000000000000000000
+            Size.Width = 200.000000000000000000
+            Size.Height = 200.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Color = claGray
+          end
+          object rctLaudoMedico: TRectangle
+            Align = Left
+            Cursor = crHandPoint
+            Fill.Color = claWhite
+            Position.X = 220.000000000000000000
+            Size.Width = 200.000000000000000000
+            Size.Height = 200.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Color = claGray
+          end
+        end
+      end
+    end
+    object btnSalvar: TButton
+      Align = Bottom
+      Position.Y = 755.000000000000000000
+      Size.Width = 922.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      Text = 'Salvar'
+      OnClick = btnSalvarClick
+    end
+    object lytHeader: TLayout
+      Align = MostTop
+      Size.Width = 922.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 10
+      object btnVoltar: TSpeedButton
+        Align = MostLeft
+        StyledSettings = [Size, FontColor]
+        Size.Width = 81.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        Text = '<--'
+        TextSettings.Font.Family = 'Fira Code'
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = btnVoltarClick
+      end
+      object lblID: TLabel
+        Align = MostRight
+        StyledSettings = [Family, FontColor]
+        Position.X = 832.000000000000000000
+        Size.Width = 90.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = 'ID'
+        TabOrder = 0
+      end
+    end
+    object FloatAnimation: TFloatAnimation
+      Duration = 0.200000002980232200
+      PropertyName = 'Position.X'
+      StartValue = 0.000000000000000000
+      StartFromCurrent = True
+      StopValue = -1.000000000000000000
+    end
+  end
+  object dlgFotoRosto: TOpenDialog
+    Left = 136
+    Top = 636
+  end
+end

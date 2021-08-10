@@ -33,7 +33,6 @@ type
     btnLogin: TSpeedButton;
     edtUser: TEdit;
     edtPass: TEdit;
-    FloatAnimation1: TFloatAnimation;
     procedure InicializarMenuPrincipal;
     procedure btnLoginClick(Sender: TObject);
     private

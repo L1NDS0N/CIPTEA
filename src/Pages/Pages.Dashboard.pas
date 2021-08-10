@@ -7,6 +7,8 @@ uses
   Router4D.Interfaces,
   System.SysUtils,
   System.Types,
+  FMX.DialogService,
+  FMX.Dialogs,
   System.UITypes,
   System.Classes,
   System.Variants,
@@ -14,7 +16,6 @@ uses
   FMX.Controls,
   FMX.Forms,
   FMX.Graphics,
-  FMX.Dialogs,
   FMX.Layouts,
   FMX.Controls.Presentation,
   FMX.StdCtrls,
@@ -30,24 +31,26 @@ uses
   FMX.Bind.Editors,
   Data.Bind.Components,
   Data.Bind.Grid,
-  Data.Bind.DBScope;
+  Data.Bind.DBScope,
+  FMX.ListBox,
+  FMX.Memo,
+  FMX.TabControl, FMX.Objects;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
     lytDashboard: TLayout;
     Layout1: TLayout;
-    btnNew: TButton;
+    btnNew: TSpeedButton;
     Label1: TLabel;
-    Grid1: TGrid;
-    DataSource: TDataSource;
-    BindSourceDB1: TBindSourceDB;
-    BindingsList1: TBindingsList;
-    LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
+    vsbCarteiras: TVertScrollBox;
+    retBtnNew: TRectangle;
     procedure btnNewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     private
-      serviceNew: TServiceNew;
+      procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
+      procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
     public
+      serviceNew: TServiceNew;
       procedure ListarCarteiras;
       function Render: TFMXObject;
       procedure UnRender;
@@ -62,7 +65,12 @@ implementation
 
 { TfrmDashboard }
 uses
-  Router4D;
+  Router4D,
+  Frames.DashboardDetail,
+  Pages.Principal,
+  Pages.Update,
+  Router4D.History,
+  Router4D.Props;
 
 procedure TPageDashboard.btnNewClick(Sender: TObject);
 begin
@@ -71,21 +79,75 @@ end;
 
 procedure TPageDashboard.FormCreate(Sender: TObject);
 begin
-  ListarCarteiras;
+  serviceNew := Services.New.TServiceNew.Create(Self);
 end;
 
 procedure TPageDashboard.ListarCarteiras;
+var
+  LFrame: TFrameDashboardDetail;
+  I: Integer;
 begin
-  if serviceNew <> nil then
-    serviceNew.Free;
+  vsbCarteiras.BeginUpdate;
+  try
+    try
+      for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
+        vsbCarteiras.Content.Controls[I].DisposeOf;
+      serviceNew.Listar;
+      serviceNew.mtPesquisaCarteiraPTEA.First;
+      while not serviceNew.mtPesquisaCarteiraPTEA.Eof do
+      begin
+        LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
+        LFrame.Parent := vsbCarteiras;
+        LFrame.Align := TAlignLayout.Top;
+        LFrame.Position.X := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
-  serviceNew := Services.New.TServiceNew.Create(nil);
-  serviceNew.Listar;
+        LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+        LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+        LFrame.lblNomeTitular.Text := serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString;
+        LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
+        LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+
+        LFrame.OnDelete := Self.OnDeleteCarteira;
+        LFrame.OnUpdate := Self.OnUpdateCarteira;
+        serviceNew.mtPesquisaCarteiraPTEA.Next;
+      end;
+    except
+      on E: Exception do
+        ShowMessage(E.Message);
+    end;
+  finally
+    vsbCarteiras.EndUpdate;
+  end;
+
+end;
+
+procedure TPageDashboard.OnDeleteCarteira(const ASender: TFrame; const AId: string);
+begin
+  try
+    TDialogService.MessageDialog('Tem certeza que deseja deletar?', TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo,
+      TMsgDlgBtn.mbNo, 0,
+        procedure(const AResult: TModalResult)
+      begin
+        if AResult <> mrYes then
+          Abort;
+      end);
+    serviceNew.Delete(AId);
+    ASender.DisposeOf;
+  except
+    on E: Exception do
+      ShowMessage(E.Message);
+  end;
+end;
+
+procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
+begin
+  TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
 end;
 
 function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
+  ListarCarteiras;
 end;
 
 procedure TPageDashboard.UnRender;

@@ -1,29 +1,22 @@
 ﻿[btnNew]
-Coordinates=66,10,58,58
+Coordinates=110,10,51,51
 
 [Layout1]
-Coordinates=10,78,60,36
+Coordinates=10,10,53,33
 
 [Label1]
-Coordinates=134,10,53,58
+Coordinates=178,10,46,51
 
 [lytDashboard]
-Coordinates=197,10,90,36
-
-[DataSource]
-Coordinates=130,132,82,36
-Visible=True
-
-[Grid1]
-Coordinates=10,10,46,58
-Visible=True
+Coordinates=0,60,80,33
 
 []
-Coordinates=143,87,91,36
+Coordinates=199,80,82,33
+Visible=True
 
-[BindSourceDB1]
-Coordinates=251,132,111,366
+[ServiceNew.mtPesquisaCarteiraPTEA]
+Coordinates=849,10,199,33
 
-[BindingsList1]
-Coordinates=143,87,91,36
+[ServiceNew.mtCadastroCarteiraPTEA]
+Coordinates=12,363,198,249
 

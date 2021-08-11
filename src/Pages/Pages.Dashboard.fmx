@@ -56,7 +56,7 @@ object PageDashboard: TPageDashboard
       Size.Width = 973.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      Stroke.Color = claLightsteelblue
+      Stroke.Color = claSkyblue
       XRadius = 5.000000000000000000
       YRadius = 5.000000000000000000
       object btnNew: TSpeedButton

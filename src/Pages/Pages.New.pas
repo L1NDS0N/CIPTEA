@@ -26,7 +26,6 @@ uses
 type
   TPageNew = class(TForm, iRouter4DComponent)
     lytNew: TLayout;
-    btnSalvar: TButton;
     edtEmailContato: TEdit;
     lblemailContato: TLabel;
     lytInterno: TLayout;
@@ -55,6 +54,8 @@ type
     lytHeader: TLayout;
     btnVoltar: TSpeedButton;
     FloatAnimation: TFloatAnimation;
+    retBtnSalvar: TRectangle;
+    btnSalvar: TSpeedButton;
     procedure btnSalvarClick(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);

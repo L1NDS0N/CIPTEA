@@ -34,6 +34,14 @@
 			"failed": false,
 			"changed": false
 		},
+		"github.com/hashload/horse-octet-stream": {
+			"name": "horse-octet-stream",
+			"version": "1.9.5",
+			"hash": "d6f99e77df3c06466741570d88505bae",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
 		"github.com/hashload/jhonson": {
 			"name": "jhonson",
 			"version": "1.1.2",

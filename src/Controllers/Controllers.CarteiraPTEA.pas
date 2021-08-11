@@ -3,8 +3,9 @@ unit Controllers.CarteiraPTEA;
 interface
 
 uses
+  Services.CarteiraPTEA,
+  System.Classes,
   Horse,
-  Horse.Commons,
   System.JSON,
   System.SysUtils,
   Dataset.Serialize;
@@ -14,7 +15,16 @@ procedure Registry;
 implementation
 
 uses
-  Services.CarteiraPTEA;
+  Horse.Commons,
+  System.Net.Mime;
+
+function CreateDirIfNotExists(aDirectoryString: string): string;
+begin
+  if not DirectoryExists(aDirectoryString) then
+    CreateDir(aDirectoryString);
+
+  Result := aDirectoryString;
+end;
 
 procedure DoList(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
@@ -95,6 +105,75 @@ begin
 
 end;
 
+procedure DoGetStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LStream: TFileStream;
+  FullPath: string;
+  Extension: string;
+  aType: string;
+  aKind: TMimeTypes.TKind;
+begin
+  //Extension := ExtractFileExt(Req.RawWebRequest.PathInfo);
+  //if not Extension.IsEmpty then
+  //begin
+
+  FullPath := ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id'] + '\fotorosto.jpg';
+
+  LStream := TFileStream.Create(FullPath, fmOpenRead);
+  LStream.Position := 0;
+
+  TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
+  Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+  //end;
+end;
+
+procedure DoGetStreamDoc(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LStream: TFileStream;
+  FullPath: string;
+  Extension: string;
+  aType: string;
+  aKind: TMimeTypes.TKind;
+begin
+  //Extension := ExtractFileExt(Req.RawWebRequest.PathInfo);
+  //if not Extension.IsEmpty then
+  //begin
+  FullPath := ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id'] + '\fotorosto.jpg';
+
+  LStream := TFileStream.Create(FullPath, fmOpenRead);
+  LStream.Position := 0;
+
+  TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
+  Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+  //end;
+end;
+
+procedure DoPutStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LStream: TMemoryStream;
+  FullPath: string;
+begin
+
+  FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']);
+  LStream := Req.Body<TMemoryStream>;
+  LStream.SaveToFile(FullPath + '\fotorosto.jpg');
+  Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
+
+end;
+
+procedure DoPutStreamDoc(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LStream: TMemoryStream;
+  FullPath: string;
+begin
+
+  FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']);
+  LStream := Req.Body<TMemoryStream>;
+  LStream.SaveToFile(FullPath + '\fotorosto.jpg');
+  Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
+
+end;
+
 procedure Registry;
 begin
   THorse.Get('/carteiras', DoList);
@@ -102,6 +181,11 @@ begin
   THorse.Post('/carteiras', DoPost);
   THorse.Put('/carteiras/:id', DoUpdate);
   THorse.Delete('/carteiras/:id', DoDelete);
+  THorse.Get('/carteiras/:id/static/foto', DoGetStreamFoto);
+  THorse.Put('/carteiras/:id/static/foto', DoPutStreamFoto);
+  //precisa ser implementado, atualmente é a cópia da foto
+  THorse.Get('/carteiras/:id/static/doc', DoGetStreamDoc);
+  THorse.Put('/carteiras/:id/static/doc', DoPutStreamDoc);
 end;
 
 end.

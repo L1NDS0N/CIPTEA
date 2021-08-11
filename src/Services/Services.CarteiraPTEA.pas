@@ -118,7 +118,6 @@ function TServiceCarteiraPTEA.ListAll: TFDQuery;
 begin
   qryPesquisaCarteiraPTEA.Open();
   Result := qryPesquisaCarteiraPTEA;
-
 end;
 
 function TServiceCarteiraPTEA.Update(const AJson: TJSONObject; AId: integer): Boolean;

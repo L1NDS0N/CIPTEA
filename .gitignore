@@ -49,6 +49,8 @@
 *.hpp
 *Resource.rc
 
+static/*
+
 # Delphi local files (user-specific info)
 *.local
 *.identcache

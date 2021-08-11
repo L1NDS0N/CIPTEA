@@ -8,6 +8,7 @@ uses
   Horse.ETag,
   Horse.Jhonson,
   Horse.Compression,
+  Horse.OctetStream,
   Horse.HandleException,
   System.SysUtils,
   Controllers.CarteiraPTEA in 'src\Controllers\Controllers.CarteiraPTEA.pas',
@@ -15,13 +16,10 @@ uses
   Services.Connection in 'src\Services\Services.Connection.pas' {ServiceConnection: TDataModule};
 
 begin
-  THorse
-  .Use(Compression())
-  .Use(Jhonson)
-  .Use(ETag)
-  .Use(HandleException);
+  THorse.Use(Compression()).Use(OctetStream).Use(Jhonson).Use(ETag).Use(HandleException);
 
   Controllers.CarteiraPTEA.Registry;
 
   THorse.Listen(9000);
+
 end.

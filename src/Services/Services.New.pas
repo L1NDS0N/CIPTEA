@@ -106,7 +106,7 @@ var
 begin
   try
     mtPesquisaCarteiraPTEA.First;
-    LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+    LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
       .AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
     if LResponse.StatusCode = 200 then
       mtPesquisaCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.ToJSON);

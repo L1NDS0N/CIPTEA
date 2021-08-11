@@ -11,7 +11,6 @@ object ServiceNew: TServiceNew
     ResourceOptions.AssignedValues = [rvSilentMode]
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvUpdateChngFields, uvUpdateMode, uvLockMode, uvLockPoint, uvLockWait, uvRefreshMode, uvFetchGeneratorsPoint, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable, uvAutoCommitUpdates]
-    UpdateOptions.UpdateMode = upWhereChanged
     UpdateOptions.LockWait = True
     UpdateOptions.RefreshMode = rmAll
     UpdateOptions.FetchGeneratorsPoint = gpNone
@@ -91,6 +90,10 @@ object ServiceNew: TServiceNew
     end
     object mtPesquisaCarteiraPTEAid: TIntegerField
       FieldName = 'id'
+    end
+    object mtPesquisaCarteiraPTEAIfNoneMatch: TStringField
+      FieldName = 'IfNoneMatch'
+      Size = 100
     end
   end
   object mtCadastroCarteiraPTEA: TFDMemTable

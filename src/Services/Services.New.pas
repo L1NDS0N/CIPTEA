@@ -46,6 +46,7 @@ type
     mtCadastroCarteiraPTEANumeroContato: TStringField;
     mtPesquisaCarteiraPTEAid: TIntegerField;
     mtCadastroCarteiraPTEAid: TIntegerField;
+    mtPesquisaCarteiraPTEAIfNoneMatch: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private const
       baseURL = 'http://localhost:9000';
@@ -103,8 +104,18 @@ procedure TServiceNew.Listar;
 var
   LResponse: IResponse;
 begin
-  LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').DataSetAdapter(mtPesquisaCarteiraPTEA).Get;
-  if not(LResponse.StatusCode = 200) then
+  try
+    mtPesquisaCarteiraPTEA.First;
+    LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+      .AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
+    if LResponse.StatusCode = 200 then
+      mtPesquisaCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.ToJSON);
+  finally
+    mtPesquisaCarteiraPTEA.First;
+    mtPesquisaCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
+  end;
+
+  if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 end;
 
@@ -115,15 +126,9 @@ var
 begin
   LRequest := TRequest.New.baseURL(baseURL).Resource('carteiras').AddBody(mtCadastroCarteiraPTEA.ToJSONObject);
   if (mtCadastroCarteiraPTEAid.AsInteger > 0) then
-  begin
-    ShowMessage('vai dar put: ' + mtCadastroCarteiraPTEAid.AsString);
-    LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put;
-  end
+    LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put
   else
-  begin
-    ShowMessage('vai dar post: ' + mtCadastroCarteiraPTEAid.AsString);
     LResponse := LRequest.Post;
-  end;
 
   if not(LResponse.StatusCode in [200, 201, 204]) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));

@@ -45,11 +45,6 @@ type
     edtDataNascimento: TDateEdit;
     edtNumeroContato: TEdit;
     lblnumeroContato: TLabel;
-    lytAnexos: TLayout;
-    rctFotoRosto: TRectangle;
-    rctLaudoMedico: TRectangle;
-    dlgFotoRosto: TOpenDialog;
-    dlgLaudoMedico: TOpenDialog;
     VertScrollBox: TVertScrollBox;
     lytHeader: TLayout;
     btnVoltar: TSpeedButton;
@@ -57,8 +52,6 @@ type
     retBtnSalvar: TRectangle;
     btnSalvar: TSpeedButton;
     procedure btnSalvarClick(Sender: TObject);
-    procedure rctFotoRostoClick(Sender: TObject);
-    procedure rctLaudoMedicoClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -139,16 +132,6 @@ begin
   edtRgTitular.Text := EmptyStr;
   edtDataNascimento.Date := Now;
   edtNumeroContato.Text := EmptyStr;
-end;
-
-procedure TPageNew.rctFotoRostoClick(Sender: TObject);
-begin
-  dlgFotoRosto.Execute;
-end;
-
-procedure TPageNew.rctLaudoMedicoClick(Sender: TObject);
-begin
-  dlgLaudoMedico.Execute;
 end;
 
 function TPageNew.Render: TFmxObject;

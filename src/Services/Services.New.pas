@@ -55,6 +55,7 @@ type
       procedure Listar;
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
+      procedure StreamFiles;
   end;
 
 var
@@ -66,7 +67,8 @@ uses
   DataSet.Serialize,
   RESTRequest4D,
   FMX.Dialogs,
-  Pages.Dashboard;
+  Pages.Dashboard,
+  REST.Types;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -134,6 +136,23 @@ begin
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 
   mtCadastroCarteiraPTEA.EmptyDataSet;
+end;
+
+procedure TServiceNew.StreamFiles;
+var
+  LStreamFoto: TFileStream;
+  LRequest: IRequest;
+  LResponse: IResponse;
+begin
+  LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
+
+  LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+    .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto')
+    .ContentType('application/octet-stream').AddBody(LStreamFoto, false).Put;
+
+  ShowMessage('Status: ' + IntToStr(LResponse.StatusCode) + 'Message: ' + LResponse.Content);
+  //if not(LResponse.StatusCode in [200, 201, 204]) then
+  //raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 end;
 
 end.

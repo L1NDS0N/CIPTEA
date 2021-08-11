@@ -2,7 +2,7 @@ object PageUpdate: TPageUpdate
   Left = 0
   Top = 0
   Caption = 'Atualizar Carteirinha'
-  ClientHeight = 787
+  ClientHeight = 896
   ClientWidth = 922
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -16,7 +16,7 @@ object PageUpdate: TPageUpdate
   object lytUpdate: TLayout
     Align = Client
     Size.Width = 922.000000000000000000
-    Size.Height = 787.000000000000000000
+    Size.Height = 896.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object lytInterno: TLayout
@@ -26,19 +26,19 @@ object PageUpdate: TPageUpdate
       Padding.Right = 50.000000000000000000
       Padding.Bottom = 50.000000000000000000
       Size.Width = 922.000000000000000000
-      Size.Height = 725.000000000000000000
+      Size.Height = 834.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       OnClick = lytInternoClick
       object VertScrollBox: TVertScrollBox
         Align = Client
         Size.Width = 822.000000000000000000
-        Size.Height = 655.000000000000000000
+        Size.Height = 764.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         ShowScrollBars = False
         Viewport.Width = 822.000000000000000000
-        Viewport.Height = 655.000000000000000000
+        Viewport.Height = 764.000000000000000000
         object edtCpfResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
@@ -272,6 +272,7 @@ object PageUpdate: TPageUpdate
             Size.Height = 200.000000000000000000
             Size.PlatformDefault = False
             Stroke.Color = claGray
+            OnClick = rctFotoRostoClick
           end
           object rctLaudoMedico: TRectangle
             Align = Left
@@ -288,7 +289,7 @@ object PageUpdate: TPageUpdate
     end
     object btnSalvar: TButton
       Align = Bottom
-      Position.Y = 755.000000000000000000
+      Position.Y = 864.000000000000000000
       Size.Width = 922.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False

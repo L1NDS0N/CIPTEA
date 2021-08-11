@@ -2,7 +2,7 @@ object PageNew: TPageNew
   Left = 0
   Top = 0
   Caption = 'Nova Carteirinha'
-  ClientHeight = 865
+  ClientHeight = 680
   ClientWidth = 800
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -10,14 +10,10 @@ object PageNew: TPageNew
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignerMasterStyle = 0
-  object dlgLaudoMedico: TOpenDialog
-    Left = 352
-    Top = 600
-  end
   object lytNew: TLayout
     Align = Client
     Size.Width = 800.000000000000000000
-    Size.Height = 865.000000000000000000
+    Size.Height = 680.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     object lytInterno: TLayout
@@ -27,18 +23,18 @@ object PageNew: TPageNew
       Padding.Right = 50.000000000000000000
       Padding.Bottom = 50.000000000000000000
       Size.Width = 800.000000000000000000
-      Size.Height = 778.000000000000000000
+      Size.Height = 593.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object VertScrollBox: TVertScrollBox
         Align = Client
         Size.Width = 700.000000000000000000
-        Size.Height = 708.000000000000000000
+        Size.Height = 523.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         ShowScrollBars = False
         Viewport.Width = 700.000000000000000000
-        Viewport.Height = 708.000000000000000000
+        Viewport.Height = 523.000000000000000000
         object edtCpfResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
@@ -255,37 +251,6 @@ object PageNew: TPageNew
           Text = 'RG do Titular'
           TabOrder = 17
         end
-        object lytAnexos: TLayout
-          Align = Top
-          Margins.Top = 5.000000000000000000
-          Position.Y = 481.000000000000000000
-          Size.Width = 700.000000000000000000
-          Size.Height = 200.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 18
-          object rctFotoRosto: TRectangle
-            Align = Left
-            Cursor = crHandPoint
-            Fill.Color = claWhite
-            Margins.Right = 20.000000000000000000
-            Size.Width = 200.000000000000000000
-            Size.Height = 200.000000000000000000
-            Size.PlatformDefault = False
-            Stroke.Color = claGray
-            OnClick = rctFotoRostoClick
-          end
-          object rctLaudoMedico: TRectangle
-            Align = Left
-            Cursor = crHandPoint
-            Fill.Color = claWhite
-            Position.X = 220.000000000000000000
-            Size.Width = 200.000000000000000000
-            Size.Height = 200.000000000000000000
-            Size.PlatformDefault = False
-            Stroke.Color = claGray
-            OnClick = rctLaudoMedicoClick
-          end
-        end
       end
     end
     object lytHeader: TLayout
@@ -321,7 +286,7 @@ object PageNew: TPageNew
       Margins.Right = 2.000000000000000000
       Margins.Bottom = 2.000000000000000000
       Position.X = 2.000000000000000000
-      Position.Y = 813.000000000000000000
+      Position.Y = 628.000000000000000000
       Size.Width = 796.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
@@ -342,9 +307,5 @@ object PageNew: TPageNew
         OnClick = btnSalvarClick
       end
     end
-  end
-  object dlgFotoRosto: TOpenDialog
-    Left = 136
-    Top = 600
   end
 end

@@ -61,6 +61,7 @@ type
     procedure btnVoltarClick(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
     procedure lytInternoClick(Sender: TObject);
+    procedure rctFotoRostoClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
     public
@@ -84,20 +85,18 @@ uses
 
 procedure TPageUpdate.btnSalvarClick(Sender: TObject);
 begin
-  if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
-    serviceNew.mtCadastroCarteiraPTEA.Edit
-  else
-    serviceNew.mtCadastroCarteiraPTEA.Append;
-  serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
-  serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
-  serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
-  serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
-  serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
-  serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
-  serviceNew.Salvar;
+  //serviceNew.mtCadastroCarteiraPTEA.Edit;
+  //serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
+  //serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
+  //serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
+  //serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
+  //serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
+  //serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
+  //serviceNew.Salvar;
+  serviceNew.StreamFiles;
 
   TRouter4D.Link.&To('Dashboard');
 end;
@@ -136,6 +135,14 @@ begin
     aValue.Free;
   end;
 
+end;
+
+procedure TPageUpdate.rctFotoRostoClick(Sender: TObject);
+begin
+  serviceNew.mtCadastroCarteiraPTEA.Edit;
+  if dlgFotoRosto.Execute then
+    serviceNew.mtCadastroCarteiraPTEAfotoRostoPath.Value := dlgFotoRosto.FileName;
+  serviceNew.mtCadastroCarteiraPTEA.Post;
 end;
 
 function TPageUpdate.Render: TFmxObject;

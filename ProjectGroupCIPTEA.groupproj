@@ -9,6 +9,9 @@
         <Projects Include="src\Pages\Pages.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\CIPTEABackend\CIPTEABackend.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="Pages:Make">
         <MSBuild Projects="src\Pages\Pages.dproj" Targets="Make"/>
     </Target>
+    <Target Name="CIPTEABackend">
+        <MSBuild Projects="..\CIPTEABackend\CIPTEABackend.dproj"/>
+    </Target>
+    <Target Name="CIPTEABackend:Clean">
+        <MSBuild Projects="..\CIPTEABackend\CIPTEABackend.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CIPTEABackend:Make">
+        <MSBuild Projects="..\CIPTEABackend\CIPTEABackend.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProjectCIPTEA;Pages"/>
+        <CallTarget Targets="ProjectCIPTEA;Pages;CIPTEABackend"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProjectCIPTEA:Clean;Pages:Clean"/>
+        <CallTarget Targets="ProjectCIPTEA:Clean;Pages:Clean;CIPTEABackend:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProjectCIPTEA:Make;Pages:Make"/>
+        <CallTarget Targets="ProjectCIPTEA:Make;Pages:Make;CIPTEABackend:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

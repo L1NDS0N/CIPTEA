@@ -6,8 +6,10 @@
 	"mainsrc": "./src",
 	"projects": [],
 	"dependencies": {
+		"github.com/bittencourtthulio/horse-etag": "^1.0.0",
 		"github.com/hashload/handle-exception": "^0.1.4",
 		"github.com/hashload/horse": "^2.0.13",
+		"github.com/hashload/horse-compression": "^1.1.3",
 		"github.com/hashload/jhonson": "^1.1.2",
 		"github.com/viniciussanchez/dataset-serialize": "^v2.3.3"
 	}

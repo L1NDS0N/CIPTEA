@@ -11,7 +11,7 @@ object PageUpdate: TPageUpdate
   DesignerMasterStyle = 0
   object dlgLaudoMedico: TOpenDialog
     Left = 352
-    Top = 636
+    Top = 660
   end
   object lytUpdate: TLayout
     Align = Client
@@ -273,6 +273,24 @@ object PageUpdate: TPageUpdate
             Size.PlatformDefault = False
             Stroke.Color = claGray
             OnClick = rctFotoRostoClick
+            object imgFotoRosto: TImage
+              MultiResBitmap = <
+                item
+                end>
+              Size.Width = 200.000000000000000000
+              Size.Height = 200.000000000000000000
+              Size.PlatformDefault = False
+              OnClick = imgFotoRostoClick
+              object lblSelecioneFOto: TLabel
+                Align = Center
+                AutoSize = True
+                Size.Width = 136.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Selecione a foto do rosto'
+                TabOrder = 0
+              end
+            end
           end
           object rctLaudoMedico: TRectangle
             Align = Left
@@ -283,6 +301,7 @@ object PageUpdate: TPageUpdate
             Size.Height = 200.000000000000000000
             Size.PlatformDefault = False
             Stroke.Color = claGray
+            OnClick = rctLaudoMedicoClick
           end
         end
       end
@@ -337,6 +356,6 @@ object PageUpdate: TPageUpdate
   end
   object dlgFotoRosto: TOpenDialog
     Left = 136
-    Top = 636
+    Top = 660
   end
 end

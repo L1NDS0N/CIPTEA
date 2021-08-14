@@ -47,6 +47,7 @@ type
     mtPesquisaCarteiraPTEAid: TIntegerField;
     mtCadastroCarteiraPTEAid: TIntegerField;
     mtPesquisaCarteiraPTEAIfNoneMatch: TStringField;
+    mtCadastroCarteiraPTEALaudoMedicoPath: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private const
       baseURL = 'http://localhost:9000';
@@ -140,19 +141,34 @@ end;
 
 procedure TServiceNew.StreamFiles;
 var
-  LStreamFoto: TFileStream;
-  LRequest: IRequest;
+  LStreamFoto, LStreamDoc: TFileStream;
   LResponse: IResponse;
+  LResponse2: IResponse;
 begin
-  LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
+  TThread.CreateAnonymousThread(
+      procedure
+    begin
+      if not(mtCadastroCarteiraPTEAfotoRostoPath.Value = EmptyStr) then
+      begin
+        LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
+        LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+          .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
+          .AddBody(LStreamFoto, false).Put;
+        //if not(LResponse.StatusCode in [200, 201, 204]) then
+        //raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+        ShowMessage('Status: ' + IntToStr(LResponse.StatusCode) + 'Message: ' + LResponse.Content);
+      end;
+    end);
 
-  LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
-    .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto')
-    .ContentType('application/octet-stream').AddBody(LStreamFoto, false).Put;
-
-  ShowMessage('Status: ' + IntToStr(LResponse.StatusCode) + 'Message: ' + LResponse.Content);
-  //if not(LResponse.StatusCode in [200, 201, 204]) then
-  //raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+  //TThread.CreateAnonymousThread(
+  //procedure
+  //begin
+  //LResponse2 := TRequest.New.baseURL(baseURL).Resource('carteiras').ResourceSuffix(mtCadastroCarteiraPTEAid.AsString
+  //+ '/static/doc').ContentType('application/octet-stream').AddBody(LStreamDoc, false).Put;
+  // //if not(LResponse.StatusCode in [200, 201, 204]) then
+  // //raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+  //ShowMessage('Status: ' + IntToStr(LResponse2.StatusCode) + 'Message: ' + LResponse2.Content);
+  //end);
 end;
 
 end.

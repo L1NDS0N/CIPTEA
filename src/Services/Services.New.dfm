@@ -159,5 +159,8 @@ object ServiceNew: TServiceNew
     object mtCadastroCarteiraPTEAid: TIntegerField
       FieldName = 'id'
     end
+    object mtCadastroCarteiraPTEALaudoMedicoPath: TStringField
+      FieldName = 'LaudoMedicoPath'
+    end
   end
 end

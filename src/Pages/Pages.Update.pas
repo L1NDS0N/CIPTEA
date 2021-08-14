@@ -57,11 +57,15 @@ type
     FloatAnimation: TFloatAnimation;
     dlgFotoRosto: TOpenDialog;
     lblID: TLabel;
+    imgFotoRosto: TImage;
+    lblSelecioneFOto: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
     procedure lytInternoClick(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
+    procedure rctLaudoMedicoClick(Sender: TObject);
+    procedure imgFotoRostoClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
     public
@@ -111,6 +115,11 @@ begin
   serviceNew := TServiceNew.Create(Self);
 end;
 
+procedure TPageUpdate.imgFotoRostoClick(Sender: TObject);
+begin
+  rctFotoRostoClick(nil);
+end;
+
 procedure TPageUpdate.lytInternoClick(Sender: TObject);
 begin
   serviceNew.Free;
@@ -143,11 +152,26 @@ begin
   if dlgFotoRosto.Execute then
     serviceNew.mtCadastroCarteiraPTEAfotoRostoPath.Value := dlgFotoRosto.FileName;
   serviceNew.mtCadastroCarteiraPTEA.Post;
+  imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
+
+  if imgFotoRosto.Bitmap.IsEmpty then
+    lblSelecioneFOto.Visible := true
+  else
+    lblSelecioneFOto.Visible := false
+end;
+
+procedure TPageUpdate.rctLaudoMedicoClick(Sender: TObject);
+begin
+  serviceNew.mtCadastroCarteiraPTEA.Edit;
+  if dlgFotoRosto.Execute then
+    serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.Value := dlgLaudoMedico.FileName;
+  serviceNew.mtCadastroCarteiraPTEA.Post;
 end;
 
 function TPageUpdate.Render: TFmxObject;
 begin
   Result := lytUpdate;
+  imgFotoRosto.Bitmap := nil;
 end;
 
 procedure TPageUpdate.UnRender;

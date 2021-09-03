@@ -3,7 +3,7 @@ object PageDashboard: TPageDashboard
   Top = 0
   Caption = 'Carteirinhas'
   ClientHeight = 612
-  ClientWidth = 977
+  ClientWidth = 688
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,13 +11,13 @@ object PageDashboard: TPageDashboard
   DesignerMasterStyle = 0
   object lytDashboard: TLayout
     Align = Client
-    Size.Width = 977.000000000000000000
+    Size.Width = 688.000000000000000000
     Size.Height = 612.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout1: TLayout
       Align = Top
-      Size.Width = 977.000000000000000000
+      Size.Width = 688.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
@@ -25,7 +25,7 @@ object PageDashboard: TPageDashboard
         Align = HorzCenter
         AutoSize = True
         StyledSettings = [Style, FontColor]
-        Position.X = 388.000000000000000000
+        Position.X = 243.000000000000000000
         Size.Width = 201.000000000000000000
         Size.Height = 25.000000000000000000
         Size.PlatformDefault = False
@@ -37,11 +37,11 @@ object PageDashboard: TPageDashboard
     end
     object vsbCarteiras: TVertScrollBox
       Align = Client
-      Size.Width = 977.000000000000000000
+      Size.Width = 688.000000000000000000
       Size.Height = 530.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
-      Viewport.Width = 977.000000000000000000
+      Viewport.Width = 688.000000000000000000
       Viewport.Height = 530.000000000000000000
     end
     object retBtnNew: TRectangle
@@ -53,7 +53,7 @@ object PageDashboard: TPageDashboard
       Margins.Bottom = 2.000000000000000000
       Position.X = 2.000000000000000000
       Position.Y = 560.000000000000000000
-      Size.Width = 973.000000000000000000
+      Size.Width = 684.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claSkyblue
@@ -63,7 +63,7 @@ object PageDashboard: TPageDashboard
         Align = Bottom
         StyledSettings = [Size]
         Position.Y = 2.000000000000000000
-        Size.Width = 973.000000000000000000
+        Size.Width = 684.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         Text = 'Nova Carteira'

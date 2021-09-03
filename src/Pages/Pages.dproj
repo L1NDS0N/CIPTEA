@@ -59,7 +59,7 @@
         <SanitizedProjectName>Pages</SanitizedProjectName>
         <DCC_BplOutput>.\bin</DCC_BplOutput>
         <DCC_DcpOutput>.\bin</DCC_DcpOutput>
-        <DCC_UnitSearchPath>modules\.dcp;modules\.dcu;modules;modules\dataset-serialize\src;modules\restrequest4delphi\src;modules\router4delphi\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>modules\.dcp;modules\.dcu;modules;modules\dataset-serialize\src;modules\restrequest4delphi\src;modules\router4delphi\src;modules\synpdf;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_CBuilderOutput>None</DCC_CBuilderOutput>
@@ -114,6 +114,11 @@
         <DCCReference Include="bindengine.dcp"/>
         <DCCReference Include="bindcomp.dcp"/>
         <DCCReference Include="bindcompfmx.dcp"/>
+        <DCCReference Include="gtxDocumentEngines.dcp"/>
+        <DCCReference Include="gtxDocumentStudioCore.dcp"/>
+        <DCCReference Include="fmxgtxDocumentStudioControls.dcp"/>
+        <DCCReference Include="fmxgtxDocumentEngines.dcp"/>
+        <DCCReference Include="fmxgtxDocumentStudioCore.dcp"/>
         <DCCReference Include="Pages.Dashboard.pas">
             <Form>PageDashboard</Form>
             <FormType>fmx</FormType>

@@ -39,7 +39,12 @@ requires
   FireDACCommon,
   bindengine,
   bindcomp,
-  bindcompfmx;
+  bindcompfmx,
+  gtxDocumentEngines,
+  gtxDocumentStudioCore,
+  fmxgtxDocumentStudioControls,
+  fmxgtxDocumentEngines,
+  fmxgtxDocumentStudioCore;
 
 contains
   Pages.Dashboard in 'Pages.Dashboard.pas' {PageDashboard},

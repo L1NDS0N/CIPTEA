@@ -8,5 +8,6 @@
 	"dependencies": {
 		"github.com/bittencourtthulio/router4delphi": "^1.0.6",
 		"github.com/viniciussanchez/restrequest4delphi": "^v3.0.7"
+		
 	}
 }

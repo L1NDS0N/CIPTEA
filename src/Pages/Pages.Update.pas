@@ -22,7 +22,12 @@ uses
   FMX.Edit,
   FMX.Layouts,
   Services.New,
-  Router4D.Props;
+  Router4D.Props,
+  FMX.WebBrowser,
+  FMX.ExtCtrls,
+  FMX.gtxClasses,
+  FMX.gtxDocumentViewer,
+  gtClasses;
 
 type
   TPageUpdate = class(TForm, iRouter4DComponent)
@@ -51,7 +56,6 @@ type
     lytAnexos: TLayout;
     rctFotoRosto: TRectangle;
     rctLaudoMedico: TRectangle;
-    btnSalvar: TButton;
     lytHeader: TLayout;
     btnVoltar: TSpeedButton;
     FloatAnimation: TFloatAnimation;
@@ -59,13 +63,24 @@ type
     lblID: TLabel;
     imgFotoRosto: TImage;
     lblSelecioneFOto: TLabel;
+    retBtnSalvar: TRectangle;
+    SpeedButton1: TSpeedButton;
+    lblSelecioneLaudo: TLabel;
+    gtDocumentViewer: TgtDocumentViewer;
+    btnAmpliarDocumento: TSpeedButton;
+    LayoutZoom: TLayout;
+    btnFecharDocumento: TSpeedButton;
+    rctTopDocument: TRectangle;
     procedure FormCreate(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
-    procedure btnSalvarClick(Sender: TObject);
     procedure lytInternoClick(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
     procedure imgFotoRostoClick(Sender: TObject);
+    procedure WebBrowserTap(Sender: TObject; const Point: TPointF);
+    procedure retBtnSalvarClick(Sender: TObject);
+    procedure btnFecharDocumentoClick(Sender: TObject);
+    procedure btnAmpliarDocumentoClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
     public
@@ -87,22 +102,14 @@ uses
 {$R *.fmx}
 { TPageUpdate }
 
-procedure TPageUpdate.btnSalvarClick(Sender: TObject);
+procedure TPageUpdate.btnAmpliarDocumentoClick(Sender: TObject);
 begin
-  //serviceNew.mtCadastroCarteiraPTEA.Edit;
-  //serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-  //serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
-  //serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
-  //serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
-  //serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
-  //serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
-  //serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
-  //serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
-  //serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
-  //serviceNew.Salvar;
-  serviceNew.StreamFiles;
+  gtDocumentViewer.Size.Height := VertScrollBox.Height;
+end;
 
-  TRouter4D.Link.&To('Dashboard');
+procedure TPageUpdate.btnFecharDocumentoClick(Sender: TObject);
+begin
+  gtDocumentViewer.Size.Height := 0;
 end;
 
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
@@ -113,6 +120,7 @@ end;
 procedure TPageUpdate.FormCreate(Sender: TObject);
 begin
   serviceNew := TServiceNew.Create(Self);
+  btnFecharDocumentoClick(nil);
 end;
 
 procedure TPageUpdate.imgFotoRostoClick(Sender: TObject);
@@ -152,7 +160,11 @@ begin
   if dlgFotoRosto.Execute then
     serviceNew.mtCadastroCarteiraPTEAfotoRostoPath.Value := dlgFotoRosto.FileName;
   serviceNew.mtCadastroCarteiraPTEA.Post;
-  imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
+
+  if dlgFotoRosto.FileName <> EmptyStr then
+    begin
+      imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
+    end;
 
   if imgFotoRosto.Bitmap.IsEmpty then
     lblSelecioneFOto.Visible := true
@@ -163,15 +175,51 @@ end;
 procedure TPageUpdate.rctLaudoMedicoClick(Sender: TObject);
 begin
   serviceNew.mtCadastroCarteiraPTEA.Edit;
-  if dlgFotoRosto.Execute then
+  if dlgLaudoMedico.Execute then
     serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.Value := dlgLaudoMedico.FileName;
   serviceNew.mtCadastroCarteiraPTEA.Post;
+
+  if dlgLaudoMedico.FileName <> EmptyStr then
+    begin
+      gtDocumentViewer.LoadFromFile(dlgLaudoMedico.FileName);
+      lblSelecioneLaudo.Text := 'Arquivo ' + dlgLaudoMedico.Files.Names[0] + ' selecionado';
+      LayoutZoom.Visible := true;
+    end
+  else
+    begin
+      LayoutZoom.Visible := false;
+      lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
+    end;
+
+  if gtDocumentViewer.IsDocumentLoaded then
+    lblSelecioneLaudo.Visible := false
+  else
+    lblSelecioneLaudo.Visible := true;
+
 end;
 
 function TPageUpdate.Render: TFmxObject;
 begin
   Result := lytUpdate;
   imgFotoRosto.Bitmap := nil;
+end;
+
+procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
+begin
+  //serviceNew.mtCadastroCarteiraPTEA.Edit;
+  //serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
+  //serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
+  //serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
+  //serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
+  //serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
+  //serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
+  //serviceNew.Salvar;
+  serviceNew.StreamFiles;
+
+  TRouter4D.Link.&To('Dashboard');
 end;
 
 procedure TPageUpdate.UnRender;
@@ -182,6 +230,11 @@ end;
 procedure TPageUpdate.updateFields(id: string);
 begin
   lblID.Text := id;
+end;
+
+procedure TPageUpdate.WebBrowserTap(Sender: TObject; const Point: TPointF);
+begin
+  rctLaudoMedicoClick(nil);
 end;
 
 end.

@@ -66,6 +66,7 @@ type
       function Append(const AJson: TJSONObject): Boolean;
       procedure Delete(AId: integer);
       function Update(const AJson: TJSONObject; AId: integer): Boolean;
+      function UpdateAField(const AField: string; AValue: string; AId: integer): Boolean;
       function GetById(const AId: string): TFDQuery;
   end;
 
@@ -95,7 +96,7 @@ end;
 
 procedure TServiceCarteiraPTEA.DataModuleDestroy(Sender: TObject);
 begin
-ServiceConnection.Free;
+  ServiceConnection.Free;
 end;
 
 procedure TServiceCarteiraPTEA.Delete(AId: integer);
@@ -127,6 +128,17 @@ begin
   qryCadastroCarteiraPTEA.ParamByName('ID').Value := AId;
   qryCadastroCarteiraPTEA.Open();
   qryCadastroCarteiraPTEA.MergeFromJSONObject(AJson, False);
+  Result := qryCadastroCarteiraPTEA.ApplyUpdates(0) = 0;
+end;
+
+function TServiceCarteiraPTEA.UpdateAField(const AField: string; AValue: string; AId: integer): Boolean;
+begin
+  qryCadastroCarteiraPTEA.Close;
+  qryCadastroCarteiraPTEA.SQL.Add('where id = :id');
+  qryCadastroCarteiraPTEA.ParamByName('ID').Value := AId;
+  qryCadastroCarteiraPTEA.Open();
+  qryCadastroCarteiraPTEA.Edit;
+  qryCadastroCarteiraPTEA.FieldByName(AField).Value := AValue;
   Result := qryCadastroCarteiraPTEA.ApplyUpdates(0) = 0;
 end;
 

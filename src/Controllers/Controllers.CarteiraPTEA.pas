@@ -15,6 +15,7 @@ procedure Registry;
 implementation
 
 uses
+  Utils.ImageFormat,
   Horse.Commons,
   System.Net.Mime;
 
@@ -152,12 +153,28 @@ procedure DoPutStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LStream: TMemoryStream;
   FullPath: string;
+  FileDir: string;
+  LService: TServiceCarteiraPTEA;
+  Buffer: Word;
 begin
+  //TODO  -----------------------------
 
-  FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']);
+  LService := TServiceCarteiraPTEA.Create(nil);
   LStream := Req.Body<TMemoryStream>;
-  LStream.SaveToFile(FullPath + '\fotorosto.jpg');
+
+  //Assina a variável buffer para obter o formato do arquivo
+  LStream.ReadBuffer(Buffer, 2);
+
+  FileDir := ImageFormatFromBuffer(Buffer);
+  FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']) + FileDir;
+  FileDir := '\static\' + Req.Params['id'] + '\fotorosto' + FileDir;
+
+  LStream.SaveToFile(FullPath);
+  LService.UpdateAField('fotoRostoPath', FileDir, Req.Params['id'].ToInteger);
+
   Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
+  //LService.Free;
+  //LStream.Free;
 
 end;
 

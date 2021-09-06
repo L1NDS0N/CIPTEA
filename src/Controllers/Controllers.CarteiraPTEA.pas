@@ -153,28 +153,33 @@ procedure DoPutStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LStream: TMemoryStream;
   FullPath: string;
-  FileDir: string;
+  FileName: string;
   LService: TServiceCarteiraPTEA;
   Buffer: Word;
 begin
-  //TODO  -----------------------------
+  try
+    LService := TServiceCarteiraPTEA.Create(nil);
+    LStream := Req.Body<TMemoryStream>;
 
-  LService := TServiceCarteiraPTEA.Create(nil);
-  LStream := Req.Body<TMemoryStream>;
+    //Assina a variável buffer para obter o formato do arquivo
+    LStream.ReadBuffer(Buffer, 2);
+    FileName := 'fotorosto' + ImageFormatFromBuffer(Buffer);
 
-  //Assina a variável buffer para obter o formato do arquivo
-  LStream.ReadBuffer(Buffer, 2);
+    FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']) + '\' + FileName;
+    FileName := '\static\' + Req.Params['id'] + '\' + FileName;
 
-  FileDir := ImageFormatFromBuffer(Buffer);
-  FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']) + FileDir;
-  FileDir := '\static\' + Req.Params['id'] + '\fotorosto' + FileDir;
+    try
+      LStream.SaveToFile(FullPath);
+      LService.UpdateAField('fotoRostoPath', FileName, Req.Params['id'].ToInteger);
+    except
+      on E: Exception do
+        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravação de imagem');
+    end;
 
-  LStream.SaveToFile(FullPath);
-  LService.UpdateAField('fotoRostoPath', FileDir, Req.Params['id'].ToInteger);
-
-  Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
-  //LService.Free;
-  //LStream.Free;
+    Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
+  finally
+    LService.Free;
+  end;
 
 end;
 

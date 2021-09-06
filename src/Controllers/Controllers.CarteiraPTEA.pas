@@ -113,19 +113,28 @@ var
   Extension: string;
   aType: string;
   aKind: TMimeTypes.TKind;
+  LService: TServiceCarteiraPTEA;
+  vImgDir: string;
 begin
-  //Extension := ExtractFileExt(Req.RawWebRequest.PathInfo);
-  //if not Extension.IsEmpty then
-  //begin
+  try
+    LService := TServiceCarteiraPTEA.Create(nil);
+    vImgDir := LService.GetAFieldById('fotoRostoPath', Req.Params['id']);
 
-  FullPath := ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id'] + '\fotorosto.jpg';
+    FullPath := ExtractFileDir(ParamStr(0)) + vImgDir;
+    try
+      LStream := TFileStream.Create(FullPath, fmOpenRead);
+      LStream.Position := 0;
 
-  LStream := TFileStream.Create(FullPath, fmOpenRead);
-  LStream.Position := 0;
+      TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
+      Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+    except
+      on E: Exception do
+        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante extração de imagem');
+    end;
+  finally
+    LService.Free;
+  end;
 
-  TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
-  Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
-  //end;
 end;
 
 procedure DoGetStreamDoc(Req: THorseRequest; Res: THorseResponse; Next: TProc);

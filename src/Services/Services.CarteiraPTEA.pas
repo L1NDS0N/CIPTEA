@@ -68,6 +68,7 @@ type
       function Update(const AJson: TJSONObject; AId: integer): Boolean;
       function UpdateAField(const AField: string; AValue: string; AId: integer): Boolean;
       function GetById(const AId: string): TFDQuery;
+      function GetAFieldById(const AField: string; const AId: string): string;
   end;
 
 implementation
@@ -105,6 +106,14 @@ begin
   qryCadastroCarteiraPTEA.SQL.Add('DELETE FROM CARTEIRAPTEA WHERE ID = :ID');
   qryCadastroCarteiraPTEA.ParamByName('ID').Value := AId;
   qryCadastroCarteiraPTEA.ExecSQL;
+end;
+
+function TServiceCarteiraPTEA.GetAFieldById(const AField: string; const AId: string): string;
+begin
+  qryCadastroCarteiraPTEA.SQL.Add('where id = :id');
+  qryCadastroCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
+  qryCadastroCarteiraPTEA.Open();
+  Result := qryCadastroCarteiraPTEA.FieldByName(AField).AsString;
 end;
 
 function TServiceCarteiraPTEA.GetById(const AId: string): TFDQuery;

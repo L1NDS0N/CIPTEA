@@ -119,6 +119,7 @@
         <DCCReference Include="fmxgtxDocumentStudioControls.dcp"/>
         <DCCReference Include="fmxgtxDocumentEngines.dcp"/>
         <DCCReference Include="fmxgtxDocumentStudioCore.dcp"/>
+        <DCCReference Include="fmxFireDAC.dcp"/>
         <DCCReference Include="Pages.Dashboard.pas">
             <Form>PageDashboard</Form>
             <FormType>fmx</FormType>
@@ -145,6 +146,11 @@
         <DCCReference Include="Pages.Update.pas">
             <Form>PageUpdate</Form>
             <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Services\Services.Connection.pas">
+            <Form>ServiceConnection</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

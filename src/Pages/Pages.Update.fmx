@@ -320,6 +320,7 @@ object PageUpdate: TPageUpdate
               Size.Width = 200.000000000000000000
               Size.Height = 48.000000000000000000
               Size.PlatformDefault = False
+              Visible = False
               TabOrder = 2
               object btnAmpliarDocumento: TSpeedButton
                 Align = Right
@@ -434,6 +435,7 @@ object PageUpdate: TPageUpdate
         TextSettings.Font.Family = 'Fira Code Retina'
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claAliceblue
+        OnClick = retBtnSalvarClick
       end
     end
   end

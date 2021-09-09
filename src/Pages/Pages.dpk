@@ -44,7 +44,8 @@ requires
   gtxDocumentStudioCore,
   fmxgtxDocumentStudioControls,
   fmxgtxDocumentEngines,
-  fmxgtxDocumentStudioCore;
+  fmxgtxDocumentStudioCore,
+  fmxFireDAC;
 
 contains
   Pages.Dashboard in 'Pages.Dashboard.pas' {PageDashboard},
@@ -53,6 +54,7 @@ contains
   Services.New in '..\Services\Services.New.pas' {ServiceNew: TDataModule},
   Frames.DashboardDetail in 'Providers\Frames.DashboardDetail.pas' {FrameDashboardDetail: TFrame},
   Providers.Types in 'Providers\Providers.Types.pas',
-  Pages.Update in 'Pages.Update.pas' {PageUpdate};
+  Pages.Update in 'Pages.Update.pas' {PageUpdate},
+  Services.Connection in '..\Services\Services.Connection.pas' {ServiceConnection: TDataModule};
 
 end.

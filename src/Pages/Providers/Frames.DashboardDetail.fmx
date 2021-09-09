@@ -9,24 +9,6 @@ object FrameDashboardDetail: TFrameDashboardDetail
     Size.Height = 207.000000000000000000
     Size.PlatformDefault = False
     Stroke.Kind = None
-    object Imagem: TImage
-      MultiResBitmap = <
-        item
-        end>
-      Align = FitLeft
-      Size.Width = 155.250030517578100000
-      Size.Height = 207.000000000000000000
-      Size.PlatformDefault = False
-      object Rectangle1: TRectangle
-        Align = Client
-        Margins.Left = 5.000000000000000000
-        Margins.Top = 2.000000000000000000
-        Margins.Bottom = 5.000000000000000000
-        Size.Width = 150.250030517578100000
-        Size.Height = 200.000000000000000000
-        Size.PlatformDefault = False
-      end
-    end
     object retContent: TRectangle
       Align = VertCenter
       Fill.Kind = None
@@ -168,6 +150,27 @@ object FrameDashboardDetail: TFrameDashboardDetail
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         Text = 'ID'
         TabOrder = 0
+      end
+    end
+    object rctImagem: TRectangle
+      Align = FitLeft
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 2.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 2.000000000000000000
+      Size.Width = 150.250030517578100000
+      Size.Height = 200.000000000000000000
+      Size.PlatformDefault = False
+      object Imagem: TImage
+        MultiResBitmap = <
+          item
+          end>
+        Align = FitLeft
+        MarginWrapMode = Fit
+        Size.Width = 150.000030517578100000
+        Size.Height = 200.000000000000000000
+        Size.PlatformDefault = False
       end
     end
   end

@@ -134,10 +134,13 @@ begin
 end;
 
 procedure TPageUpdate.Props(aValue: TProps);
+var
+  streamImage: TMemoryStream;
 begin
   try
     if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToUpdate') then
       serviceNew.GetById(aValue.PropString);
+
     lblID.Text := '#' + aValue.PropString;
     edtNomeResponsavel.Text := serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString;
     edtCpfResponsavel.Text := serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString;
@@ -148,6 +151,12 @@ begin
     edtNumeroContato.Text := serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString;
     edtRgResponsavel.Text := serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString;
     edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
+
+    streamImage := TMemoryStream.Create;
+    //serviceNew.mtCadastroCarteiraPTEAFo.SaveToStream(streamImage);
+    streamImage.Position := 0;
+    imgFotoRosto.Bitmap.LoadFromStream(streamImage);
+
   finally
     aValue.Free;
   end;
@@ -217,6 +226,7 @@ begin
   //serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
   //serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
   //serviceNew.Salvar;
+
   serviceNew.StreamFiles;
 
   TRouter4D.Link.&To('Dashboard');

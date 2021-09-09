@@ -64,7 +64,7 @@ type
       procedure GetById(const AId: string);
       procedure StreamFiles;
       procedure GetFiles;
-      function GetFilesById(const AId: integer): TStream;
+      function GetFilesById(AId: integer): TStream;
   end;
 
 var
@@ -130,9 +130,6 @@ begin
   mtPesquisaCarteiraPTEA.First;
   while not(mtPesquisaCarteiraPTEA.Eof) do
     begin
-      //2 situações com 2 variantes
-      //se a qry estiver vazia, pode não haver foto ainda ou pode estar desatualizado
-      //se a qry não estiver vazia, pode estar desatualizada e pra isso precisa checar o etag da foto
       qryArquivosCarteiraPTEA.Close;
       qryArquivosCarteiraPTEA.ParamByName('IDCarteira').Value := mtPesquisaCarteiraPTEAid.Value;
       qryArquivosCarteiraPTEA.Open;
@@ -151,6 +148,7 @@ begin
           LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
             .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/etag/foto')
             .AddHeader('If-None-Match', qryArquivosCarteiraPTEAIfNoneMatch.Value).Get;
+
           qryArquivosCarteiraPTEA.Edit;
           qryArquivosCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
           qryArquivosCarteiraPTEA.Post;
@@ -163,18 +161,15 @@ begin
               qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
               qryArquivosCarteiraPTEA.Post;
             end
-          else if (LResponse.StatusCode = 304) then
-            mtPesquisaCarteiraPTEA.Next
-          else
-            ShowMessage('Erro durante o download das imagens. ' + LResponse.JSONValue.GetValue<string>('error'));
+          else if not(LResponse.StatusCode = 304) then
+            showmessage('Erro durante o download das imagens. ' + LResponse.JSONValue.GetValue<string>('error'));
         end;
 
       mtPesquisaCarteiraPTEA.Next;
-
     end;
 end;
 
-function TServiceNew.GetFilesById(const AId: integer): TStream;
+function TServiceNew.GetFilesById(AId: integer): TStream;
 begin
   Result := TMemoryStream.Create;
   qryArquivosCarteiraPTEA.Close;
@@ -227,23 +222,23 @@ var
   LResponse2: IResponse;
 begin
   try
-    //TThread.CreateAnonymousThread(
-    //procedure
-    //begin
-    if not(mtCadastroCarteiraPTEAfotoRostoPath.Value = EmptyStr) then
-      begin
-        LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
-        LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
-          .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
-          .AddBody(LStreamFoto, false).Put;
-        if not(LResponse.StatusCode in [200, 201, 204]) then
-          raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-        ShowMessage('Status: ' + IntToStr(LResponse.StatusCode) + 'Message: ' + LResponse.Content);
-      end;
-    //end);
+    begin
+      if not(mtCadastroCarteiraPTEAfotoRostoPath.Value = EmptyStr) then
+        begin
+          LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
+          LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+            .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
+            .AddBody(LStreamFoto, false).Put;
+          if not(LResponse.StatusCode in [200, 201, 204]) then
+            raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+          //destruir a stream da foto
+          if LResponse.StatusCode > 0 then
+            LStreamFoto.Free;
+        end;
+    end;
   except
     on E: Exception do
-      ShowMessage(E.Message);
+      showmessage(E.Message);
   end;
   //TThread.CreateAnonymousThread(
   //procedure

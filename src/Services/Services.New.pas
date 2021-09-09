@@ -120,25 +120,12 @@ begin
     .DataSetAdapter(mtCadastroCarteiraPTEA).Get;
   if not(LResponse.StatusCode = 200) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-
-  //try
-  //LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
-  //.ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
-  //
-  //
-  //mtArquivosCarteiraPTEA.Open;
-  //mtCadastroCarteiraPTEAFotoStream mtCadastroCarteiraPTEA.Edit;
-  //finally
-  //
-  //end;
-
 end;
 
 procedure TServiceNew.GetFiles;
 var
   LResponse: IResponse;
 begin
-  //implementar ETag
   mtPesquisaCarteiraPTEA.Open;
   mtPesquisaCarteiraPTEA.First;
   while not(mtPesquisaCarteiraPTEA.Eof) do

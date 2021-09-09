@@ -8,6 +8,7 @@ uses
   Horse,
   System.JSON,
   System.SysUtils,
+  VCL.Dialogs,
   Dataset.Serialize;
 
 procedure Registry;
@@ -90,6 +91,27 @@ begin
 
 end;
 
+procedure DeleteFileById(const AID: Integer);
+var
+  vImgDir: string;
+  vImgPath: string;
+  LService: TServiceCarteiraPTEA;
+begin
+  LService := TServiceCarteiraPTEA.Create(nil);
+  try
+    vImgDir := LService.GetAFieldById('fotoRostoPath', AID.ToString);
+    vImgPath := ExtractFileDir(ParamStr(0)) + vImgDir;
+    if vImgDir <> EmptyStr then
+      begin
+        if FileExists(vImgPath) then
+          DeleteFile(vImgPath);
+      end;
+  finally
+    LService.Free;
+  end;
+
+end;
+
 procedure DoDelete(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   AID: Integer;
@@ -98,12 +120,32 @@ begin
   LService := TServiceCarteiraPTEA.Create(nil);
   try
     AID := Req.Params.Items['id'].ToInteger;
+
+    DeleteFileById(AID);
+
     LService.Delete(AID);
     Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject).Status(204);
   finally
     LService.Free;
   end;
+end;
 
+procedure DoGetEtagFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LId: string;
+  LService: TServiceCarteiraPTEA;
+begin
+  LService := TServiceCarteiraPTEA.Create(nil);
+  try
+    LId := Req.Params.Items['id'];
+    if LService.GetById(LId).IsEmpty then
+      raise EHorseException.Create(THTTPStatus.NotFound, 'Not Found');
+
+    Res.Send(TJsonObject.Create.AddPair('AlteradoEm', LService.qryCadastroCarteiraPTEAAlteradoEm.AsString).AddPair('ID',
+        LService.qryCadastroCarteiraPTEAid.AsString)).Status(THTTPStatus.OK);
+  finally
+    LService.Free;
+  end;
 end;
 
 procedure DoGetStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
@@ -116,17 +158,22 @@ var
   LService: TServiceCarteiraPTEA;
   vImgDir: string;
 begin
+  LService := TServiceCarteiraPTEA.Create(nil);
   try
-    LService := TServiceCarteiraPTEA.Create(nil);
     vImgDir := LService.GetAFieldById('fotoRostoPath', Req.Params['id']);
 
     FullPath := ExtractFileDir(ParamStr(0)) + vImgDir;
     try
-      LStream := TFileStream.Create(FullPath, fmOpenRead);
-      LStream.Position := 0;
+      if FileExists(FullPath) then
+        begin
+          LStream := TFileStream.Create(FullPath, fmOpenRead);
+          LStream.Position := 0;
 
-      TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
-      Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+          TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
+          Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+        end
+      else
+        Res.Status(THTTPStatus.NoContent);
     except
       on E: Exception do
         raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante extração de imagem');
@@ -165,27 +212,32 @@ var
   FileName: string;
   LService: TServiceCarteiraPTEA;
   Buffer: Word;
+
 begin
+  LService := TServiceCarteiraPTEA.Create(nil);
   try
-    LService := TServiceCarteiraPTEA.Create(nil);
     LStream := Req.Body<TMemoryStream>;
+    if LStream.Size = 0 then
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Erro ao processar a imagem');
 
     //Assina a variável buffer para obter o formato do arquivo
     LStream.ReadBuffer(Buffer, 2);
-    FileName := 'fotorosto' + ImageFormatFromBuffer(Buffer);
+    if ImageFormatFromBuffer(Buffer) = EmptyStr then
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Erro formato de imagem desconhecido');
 
+    FileName := 'fotorosto' + ImageFormatFromBuffer(Buffer);
     FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']) + '\' + FileName;
     FileName := '\static\' + Req.Params['id'] + '\' + FileName;
 
     try
-      LStream.SaveToFile(FullPath);
-      LService.UpdateAField('fotoRostoPath', FileName, Req.Params['id'].ToInteger);
+      if LService.UpdateAField('fotoRostoPath', FileName, Req.Params['id'].ToInteger) then
+        LStream.SaveToFile(FullPath);
     except
       on E: Exception do
-        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravação de imagem');
+        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravação de imagem - ' + E.Message);
     end;
 
-    Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
+    Res.Send(TJsonObject.Create.AddPair('Created', FileExists(FullPath).ToString())).Status(THTTPStatus.Created);
   finally
     LService.Free;
   end;
@@ -201,7 +253,7 @@ begin
   FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']);
   LStream := Req.Body<TMemoryStream>;
   LStream.SaveToFile(FullPath + '\fotorosto.jpg');
-  Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJSON).Status(THTTPStatus.Created);
+  Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJson).Status(THTTPStatus.Created);
 
 end;
 
@@ -212,9 +264,11 @@ begin
   THorse.Post('/carteiras', DoPost);
   THorse.Put('/carteiras/:id', DoUpdate);
   THorse.Delete('/carteiras/:id', DoDelete);
+
   THorse.Get('/carteiras/:id/static/foto', DoGetStreamFoto);
   THorse.Put('/carteiras/:id/static/foto', DoPutStreamFoto);
-  //precisa ser implementado, atualmente é a cópia da foto
+  THorse.Get('/carteiras/:id/etag/foto', DoGetEtagFoto);
+
   THorse.Get('/carteiras/:id/static/doc', DoGetStreamDoc);
   THorse.Put('/carteiras/:id/static/doc', DoPutStreamDoc);
 end;

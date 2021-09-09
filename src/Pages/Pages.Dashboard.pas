@@ -34,7 +34,8 @@ uses
   Data.Bind.DBScope,
   FMX.ListBox,
   FMX.Memo,
-  FMX.TabControl, FMX.Objects;
+  FMX.TabControl,
+  FMX.Objects;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
@@ -79,13 +80,14 @@ end;
 
 procedure TPageDashboard.FormCreate(Sender: TObject);
 begin
-  serviceNew := Services.New.TServiceNew.Create(Self);
+  serviceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPageDashboard.ListarCarteiras;
 var
   LFrame: TFrameDashboardDetail;
   I: Integer;
+  streamImage: TMemoryStream;
 begin
   vsbCarteiras.BeginUpdate;
   try
@@ -93,24 +95,32 @@ begin
       for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
         vsbCarteiras.Content.Controls[I].DisposeOf;
       serviceNew.Listar;
+      serviceNew.GetFiles;
       serviceNew.mtPesquisaCarteiraPTEA.First;
       while not serviceNew.mtPesquisaCarteiraPTEA.Eof do
-      begin
-        LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
-        LFrame.Parent := vsbCarteiras;
-        LFrame.Align := TAlignLayout.Top;
-        LFrame.Position.X := vsbCarteiras.Content.ControlsCount * LFrame.Height;
+        begin
+          try
 
-        LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
-        LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
-        LFrame.lblNomeTitular.Text := serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString;
-        LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
-        LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+            LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
+            LFrame.Parent := vsbCarteiras;
+            LFrame.Align := TAlignLayout.Top;
+            LFrame.Position.X := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
-        LFrame.OnDelete := Self.OnDeleteCarteira;
-        LFrame.OnUpdate := Self.OnUpdateCarteira;
-        serviceNew.mtPesquisaCarteiraPTEA.Next;
-      end;
+            LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+            LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+            LFrame.lblNomeTitular.Text := serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString;
+            LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
+            LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+
+            LFrame.Imagem.Bitmap.LoadFromStream(serviceNew.GetFilesById(serviceNew.mtPesquisaCarteiraPTEAid.Value));
+
+            LFrame.OnDelete := Self.OnDeleteCarteira;
+            LFrame.OnUpdate := Self.OnUpdateCarteira;
+            serviceNew.mtPesquisaCarteiraPTEA.Next;
+          finally
+            streamImage.Free;
+          end;
+        end;
     except
       on E: Exception do
         ShowMessage(E.Message);

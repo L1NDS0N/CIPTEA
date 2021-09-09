@@ -87,7 +87,6 @@ procedure TPageDashboard.ListarCarteiras;
 var
   LFrame: TFrameDashboardDetail;
   I: Integer;
-  streamImage: TMemoryStream;
 begin
   vsbCarteiras.BeginUpdate;
   try
@@ -99,8 +98,6 @@ begin
       serviceNew.mtPesquisaCarteiraPTEA.First;
       while not serviceNew.mtPesquisaCarteiraPTEA.Eof do
         begin
-          try
-
             LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
             LFrame.Parent := vsbCarteiras;
             LFrame.Align := TAlignLayout.Top;
@@ -117,9 +114,6 @@ begin
             LFrame.OnDelete := Self.OnDeleteCarteira;
             LFrame.OnUpdate := Self.OnUpdateCarteira;
             serviceNew.mtPesquisaCarteiraPTEA.Next;
-          finally
-            streamImage.Free;
-          end;
         end;
     except
       on E: Exception do

@@ -30,7 +30,6 @@ object PageUpdate: TPageUpdate
       Size.Height = 809.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      OnClick = lytInternoClick
       object VertScrollBox: TVertScrollBox
         Align = Client
         Size.Width = 822.000000000000000000
@@ -43,7 +42,7 @@ object PageUpdate: TPageUpdate
         object edtCpfResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
-          TabOrder = 0
+          TabOrder = 6
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 339.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -55,7 +54,7 @@ object PageUpdate: TPageUpdate
         object edtCpfTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
-          TabOrder = 1
+          TabOrder = 7
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 392.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -74,13 +73,13 @@ object PageUpdate: TPageUpdate
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
-          TabOrder = 2
+          TabOrder = 8
           TextSettings.Font.Family = 'Fira Code Retina'
         end
         object edtEmailContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
-          TabOrder = 3
+          TabOrder = 0
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 22.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -116,7 +115,7 @@ object PageUpdate: TPageUpdate
         object edtNumeroContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
-          TabOrder = 6
+          TabOrder = 1
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 75.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -128,7 +127,7 @@ object PageUpdate: TPageUpdate
         object edtRgResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
-          TabOrder = 7
+          TabOrder = 2
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 127.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -140,7 +139,7 @@ object PageUpdate: TPageUpdate
         object edtRgTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
-          TabOrder = 8
+          TabOrder = 3
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 180.000000000000000000
           Margins.Bottom = 5.000000000000000000

@@ -46,12 +46,10 @@ type
     vsbCarteiras: TVertScrollBox;
     retBtnNew: TRectangle;
     procedure btnNewClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     private
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
       procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
     public
-      serviceNew: TServiceNew;
       procedure ListarCarteiras;
       function Render: TFMXObject;
       procedure UnRender;
@@ -78,42 +76,41 @@ begin
   TRouter4D.Link.&To('New');
 end;
 
-procedure TPageDashboard.FormCreate(Sender: TObject);
-begin
-  serviceNew := TServiceNew.Create(Self);
-end;
-
 procedure TPageDashboard.ListarCarteiras;
 var
+  serviceNew: TServiceNew;
   LFrame: TFrameDashboardDetail;
   I: Integer;
 begin
+  serviceNew := TServiceNew.Create(Self);
   vsbCarteiras.BeginUpdate;
   try
     try
       for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
         vsbCarteiras.Content.Controls[I].DisposeOf;
+
       serviceNew.Listar;
       serviceNew.GetFiles;
+
       serviceNew.mtPesquisaCarteiraPTEA.First;
       while not serviceNew.mtPesquisaCarteiraPTEA.Eof do
         begin
-            LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
-            LFrame.Parent := vsbCarteiras;
-            LFrame.Align := TAlignLayout.Top;
-            LFrame.Position.X := vsbCarteiras.Content.ControlsCount * LFrame.Height;
+          LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
+          LFrame.Parent := vsbCarteiras;
+          LFrame.Align := TAlignLayout.Top;
+          LFrame.Position.X := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
-            LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
-            LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
-            LFrame.lblNomeTitular.Text := serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString;
-            LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
-            LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+          LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+          LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+          LFrame.lblNomeTitular.Text := serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString;
+          LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
+          LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
 
-            LFrame.Imagem.Bitmap.LoadFromStream(serviceNew.GetFilesById(serviceNew.mtPesquisaCarteiraPTEAid.Value));
+          LFrame.Imagem.Bitmap.LoadFromStream(serviceNew.GetFilesById(serviceNew.mtPesquisaCarteiraPTEAid.Value));
 
-            LFrame.OnDelete := Self.OnDeleteCarteira;
-            LFrame.OnUpdate := Self.OnUpdateCarteira;
-            serviceNew.mtPesquisaCarteiraPTEA.Next;
+          LFrame.OnDelete := Self.OnDeleteCarteira;
+          LFrame.OnUpdate := Self.OnUpdateCarteira;
+          serviceNew.mtPesquisaCarteiraPTEA.Next;
         end;
     except
       on E: Exception do
@@ -121,25 +118,32 @@ begin
     end;
   finally
     vsbCarteiras.EndUpdate;
+    serviceNew.Free;
   end;
-
 end;
 
 procedure TPageDashboard.OnDeleteCarteira(const ASender: TFrame; const AId: string);
+var
+  serviceNew: TServiceNew;
 begin
   try
-    TDialogService.MessageDialog('Tem certeza que deseja deletar?', TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo,
-      TMsgDlgBtn.mbNo, 0,
-        procedure(const AResult: TModalResult)
-      begin
-        if AResult <> mrYes then
-          Abort;
-      end);
-    serviceNew.Delete(AId);
-    ASender.DisposeOf;
-  except
-    on E: Exception do
-      ShowMessage(E.Message);
+    serviceNew := TServiceNew.Create(nil);
+    try
+      TDialogService.MessageDialog('Tem certeza que deseja deletar?', TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo,
+        TMsgDlgBtn.mbNo, 0,
+          procedure(const AResult: TModalResult)
+        begin
+          if AResult <> mrYes then
+            Abort;
+        end);
+      serviceNew.Delete(AId);
+      ASender.DisposeOf;
+    except
+      on E: Exception do
+        ShowMessage(E.Message);
+    end;
+  finally
+    serviceNew.Free;
   end;
 end;
 
@@ -151,7 +155,7 @@ end;
 function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
-  ListarCarteiras;
+  Self.ListarCarteiras;
 end;
 
 procedure TPageDashboard.UnRender;

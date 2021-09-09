@@ -6,7 +6,6 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
   Width = 144
   object qryCadastroCarteiraPTEA: TFDQuery
     CachedUpdates = True
-    Connection = ServiceConnection.FDConnection
     SQL.Strings = (
       'select * from carteiraptea')
     Left = 56
@@ -86,7 +85,6 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
     end
   end
   object qryPesquisaCarteiraPTEA: TFDQuery
-    Connection = ServiceConnection.FDConnection
     SQL.Strings = (
       'select * from carteiraptea')
     Left = 56

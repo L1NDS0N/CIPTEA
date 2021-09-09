@@ -1,8 +1,8 @@
 object ServiceNew: TServiceNew
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 139
-  Width = 150
+  Height = 207
+  Width = 154
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
@@ -95,6 +95,9 @@ object ServiceNew: TServiceNew
       FieldName = 'IfNoneMatch'
       Size = 100
     end
+    object mtPesquisaCarteiraPTEAFotoStream: TBlobField
+      FieldName = 'FotoStream'
+    end
   end
   object mtCadastroCarteiraPTEA: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -161,6 +164,37 @@ object ServiceNew: TServiceNew
     end
     object mtCadastroCarteiraPTEALaudoMedicoPath: TStringField
       FieldName = 'LaudoMedicoPath'
+    end
+  end
+  object qryArquivosCarteiraPTEA: TFDQuery
+    SQL.Strings = (
+      'select * from ArquivosCarteiraPTEA'
+      'where IDCarteira = :IDCARTEIRA')
+    Left = 56
+    Top = 136
+    ParamData = <
+      item
+        Name = 'IDCARTEIRA'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryArquivosCarteiraPTEAIDCarteira: TIntegerField
+      FieldName = 'IDCarteira'
+      Origin = 'IDCarteira'
+    end
+    object qryArquivosCarteiraPTEAFotoStream: TBlobField
+      FieldName = 'FotoStream'
+      Origin = 'FotoStream'
+    end
+    object qryArquivosCarteiraPTEADocStream: TBlobField
+      FieldName = 'DocStream'
+      Origin = 'DocStream'
+    end
+    object qryArquivosCarteiraPTEAIfNoneMatch: TStringField
+      FieldName = 'IfNoneMatch'
+      Origin = 'IfNoneMatch'
+      Size = 32767
     end
   end
 end

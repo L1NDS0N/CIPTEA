@@ -151,11 +151,7 @@ begin
     edtNumeroContato.Text := serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString;
     edtRgResponsavel.Text := serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString;
     edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
-
-    streamImage := TMemoryStream.Create;
-    //serviceNew.mtCadastroCarteiraPTEAFo.SaveToStream(streamImage);
-    streamImage.Position := 0;
-    imgFotoRosto.Bitmap.LoadFromStream(streamImage);
+    imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetFilesById(aValue.PropString.ToInteger));
 
   finally
     aValue.Free;

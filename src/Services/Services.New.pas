@@ -48,6 +48,12 @@ type
     mtCadastroCarteiraPTEAid: TIntegerField;
     mtPesquisaCarteiraPTEAIfNoneMatch: TStringField;
     mtCadastroCarteiraPTEALaudoMedicoPath: TStringField;
+    mtPesquisaCarteiraPTEAFotoStream: TBlobField;
+    qryArquivosCarteiraPTEA: TFDQuery;
+    qryArquivosCarteiraPTEAIDCarteira: TIntegerField;
+    qryArquivosCarteiraPTEAFotoStream: TBlobField;
+    qryArquivosCarteiraPTEADocStream: TBlobField;
+    qryArquivosCarteiraPTEAIfNoneMatch: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private const
       baseURL = 'http://localhost:9000';
@@ -57,6 +63,8 @@ type
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
       procedure StreamFiles;
+      procedure GetFiles;
+      function GetFilesById(const AId: integer): TStream;
   end;
 
 var
@@ -65,6 +73,7 @@ var
 implementation
 
 uses
+  Services.Connection,
   DataSet.Serialize,
   RESTRequest4D,
   FMX.Dialogs,
@@ -76,9 +85,14 @@ uses
 { TDataModule1 }
 
 procedure TServiceNew.DataModuleCreate(Sender: TObject);
+var
+  Connection: TServiceConnection;
 begin
   mtPesquisaCarteiraPTEA.Open;
   mtCadastroCarteiraPTEA.Open;
+
+  Connection := TServiceConnection.Create(Self);
+  qryArquivosCarteiraPTEA.Connection := Connection.LocalConnection;
 end;
 
 procedure TServiceNew.Delete(const AId: string);
@@ -87,8 +101,14 @@ var
 begin
   LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').ResourceSuffix(AId).Delete;
   if not(LResponse.StatusCode = 204) then
-    raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-
+    raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'))
+  else
+    begin
+      qryArquivosCarteiraPTEA.Close;
+      qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId;
+      qryArquivosCarteiraPTEA.Open;
+      qryArquivosCarteiraPTEA.Delete;
+    end;
 end;
 
 procedure TServiceNew.GetById(const AId: string);
@@ -101,6 +121,80 @@ begin
   if not(LResponse.StatusCode = 200) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 
+  //try
+  //LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+  //.ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
+  //
+  //
+  //mtArquivosCarteiraPTEA.Open;
+  //mtCadastroCarteiraPTEAFotoStream mtCadastroCarteiraPTEA.Edit;
+  //finally
+  //
+  //end;
+
+end;
+
+procedure TServiceNew.GetFiles;
+var
+  LResponse: IResponse;
+begin
+  //implementar ETag
+  mtPesquisaCarteiraPTEA.Open;
+  mtPesquisaCarteiraPTEA.First;
+  while not(mtPesquisaCarteiraPTEA.Eof) do
+    begin
+      //2 situações com 2 variantes
+      //se a qry estiver vazia, pode não haver foto ainda ou pode estar desatualizado
+      //se a qry não estiver vazia, pode estar desatualizada e pra isso precisa checar o etag da foto
+      qryArquivosCarteiraPTEA.Close;
+      qryArquivosCarteiraPTEA.ParamByName('IDCarteira').Value := mtPesquisaCarteiraPTEAid.Value;
+      qryArquivosCarteiraPTEA.Open;
+
+      if qryArquivosCarteiraPTEA.IsEmpty then
+        begin
+          LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+            .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
+          qryArquivosCarteiraPTEA.Append;
+          qryArquivosCarteiraPTEAIDCarteira.Value := mtPesquisaCarteiraPTEAid.Value;
+          qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
+          qryArquivosCarteiraPTEA.Post;
+        end
+      else
+        begin
+          LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+            .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/etag/foto')
+            .AddHeader('If-None-Match', qryArquivosCarteiraPTEAIfNoneMatch.Value).Get;
+          qryArquivosCarteiraPTEA.Edit;
+          qryArquivosCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
+          qryArquivosCarteiraPTEA.Post;
+
+          if (LResponse.StatusCode in [200]) then
+            begin
+              LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+                .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
+              qryArquivosCarteiraPTEA.Edit;
+              qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
+              qryArquivosCarteiraPTEA.Post;
+            end
+          else if (LResponse.StatusCode = 304) then
+            mtPesquisaCarteiraPTEA.Next
+          else
+            ShowMessage('Erro durante o download das imagens. ' + LResponse.JSONValue.GetValue<string>('error'));
+        end;
+
+      mtPesquisaCarteiraPTEA.Next;
+
+    end;
+end;
+
+function TServiceNew.GetFilesById(const AId: integer): TStream;
+begin
+  Result := TMemoryStream.Create;
+  qryArquivosCarteiraPTEA.Close;
+  qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId.ToString;
+  qryArquivosCarteiraPTEA.Open;
+  qryArquivosCarteiraPTEAFotoStream.SaveToStream(Result);
+  Result.Position := 0;
 end;
 
 procedure TServiceNew.Listar;
@@ -145,21 +239,25 @@ var
   LResponse: IResponse;
   LResponse2: IResponse;
 begin
-  TThread.CreateAnonymousThread(
-      procedure
-    begin
-      if not(mtCadastroCarteiraPTEAfotoRostoPath.Value = EmptyStr) then
+  try
+    //TThread.CreateAnonymousThread(
+    //procedure
+    //begin
+    if not(mtCadastroCarteiraPTEAfotoRostoPath.Value = EmptyStr) then
       begin
         LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
         LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
           .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
           .AddBody(LStreamFoto, false).Put;
-        //if not(LResponse.StatusCode in [200, 201, 204]) then
-        //raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+        if not(LResponse.StatusCode in [200, 201, 204]) then
+          raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
         ShowMessage('Status: ' + IntToStr(LResponse.StatusCode) + 'Message: ' + LResponse.Content);
       end;
-    end);
-
+    //end);
+  except
+    on E: Exception do
+      ShowMessage(E.Message);
+  end;
   //TThread.CreateAnonymousThread(
   //procedure
   //begin

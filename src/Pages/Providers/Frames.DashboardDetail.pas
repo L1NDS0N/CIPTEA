@@ -32,7 +32,7 @@ type
     FloatAnimation1: TFloatAnimation;
     retTop: TRectangle;
     Imagem: TImage;
-    Rectangle1: TRectangle;
+    rctImagem: TRectangle;
     lblID: TLabel;
     retRight: TRectangle;
     procedure crlEditClick(Sender: TObject);

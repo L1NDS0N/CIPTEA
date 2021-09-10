@@ -27,7 +27,8 @@ uses
   FMX.ExtCtrls,
   FMX.gtxClasses,
   FMX.gtxDocumentViewer,
-  gtClasses;
+  gtClasses,
+  FMX.Effects;
 
 type
   TPageUpdate = class(TForm, iRouter4DComponent)
@@ -64,23 +65,23 @@ type
     imgFotoRosto: TImage;
     lblSelecioneFOto: TLabel;
     retBtnSalvar: TRectangle;
-    SpeedButton1: TSpeedButton;
     lblSelecioneLaudo: TLabel;
     gtDocumentViewer: TgtDocumentViewer;
     btnAmpliarDocumento: TSpeedButton;
     LayoutZoom: TLayout;
     btnFecharDocumento: TSpeedButton;
     rctTopDocument: TRectangle;
+    ColorAnimation1: TColorAnimation;
+    ShadowEffect1: TShadowEffect;
+    lblSalvar: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
-    procedure retBtnSalvarClick(Sender: TObject);
-    procedure btnFecharDocumentoClick(Sender: TObject);
     procedure btnAmpliarDocumentoClick(Sender: TObject);
+    procedure retBtnSalvarClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
-      procedure CheckAndUpdateUserInterface;
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -104,33 +105,14 @@ begin
   gtDocumentViewer.Size.Height := VertScrollBox.Height;
 end;
 
-procedure TPageUpdate.btnFecharDocumentoClick(Sender: TObject);
-begin
-  gtDocumentViewer.Size.Height := 0;
-end;
-
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
 begin
   TRouter4D.Link.&To('Dashboard');
 end;
 
-procedure TPageUpdate.CheckAndUpdateUserInterface;
-begin
-  if imgFotoRosto.Bitmap.IsEmpty then
-    lblSelecioneFOto.Visible := true
-  else
-    lblSelecioneFOto.Visible := false;
-
-  if gtDocumentViewer.IsDocumentLoaded then
-    lblSelecioneLaudo.Visible := false
-  else
-    lblSelecioneLaudo.Visible := true;
-end;
-
 procedure TPageUpdate.FormCreate(Sender: TObject);
 begin
   serviceNew := TServiceNew.Create(Self);
-  btnFecharDocumentoClick(nil);
 end;
 
 procedure TPageUpdate.Props(aValue: TProps);
@@ -153,54 +135,56 @@ begin
     edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
     imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetFilesById(aValue.PropString.ToInteger));
   finally
-    Self.CheckAndUpdateUserInterface;
     aValue.Free;
   end;
 end;
 
 procedure TPageUpdate.rctFotoRostoClick(Sender: TObject);
 begin
-  serviceNew.mtCadastroCarteiraPTEA.Edit;
   if dlgFotoRosto.Execute then
-    serviceNew.mtCadastroCarteiraPTEAfotoRostoPath.Value := dlgFotoRosto.FileName;
-  serviceNew.mtCadastroCarteiraPTEA.Post;
+    if dlgFotoRosto.FileName <> EmptyStr then
+      begin
+        serviceNew.mtCadastroCarteiraPTEA.Edit;
+        serviceNew.mtCadastroCarteiraPTEAfotoRostoPath.Value := dlgFotoRosto.FileName;
+        serviceNew.mtCadastroCarteiraPTEA.Post;
 
-  if dlgFotoRosto.FileName <> EmptyStr then
-    begin
-      imgFotoRosto.Bitmap := nil;
-      imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
-    end;
-  Self.CheckAndUpdateUserInterface;
+        imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
+      end;
+
+  if imgFotoRosto.Bitmap.IsEmpty then
+    lblSelecioneFOto.Visible := true
+  else
+    lblSelecioneFOto.Visible := false;
 end;
 
 procedure TPageUpdate.rctLaudoMedicoClick(Sender: TObject);
 begin
-  serviceNew.mtCadastroCarteiraPTEA.Edit;
+  dlgLaudoMedico.FileName := EmptyStr;
   if dlgLaudoMedico.Execute then
-    serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.Value := dlgLaudoMedico.FileName;
-  serviceNew.mtCadastroCarteiraPTEA.Post;
+    if dlgLaudoMedico.FileName <> EmptyStr then
+      begin
+        serviceNew.mtCadastroCarteiraPTEA.Edit;
+        serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.Value := dlgLaudoMedico.FileName;
+        serviceNew.mtCadastroCarteiraPTEA.Post;
 
-  if dlgLaudoMedico.FileName <> EmptyStr then
-    begin
-      gtDocumentViewer.LoadFromFile(dlgLaudoMedico.FileName);
-      lblSelecioneLaudo.Text := 'Arquivo "' + Copy(dlgLaudoMedico.FileName, LastDelimiter('\', dlgLaudoMedico.FileName)
-          + 1, Length(dlgLaudoMedico.FileName)) + '" selecionado';
-      LayoutZoom.Visible := true;
-    end
-  else
-    begin
-      LayoutZoom.Visible := false;
-      lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
-    end;
+        lblSelecioneLaudo.Text := 'Arquivo "' + Copy(dlgLaudoMedico.FileName,
+          LastDelimiter('\', dlgLaudoMedico.FileName) + 1, Length(dlgLaudoMedico.FileName)) + '" selecionado';
 
-  Self.CheckAndUpdateUserInterface;
+        LayoutZoom.Visible := true;
+
+        gtDocumentViewer.LoadFromFile(dlgLaudoMedico.FileName);
+      end
+    else
+      begin
+        LayoutZoom.Visible := false;
+        lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
+      end;
 end;
 
 function TPageUpdate.Render: TFmxObject;
 begin
   Result := lytUpdate;
-  imgFotoRosto.Bitmap := nil;
-  gtDocumentViewer.LoadFromStream(nil);
+  gtDocumentViewer.Size.Height := 0;
 end;
 
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
@@ -223,7 +207,13 @@ end;
 
 procedure TPageUpdate.UnRender;
 begin
-  //
+  if gtDocumentViewer.IsDocumentLoaded then
+    gtDocumentViewer.LoadFromStream(nil);
+  if not(imgFotoRosto.Bitmap.IsEmpty) then
+    imgFotoRosto.Bitmap := nil;
+
+  LayoutZoom.Visible := false;
+  lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
 end;
 
 end.

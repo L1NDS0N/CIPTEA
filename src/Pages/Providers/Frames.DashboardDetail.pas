@@ -17,7 +17,7 @@ uses
   FMX.Ani,
   FMX.Objects,
   FMX.Controls.Presentation,
-  Providers.Types;
+  Providers.Types, FMX.Layouts, FMX.Effects;
 
 type
   TFrameDashboardDetail = class(TFrame)
@@ -29,12 +29,20 @@ type
     lineSeparator: TLine;
     crlEdit: TCircle;
     imgEdit: TPath;
-    FloatAnimation1: TFloatAnimation;
     retTop: TRectangle;
     Imagem: TImage;
     rctImagem: TRectangle;
     lblID: TLabel;
     retRight: TRectangle;
+    lytButtons: TLayout;
+    lytButtonsRight: TLayout;
+    lytLabels: TLayout;
+    ShadowEffect1: TShadowEffect;
+    ColorAnimation1: TColorAnimation;
+    ColorAnimation2: TColorAnimation;
+    lytLabelsCenter: TLayout;
+    ShadowEffect2: TShadowEffect;
+    ShadowEffect3: TShadowEffect;
     procedure crlEditClick(Sender: TObject);
     procedure retContentClick(Sender: TObject);
     procedure crlDeleteClick(Sender: TObject);

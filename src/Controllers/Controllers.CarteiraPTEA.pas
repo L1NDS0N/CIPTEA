@@ -152,7 +152,6 @@ procedure DoGetStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LStream: TFileStream;
   FullPath: string;
-  Extension: string;
   aType: string;
   aKind: TMimeTypes.TKind;
   LService: TServiceCarteiraPTEA;
@@ -188,21 +187,21 @@ procedure DoGetStreamDoc(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LStream: TFileStream;
   FullPath: string;
-  Extension: string;
   aType: string;
   aKind: TMimeTypes.TKind;
 begin
-  //Extension := ExtractFileExt(Req.RawWebRequest.PathInfo);
-  //if not Extension.IsEmpty then
-  //begin
-  FullPath := ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id'] + '\fotorosto.jpg';
+  FullPath := ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id'] + '\laudomedico.pdf';
 
-  LStream := TFileStream.Create(FullPath, fmOpenRead);
-  LStream.Position := 0;
+  if FileExists(FullPath) then
+    begin
+      LStream := TFileStream.Create(FullPath, fmOpenRead);
+      LStream.Position := 0;
 
-  TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
-  Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
-  //end;
+      TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
+      Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+    end
+  else
+    Res.Status(THTTPStatus.NoContent);
 end;
 
 procedure DoPutStreamFoto(Req: THorseRequest; Res: THorseResponse; Next: TProc);
@@ -237,7 +236,8 @@ begin
         raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravação de imagem - ' + E.Message);
     end;
 
-    Res.Send(TJsonObject.Create.AddPair('Created', FileExists(FullPath).ToString())).Status(THTTPStatus.Created);
+    if FileExists(FullPath) then
+      Res.Send(TJsonObject.Create.AddPair('Created', FileExists(FullPath).ToString())).Status(THTTPStatus.Created);
   finally
     LService.Free;
   end;
@@ -249,12 +249,23 @@ var
   LStream: TMemoryStream;
   FullPath: string;
 begin
+  try
+    LStream := Req.Body<TMemoryStream>;
 
-  FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']);
-  LStream := Req.Body<TMemoryStream>;
-  LStream.SaveToFile(FullPath + '\fotorosto.jpg');
-  Res.Send(TJsonObject.Create.AddPair('message', 'Ok').ToJson).Status(THTTPStatus.Created);
+    if LStream.Size = 0 then
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Erro ao processar o documento');
 
+    FullPath := CreateDirIfNotExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id']) + '\laudomedico.pdf';
+    LStream.SaveToFile(FullPath);
+
+    if FileExists(FullPath) then
+      Res.Send(TJsonObject.Create.AddPair('Created', FileExists(FullPath).ToString)).Status(THTTPStatus.Created);
+
+  except
+    on E: Exception do
+      raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravação do documento - ' +
+          E.Message);
+  end;
 end;
 
 procedure Registry;

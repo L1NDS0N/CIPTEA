@@ -18,7 +18,7 @@ uses
   FMX.StdCtrls,
   FMX.Objects,
   FMX.Layouts,
-  Router4D.History;
+  Router4D.History, FMX.Effects;
 
 type
   TPagePrincipal = class(TForm)

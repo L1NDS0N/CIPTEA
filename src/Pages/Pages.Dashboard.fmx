@@ -45,7 +45,7 @@ object PageDashboard: TPageDashboard
     end
     object retBtnNew: TRectangle
       Align = Bottom
-      Fill.Color = claSteelblue
+      Fill.Color = xC84682B4
       Margins.Left = 2.000000000000000000
       Margins.Top = 5.000000000000000000
       Margins.Right = 2.000000000000000000
@@ -58,18 +58,37 @@ object PageDashboard: TPageDashboard
       Stroke.Color = claSkyblue
       XRadius = 5.000000000000000000
       YRadius = 5.000000000000000000
-      object btnNew: TSpeedButton
-        Align = Bottom
-        StyledSettings = [Size]
-        Position.Y = 2.000000000000000000
+      OnClick = retBtnNewClick
+      object lblNovo: TLabel
+        Align = VertCenter
+        AutoSize = True
+        StyledSettings = []
+        Position.Y = 16.000000000000000000
         Size.Width = 684.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 18.000000000000000000
         Size.PlatformDefault = False
-        Text = 'Nova Carteira'
         TextSettings.Font.Family = 'Fira Code Retina'
+        TextSettings.Font.Size = 14.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
-        TextSettings.FontColor = claAliceblue
-        OnClick = btnNewClick
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'Nova Carteirinha'
+        TabOrder = 0
+      end
+      object ColorAnimation1: TColorAnimation
+        Duration = 0.200000002980232200
+        PropertyName = 'Fill.Color'
+        StartValue = xC84682B4
+        StopValue = claSteelblue
+        Trigger = 'IsMouseOver=true'
+        TriggerInverse = 'IsMouseOver=false'
+      end
+      object ShadowEffect1: TShadowEffect
+        Distance = 2.000000000000000000
+        Direction = 90.000000000000000000
+        Softness = 0.200000002980232200
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
       end
     end
   end

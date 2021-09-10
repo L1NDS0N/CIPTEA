@@ -35,17 +35,19 @@ uses
   FMX.ListBox,
   FMX.Memo,
   FMX.TabControl,
-  FMX.Objects;
+  FMX.Objects, FMX.Ani, FMX.Effects;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
     lytDashboard: TLayout;
     Layout1: TLayout;
-    btnNew: TSpeedButton;
     Label1: TLabel;
     vsbCarteiras: TVertScrollBox;
     retBtnNew: TRectangle;
-    procedure btnNewClick(Sender: TObject);
+    lblNovo: TLabel;
+    ColorAnimation1: TColorAnimation;
+    ShadowEffect1: TShadowEffect;
+    procedure retBtnNewClick(Sender: TObject);
     private
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
       procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
@@ -53,6 +55,7 @@ type
       procedure ListarCarteiras;
       function Render: TFMXObject;
       procedure UnRender;
+
   end;
 
 var
@@ -71,16 +74,12 @@ uses
   Router4D.History,
   Router4D.Props;
 
-procedure TPageDashboard.btnNewClick(Sender: TObject);
-begin
-  TRouter4D.Link.&To('New');
-end;
-
 procedure TPageDashboard.ListarCarteiras;
 var
   serviceNew: TServiceNew;
   LFrame: TFrameDashboardDetail;
   I: Integer;
+  LStream: TStream;
 begin
   serviceNew := TServiceNew.Create(Self);
   vsbCarteiras.BeginUpdate;
@@ -98,7 +97,7 @@ begin
           LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
           LFrame.Parent := vsbCarteiras;
           LFrame.Align := TAlignLayout.Top;
-          LFrame.Position.X := vsbCarteiras.Content.ControlsCount * LFrame.Height;
+          LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
           LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
           LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
@@ -106,7 +105,9 @@ begin
           LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
           LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
 
-          LFrame.Imagem.Bitmap.LoadFromStream(serviceNew.GetFilesById(serviceNew.mtPesquisaCarteiraPTEAid.Value));
+          LStream := serviceNew.GetFilesById(serviceNew.mtPesquisaCarteiraPTEAid.Value);
+          if LStream.Size > 0 then
+            LFrame.Imagem.Bitmap.LoadFromStream(LStream);
 
           LFrame.OnDelete := Self.OnDeleteCarteira;
           LFrame.OnUpdate := Self.OnUpdateCarteira;
@@ -156,6 +157,11 @@ function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
   Self.ListarCarteiras;
+end;
+
+procedure TPageDashboard.retBtnNewClick(Sender: TObject);
+begin
+  TRouter4D.Link.&To('New');
 end;
 
 procedure TPageDashboard.UnRender;

@@ -1,7 +1,4 @@
-﻿[btnNew]
-Coordinates=110,10,51,51
-
-[Layout1]
+﻿[Layout1]
 Coordinates=10,10,53,33
 
 [Label1]
@@ -11,7 +8,7 @@ Coordinates=178,10,46,51
 Coordinates=0,60,80,33
 
 []
-Coordinates=199,80,82,33
+Coordinates=110,10,51,51
 Visible=True
 
 [ServiceNew.mtPesquisaCarteiraPTEA]

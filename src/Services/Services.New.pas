@@ -175,8 +175,13 @@ begin
   qryArquivosCarteiraPTEA.Close;
   qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId.ToString;
   qryArquivosCarteiraPTEA.Open;
-  qryArquivosCarteiraPTEAFotoStream.SaveToStream(Result);
-  Result.Position := 0;
+  if not(qryArquivosCarteiraPTEA.IsEmpty) then
+    begin
+      qryArquivosCarteiraPTEAFotoStream.SaveToStream(Result);
+      Result.Position := 0;
+    end
+  else
+    Result.DisposeOf;
 end;
 
 procedure TServiceNew.Listar;
@@ -218,37 +223,46 @@ end;
 procedure TServiceNew.StreamFiles;
 var
   LStreamFoto, LStreamDoc: TFileStream;
-  LResponse: IResponse;
-  LResponse2: IResponse;
+  LResponseFoto: IResponse;
+  LResponseDoc: IResponse;
 begin
   try
-    begin
-      if not(mtCadastroCarteiraPTEAfotoRostoPath.Value = EmptyStr) then
-        begin
-          LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
-          LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
-            .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
-            .AddBody(LStreamFoto, false).Put;
-          if not(LResponse.StatusCode in [200, 201, 204]) then
-            raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-          //destruir a stream da foto
-          if LResponse.StatusCode > 0 then
-            LStreamFoto.Free;
-        end;
-    end;
+    if not(mtCadastroCarteiraPTEAfotoRostoPath.IsNull) then
+      begin
+        LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
+        LResponseFoto := TRequest.New.baseURL(baseURL).Resource('carteiras')
+          .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
+          .AddBody(LStreamFoto, false).Put;
+
+        if not(LResponseFoto.StatusCode in [200, 201, 204]) then
+          raise Exception.Create(LResponseFoto.JSONValue.GetValue<string>('error'));
+        //destruir a stream da foto
+        if LResponseFoto.StatusCode > 0 then
+          LStreamFoto.Free;
+      end;
   except
     on E: Exception do
       showmessage(E.Message);
   end;
-  //TThread.CreateAnonymousThread(
-  //procedure
-  //begin
-  //LResponse2 := TRequest.New.baseURL(baseURL).Resource('carteiras').ResourceSuffix(mtCadastroCarteiraPTEAid.AsString
-  //+ '/static/doc').ContentType('application/octet-stream').AddBody(LStreamDoc, false).Put;
-  // //if not(LResponse.StatusCode in [200, 201, 204]) then
-  // //raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-  //ShowMessage('Status: ' + IntToStr(LResponse2.StatusCode) + 'Message: ' + LResponse2.Content);
-  //end);
+
+  try
+    if not(mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
+      begin
+        LStreamDoc := TFileStream.Create(mtCadastroCarteiraPTEALaudoMedicoPath.Value, fmOpenRead);
+        LResponseDoc := TRequest.New.baseURL(baseURL).Resource('carteiras')
+          .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc').ContentType('application/octet-stream')
+          .AddBody(LStreamDoc, false).Put;
+
+        if not(LResponseDoc.StatusCode in [200, 201, 204]) then
+          raise Exception.Create(LResponseDoc.JSONValue.GetValue<string>('error'));
+
+        if LResponseDoc.StatusCode > 0 then
+          LStreamFoto.Free;
+      end;
+  except
+    on E: Exception do
+      showmessage(E.Message);
+  end;
 end;
 
 end.

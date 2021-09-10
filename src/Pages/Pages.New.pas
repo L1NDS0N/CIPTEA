@@ -21,7 +21,7 @@ uses
   FMX.StdCtrls,
   FMX.Edit,
   FMX.DateTimeCtrls,
-  FMX.Ani;
+  FMX.Ani, FMX.Effects;
 
 type
   TPageNew = class(TForm, iRouter4DComponent)
@@ -50,11 +50,13 @@ type
     btnVoltar: TSpeedButton;
     FloatAnimation: TFloatAnimation;
     retBtnSalvar: TRectangle;
-    btnSalvar: TSpeedButton;
-    procedure btnSalvarClick(Sender: TObject);
+    ColorAnimation1: TColorAnimation;
+    lblSalvar: TLabel;
+    ShadowEffect1: TShadowEffect;
     procedure btnVoltarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure retBtnSalvarClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
       procedure LimparCampos;
@@ -75,36 +77,6 @@ uses
 
 {$R *.fmx}
 { TPageNew }
-
-procedure TPageNew.btnSalvarClick(Sender: TObject);
-begin
-  try
-    try
-      if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
-        serviceNew.mtCadastroCarteiraPTEA.Edit
-      else
-        serviceNew.mtCadastroCarteiraPTEA.Append;
-
-      serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEADataNascimento.Value := edtDataNascimento.Date;
-      serviceNew.mtCadastroCarteiraPTEACpfResponsavel.Value := edtCpfResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEANumeroContato.Value := edtNumeroContato.Text;
-      serviceNew.mtCadastroCarteiraPTEARgResponsavel.Value := edtRgResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEAEmailContato.Value := edtEmailContato.Text;
-      serviceNew.mtCadastroCarteiraPTEANomeTitular.Value := edtNomeTitular.Text;
-      serviceNew.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
-      serviceNew.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
-      serviceNew.Salvar;
-    except
-      on E: Exception do
-        raise Exception.Create('Error Message: ' + E.Message);
-    end;
-  finally
-    Self.LimparCampos;
-    TRouter4D.Link.&To('Dashboard');
-  end;
-
-end;
 
 procedure TPageNew.btnVoltarClick(Sender: TObject);
 begin
@@ -137,6 +109,36 @@ end;
 function TPageNew.Render: TFmxObject;
 begin
   Result := lytNew;
+end;
+
+procedure TPageNew.retBtnSalvarClick(Sender: TObject);
+begin
+  try
+    try
+      if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
+        serviceNew.mtCadastroCarteiraPTEA.Edit
+      else
+        serviceNew.mtCadastroCarteiraPTEA.Append;
+
+      serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEADataNascimento.Value := edtDataNascimento.Date;
+      serviceNew.mtCadastroCarteiraPTEACpfResponsavel.Value := edtCpfResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEANumeroContato.Value := edtNumeroContato.Text;
+      serviceNew.mtCadastroCarteiraPTEARgResponsavel.Value := edtRgResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEAEmailContato.Value := edtEmailContato.Text;
+      serviceNew.mtCadastroCarteiraPTEANomeTitular.Value := edtNomeTitular.Text;
+      serviceNew.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
+      serviceNew.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
+      serviceNew.Salvar;
+    except
+      on E: Exception do
+        raise Exception.Create('Error Message: ' + E.Message);
+    end;
+  finally
+    Self.LimparCampos;
+    TRouter4D.Link.&To('Dashboard');
+  end;
+
 end;
 
 procedure TPageNew.UnRender;

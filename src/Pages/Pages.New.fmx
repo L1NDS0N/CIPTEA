@@ -280,7 +280,7 @@ object PageNew: TPageNew
     end
     object retBtnSalvar: TRectangle
       Align = Bottom
-      Fill.Color = claSteelblue
+      Fill.Color = xC84682B4
       Margins.Left = 2.000000000000000000
       Margins.Top = 5.000000000000000000
       Margins.Right = 2.000000000000000000
@@ -293,18 +293,37 @@ object PageNew: TPageNew
       Stroke.Color = claSkyblue
       XRadius = 5.000000000000000000
       YRadius = 5.000000000000000000
-      object btnSalvar: TSpeedButton
-        Align = Bottom
-        StyledSettings = [Size]
-        Position.Y = 2.000000000000000000
+      OnClick = retBtnSalvarClick
+      object ColorAnimation1: TColorAnimation
+        Duration = 0.200000002980232200
+        PropertyName = 'Fill.Color'
+        StartValue = xC84682B4
+        StopValue = claSteelblue
+        Trigger = 'IsMouseOver=true'
+        TriggerInverse = 'IsMouseOver=false'
+      end
+      object lblSalvar: TLabel
+        Align = VertCenter
+        AutoSize = True
+        StyledSettings = []
+        Position.Y = 16.000000000000000000
         Size.Width = 796.000000000000000000
-        Size.Height = 48.000000000000000000
+        Size.Height = 18.000000000000000000
         Size.PlatformDefault = False
-        Text = 'Salvar'
         TextSettings.Font.Family = 'Fira Code Retina'
+        TextSettings.Font.Size = 14.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
-        TextSettings.FontColor = claAliceblue
-        OnClick = btnSalvarClick
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'Salvar'
+        TabOrder = 0
+      end
+      object ShadowEffect1: TShadowEffect
+        Distance = 2.000000000000000000
+        Direction = 90.000000000000000000
+        Softness = 0.200000002980232200
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
       end
     end
   end

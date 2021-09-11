@@ -58,7 +58,6 @@ type
     rctFotoRosto: TRectangle;
     rctLaudoMedico: TRectangle;
     lytHeader: TLayout;
-    btnVoltar: TSpeedButton;
     FloatAnimation: TFloatAnimation;
     dlgFotoRosto: TOpenDialog;
     lblID: TLabel;
@@ -74,12 +73,17 @@ type
     ColorAnimation1: TColorAnimation;
     ShadowEffect1: TShadowEffect;
     lblSalvar: TLabel;
+    lblTitle: TLabel;
+    btnVoltar: TRectangle;
+    ColorAnimation2: TColorAnimation;
+    lblBtnVoltar: TLabel;
+    ColorAnimation3: TColorAnimation;
     procedure FormCreate(Sender: TObject);
-    procedure btnVoltarClick(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
     procedure btnAmpliarDocumentoClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
+    procedure btnVoltarClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
     public
@@ -103,11 +107,6 @@ uses
 procedure TPageUpdate.btnAmpliarDocumentoClick(Sender: TObject);
 begin
   gtDocumentViewer.Size.Height := VertScrollBox.Height;
-end;
-
-procedure TPageUpdate.btnVoltarClick(Sender: TObject);
-begin
-  TRouter4D.Link.&To('Dashboard');
 end;
 
 procedure TPageUpdate.FormCreate(Sender: TObject);
@@ -179,6 +178,11 @@ begin
         LayoutZoom.Visible := false;
         lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
       end;
+end;
+
+procedure TPageUpdate.btnVoltarClick(Sender: TObject);
+begin
+  TRouter4D.Link.&To('Dashboard');
 end;
 
 function TPageUpdate.Render: TFmxObject;

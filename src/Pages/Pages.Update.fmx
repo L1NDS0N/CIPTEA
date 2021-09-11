@@ -27,27 +27,27 @@ object PageUpdate: TPageUpdate
       Padding.Right = 50.000000000000000000
       Padding.Bottom = 50.000000000000000000
       Size.Width = 922.000000000000000000
-      Size.Height = 809.000000000000000000
+      Size.Height = 763.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object VertScrollBox: TVertScrollBox
         Align = Client
         Size.Width = 822.000000000000000000
-        Size.Height = 697.000000000000000000
+        Size.Height = 651.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         ShowScrollBars = False
         Viewport.Width = 822.000000000000000000
-        Viewport.Height = 697.000000000000000000
+        Viewport.Height = 651.000000000000000000
         object edtCpfResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 6
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 339.000000000000000000
+          Position.Y = 345.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -56,10 +56,10 @@ object PageUpdate: TPageUpdate
           Align = Top
           TabOrder = 7
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 392.000000000000000000
+          Position.Y = 399.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -68,9 +68,9 @@ object PageUpdate: TPageUpdate
           Align = Top
           Margins.Right = 500.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 445.000000000000000000
+          Position.Y = 453.000000000000000000
           Size.Width = 322.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
           TabOrder = 8
@@ -84,7 +84,7 @@ object PageUpdate: TPageUpdate
           Position.Y = 22.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -93,10 +93,10 @@ object PageUpdate: TPageUpdate
           Align = Top
           TabOrder = 4
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 233.000000000000000000
+          Position.Y = 237.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -105,10 +105,10 @@ object PageUpdate: TPageUpdate
           Align = Top
           TabOrder = 5
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 286.000000000000000000
+          Position.Y = 291.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -117,10 +117,10 @@ object PageUpdate: TPageUpdate
           Align = Top
           TabOrder = 1
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 75.000000000000000000
+          Position.Y = 76.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -129,10 +129,10 @@ object PageUpdate: TPageUpdate
           Align = Top
           TabOrder = 2
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 127.000000000000000000
+          Position.Y = 129.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -141,10 +141,10 @@ object PageUpdate: TPageUpdate
           Align = Top
           TabOrder = 3
           TextSettings.Font.Family = 'Fira Code Retina'
-          Position.Y = 180.000000000000000000
+          Position.Y = 183.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 822.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
         end
@@ -152,7 +152,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 317.000000000000000000
+          Position.Y = 323.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -164,7 +164,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 370.000000000000000000
+          Position.Y = 377.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -176,7 +176,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 423.000000000000000000
+          Position.Y = 431.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -199,7 +199,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 211.000000000000000000
+          Position.Y = 215.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -211,7 +211,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 264.000000000000000000
+          Position.Y = 269.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -223,7 +223,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 53.000000000000000000
+          Position.Y = 54.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -235,7 +235,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 106.000000000000000000
+          Position.Y = 108.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 16.000000000000000000
           Size.PlatformDefault = False
@@ -247,7 +247,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Position.Y = 158.000000000000000000
+          Position.Y = 161.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
@@ -257,8 +257,8 @@ object PageUpdate: TPageUpdate
         end
         object lytAnexos: TLayout
           Align = Top
-          Margins.Top = 5.000000000000000000
-          Position.Y = 481.000000000000000000
+          Margins.Top = 12.000000000000000000
+          Position.Y = 497.000000000000000000
           Size.Width = 822.000000000000000000
           Size.Height = 200.000000000000000000
           Size.PlatformDefault = False
@@ -284,6 +284,8 @@ object PageUpdate: TPageUpdate
               object lblSelecioneFOto: TLabel
                 Align = Center
                 AutoSize = True
+                Margins.Left = 2.000000000000000000
+                Margins.Right = 2.000000000000000000
                 Size.Width = 136.000000000000000000
                 Size.Height = 16.000000000000000000
                 Size.PlatformDefault = False
@@ -305,8 +307,13 @@ object PageUpdate: TPageUpdate
             object lblSelecioneLaudo: TLabel
               Align = Horizontal
               AutoSize = True
+              Padding.Left = 2.000000000000000000
+              Padding.Right = 2.000000000000000000
+              Margins.Left = 2.000000000000000000
+              Margins.Right = 2.000000000000000000
+              Position.X = 2.000000000000000000
               Position.Y = 88.000000000000000000
-              Size.Width = 200.000000000000000000
+              Size.Width = 196.000000000000000000
               Size.Height = 32.000000000000000000
               Size.PlatformDefault = False
               TextSettings.HorzAlign = Center
@@ -340,8 +347,8 @@ object PageUpdate: TPageUpdate
         Size.Height = 42.000000000000000000
         Size.PlatformDefault = False
         Position.X = 50.000000000000000000
-        Position.Y = 717.000000000000000000
-        TabOrder = 1
+        Position.Y = 671.000000000000000000
+        TabOrder = 12
         Display.PagedView.HorzPageSpacing = 4.000000000000000000
         Display.PagedView.VertPageSpacing = 4.000000000000000000
         Display.Zoom.IncrementPercent = 3333.333251953125000000
@@ -372,31 +379,83 @@ object PageUpdate: TPageUpdate
     object lytHeader: TLayout
       Align = MostTop
       Size.Width = 922.000000000000000000
-      Size.Height = 30.000000000000000000
+      Size.Height = 63.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 9
-      object btnVoltar: TSpeedButton
-        Align = MostLeft
-        StyledSettings = [Size, FontColor]
-        Size.Width = 81.000000000000000000
-        Size.Height = 30.000000000000000000
-        Size.PlatformDefault = False
-        Text = '<--'
-        TextSettings.Font.Family = 'Fira Code'
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        OnClick = btnVoltarClick
-      end
       object lblID: TLabel
         Align = MostRight
         StyledSettings = [Family, FontColor]
         Position.X = 832.000000000000000000
         Size.Width = 90.000000000000000000
-        Size.Height = 30.000000000000000000
+        Size.Height = 63.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Size = 14.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
         Text = 'ID'
+        TabOrder = 1
+      end
+      object lblTitle: TLabel
+        Align = VertCenter
+        AutoSize = True
+        StyledSettings = [FontColor]
+        Position.X = 96.000000000000000000
+        Position.Y = 21.000000000000000000
+        Size.Width = 736.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = 'Fira Code Retina'
+        TextSettings.Font.Size = 16.000000000000000000
+        TextSettings.HorzAlign = Center
+        Text = 'Editar carteirinha'
         TabOrder = 0
+      end
+      object btnVoltar: TRectangle
+        Align = Left
+        Fill.Color = claNull
+        Margins.Left = 3.000000000000000000
+        Margins.Top = 3.000000000000000000
+        Margins.Right = 3.000000000000000000
+        Margins.Bottom = 3.000000000000000000
+        Position.X = 3.000000000000000000
+        Position.Y = 3.000000000000000000
+        Size.Width = 90.000000000000000000
+        Size.Height = 57.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claNull
+        XRadius = 5.000000000000000000
+        YRadius = 5.000000000000000000
+        OnClick = btnVoltarClick
+        object ColorAnimation2: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claNull
+          StopValue = x1E36393F
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object lblBtnVoltar: TLabel
+          Align = HorzCenter
+          AutoSize = True
+          StyledSettings = []
+          Size.Width = 90.000000000000000000
+          Size.Height = 57.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = xFF202225
+          TextSettings.HorzAlign = Center
+          Text = '<--'
+          TabOrder = 0
+        end
+        object ColorAnimation3: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Stroke.Color'
+          StartValue = claNull
+          StopValue = x5A36393F
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
       end
     end
     object FloatAnimation: TFloatAnimation
@@ -414,9 +473,9 @@ object PageUpdate: TPageUpdate
       Margins.Right = 2.000000000000000000
       Margins.Bottom = 2.000000000000000000
       Position.X = 2.000000000000000000
-      Position.Y = 844.000000000000000000
+      Position.Y = 831.000000000000000000
       Size.Width = 918.000000000000000000
-      Size.Height = 50.000000000000000000
+      Size.Height = 63.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claSkyblue
       XRadius = 5.000000000000000000
@@ -441,7 +500,7 @@ object PageUpdate: TPageUpdate
         Align = VertCenter
         AutoSize = True
         StyledSettings = []
-        Position.Y = 16.000000000000000000
+        Position.Y = 22.000000000000000000
         Size.Width = 918.000000000000000000
         Size.Height = 18.000000000000000000
         Size.PlatformDefault = False

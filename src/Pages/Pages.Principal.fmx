@@ -42,26 +42,26 @@ object PagePrincipal: TPagePrincipal
       Align = HorzCenter
       Padding.Top = 100.000000000000000000
       Padding.Bottom = 100.000000000000000000
-      Position.X = 112.000000000000000000
-      Size.Width = 800.000000000000000000
+      Position.X = 116.000000000000000000
+      Size.Width = 792.000000000000000000
       Size.Height = 768.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object VertScrollBox: TVertScrollBox
         Align = Client
-        Size.Width = 800.000000000000000000
+        Size.Width = 792.000000000000000000
         Size.Height = 568.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'scrollboxstyle'
         TabOrder = 0
         ShowSizeGrip = True
-        Viewport.Width = 800.000000000000000000
+        Viewport.Width = 792.000000000000000000
         Viewport.Height = 568.000000000000000000
         object rctPrincipal: TRectangle
           Align = Client
           Fill.Color = xFFE9E9E9
           Opacity = 0.899999976158142100
-          Size.Width = 800.000000000000000000
+          Size.Width = 792.000000000000000000
           Size.Height = 568.000000000000000000
           Size.PlatformDefault = False
           Stroke.Kind = None
@@ -69,7 +69,7 @@ object PagePrincipal: TPagePrincipal
           YRadius = 5.000000000000000000
           object lytMaster: TLayout
             Align = Client
-            Size.Width = 800.000000000000000000
+            Size.Width = 792.000000000000000000
             Size.Height = 568.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0

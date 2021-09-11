@@ -35,7 +35,9 @@ uses
   FMX.ListBox,
   FMX.Memo,
   FMX.TabControl,
-  FMX.Objects, FMX.Ani, FMX.Effects;
+  FMX.Objects,
+  FMX.Ani,
+  FMX.Effects;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
@@ -69,9 +71,7 @@ implementation
 uses
   Router4D,
   Frames.DashboardDetail,
-  Pages.Principal,
   Pages.Update,
-  Router4D.History,
   Router4D.Props;
 
 procedure TPageDashboard.ListarCarteiras;

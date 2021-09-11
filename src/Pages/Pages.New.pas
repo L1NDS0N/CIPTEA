@@ -21,7 +21,8 @@ uses
   FMX.StdCtrls,
   FMX.Edit,
   FMX.DateTimeCtrls,
-  FMX.Ani, FMX.Effects;
+  FMX.Ani,
+  FMX.Effects;
 
 type
   TPageNew = class(TForm, iRouter4DComponent)
@@ -47,12 +48,16 @@ type
     lblnumeroContato: TLabel;
     VertScrollBox: TVertScrollBox;
     lytHeader: TLayout;
-    btnVoltar: TSpeedButton;
     FloatAnimation: TFloatAnimation;
     retBtnSalvar: TRectangle;
     ColorAnimation1: TColorAnimation;
     lblSalvar: TLabel;
     ShadowEffect1: TShadowEffect;
+    Label1: TLabel;
+    btnVoltar: TRectangle;
+    ColorAnimation2: TColorAnimation;
+    lblBtnVoltar: TLabel;
+    ColorAnimation3: TColorAnimation;
     procedure btnVoltarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

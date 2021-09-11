@@ -17,31 +17,32 @@ object PageDashboard: TPageDashboard
     object Layout1: TLayout
       Align = Top
       Size.Width = 688.000000000000000000
-      Size.Height = 25.000000000000000000
+      Size.Height = 64.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object Label1: TLabel
-        Align = HorzCenter
+        Align = VertCenter
         AutoSize = True
         StyledSettings = [Style, FontColor]
-        Position.X = 243.000000000000000000
-        Size.Width = 201.000000000000000000
-        Size.Height = 25.000000000000000000
+        Position.Y = 23.000000000000000000
+        Size.Width = 688.000000000000000000
+        Size.Height = 18.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Family = 'Fira Code Retina'
         TextSettings.Font.Size = 14.000000000000000000
-        Text = 'Carteiras cadastradas'
+        TextSettings.HorzAlign = Center
+        Text = 'Carteirinhas cadastradas'
         TabOrder = 0
       end
     end
     object vsbCarteiras: TVertScrollBox
       Align = Client
       Size.Width = 688.000000000000000000
-      Size.Height = 530.000000000000000000
+      Size.Height = 477.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
       Viewport.Width = 688.000000000000000000
-      Viewport.Height = 530.000000000000000000
+      Viewport.Height = 477.000000000000000000
     end
     object retBtnNew: TRectangle
       Align = Bottom
@@ -51,9 +52,9 @@ object PageDashboard: TPageDashboard
       Margins.Right = 2.000000000000000000
       Margins.Bottom = 2.000000000000000000
       Position.X = 2.000000000000000000
-      Position.Y = 560.000000000000000000
+      Position.Y = 546.000000000000000000
       Size.Width = 684.000000000000000000
-      Size.Height = 50.000000000000000000
+      Size.Height = 64.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claSkyblue
       XRadius = 5.000000000000000000
@@ -63,7 +64,7 @@ object PageDashboard: TPageDashboard
         Align = VertCenter
         AutoSize = True
         StyledSettings = []
-        Position.Y = 16.000000000000000000
+        Position.Y = 23.000000000000000000
         Size.Width = 684.000000000000000000
         Size.Height = 18.000000000000000000
         Size.PlatformDefault = False

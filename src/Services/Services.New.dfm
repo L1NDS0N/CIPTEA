@@ -1,7 +1,7 @@
 object ServiceNew: TServiceNew
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 207
+  Height = 204
   Width = 154
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
@@ -59,12 +59,6 @@ object ServiceNew: TServiceNew
       FieldName = 'DataNascimento'
       Origin = 'DataNascimento'
       Required = True
-    end
-    object mtPesquisaCarteiraPTEAfotoRostoPath: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'fotoRostoPath'
-      Origin = 'fotoRostoPath'
-      Size = 254
     end
     object mtPesquisaCarteiraPTEAEmailContato: TStringField
       AutoGenerateValue = arDefault
@@ -164,6 +158,7 @@ object ServiceNew: TServiceNew
     end
     object mtCadastroCarteiraPTEALaudoMedicoPath: TStringField
       FieldName = 'LaudoMedicoPath'
+      Size = 254
     end
   end
   object qryArquivosCarteiraPTEA: TFDQuery

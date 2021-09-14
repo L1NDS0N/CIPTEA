@@ -3,6 +3,7 @@ unit Services.New;
 interface
 
 uses
+  Configs.GLOBAL,
   System.SysUtils,
   System.Classes,
   FireDAC.Stan.Intf,
@@ -28,7 +29,6 @@ type
     mtPesquisaCarteiraPTEACpfTitular: TStringField;
     mtPesquisaCarteiraPTEARgTitular: TStringField;
     mtPesquisaCarteiraPTEADataNascimento: TDateField;
-    mtPesquisaCarteiraPTEAfotoRostoPath: TStringField;
     mtPesquisaCarteiraPTEAEmailContato: TStringField;
     mtPesquisaCarteiraPTEANumeroContato: TStringField;
     mtPesquisaCarteiraPTEACriadoEm: TSQLTimeStampField;
@@ -55,8 +55,9 @@ type
     qryArquivosCarteiraPTEADocStream: TBlobField;
     qryArquivosCarteiraPTEAIfNoneMatch: TStringField;
     procedure DataModuleCreate(Sender: TObject);
-    private const
-      baseURL = 'http://localhost:9000';
+    private
+    var
+      Config: TConfigGlobal;
     public
       procedure Salvar;
       procedure Listar;
@@ -99,7 +100,7 @@ procedure TServiceNew.Delete(const AId: string);
 var
   LResponse: IResponse;
 begin
-  LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').ResourceSuffix(AId).Delete;
+  LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix(AId).Delete;
   if not(LResponse.StatusCode = 204) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'))
   else
@@ -116,8 +117,9 @@ var
   LResponse: IResponse;
 begin
   mtCadastroCarteiraPTEA.EmptyDataSet;
-  LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').ResourceSuffix(AId)
+  LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix(AId)
     .DataSetAdapter(mtCadastroCarteiraPTEA).Get;
+
   if not(LResponse.StatusCode = 200) then
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 end;
@@ -136,7 +138,7 @@ begin
 
       if qryArquivosCarteiraPTEA.IsEmpty then
         begin
-          LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+          LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
             .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
           qryArquivosCarteiraPTEA.Append;
           qryArquivosCarteiraPTEAIDCarteira.Value := mtPesquisaCarteiraPTEAid.Value;
@@ -145,7 +147,7 @@ begin
         end
       else
         begin
-          LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+          LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
             .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/etag/foto')
             .AddHeader('If-None-Match', qryArquivosCarteiraPTEAIfNoneMatch.Value).Get;
 
@@ -155,7 +157,7 @@ begin
 
           if (LResponse.StatusCode in [200]) then
             begin
-              LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras')
+              LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
                 .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
               qryArquivosCarteiraPTEA.Edit;
               qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
@@ -190,7 +192,7 @@ var
 begin
   try
     mtPesquisaCarteiraPTEA.First;
-    LResponse := TRequest.New.baseURL(baseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
+    LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
       .AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
     if LResponse.StatusCode = 200 then
       mtPesquisaCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.ToJSON);
@@ -208,7 +210,8 @@ var
   LRequest: IRequest;
   LResponse: IResponse;
 begin
-  LRequest := TRequest.New.baseURL(baseURL).Resource('carteiras').AddBody(mtCadastroCarteiraPTEA.ToJSONObject);
+
+  LRequest := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').AddBody(mtCadastroCarteiraPTEA.ToJSONObject);
   if (mtCadastroCarteiraPTEAid.AsInteger > 0) then
     LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put
   else
@@ -230,7 +233,7 @@ begin
     if not(mtCadastroCarteiraPTEAfotoRostoPath.IsNull) then
       begin
         LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
-        LResponseFoto := TRequest.New.baseURL(baseURL).Resource('carteiras')
+        LResponseFoto := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
           .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
           .AddBody(LStreamFoto, false).Put;
 
@@ -249,7 +252,7 @@ begin
     if not(mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
       begin
         LStreamDoc := TFileStream.Create(mtCadastroCarteiraPTEALaudoMedicoPath.Value, fmOpenRead);
-        LResponseDoc := TRequest.New.baseURL(baseURL).Resource('carteiras')
+        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
           .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc').ContentType('application/octet-stream')
           .AddBody(LStreamDoc, false).Put;
 
@@ -257,7 +260,7 @@ begin
           raise Exception.Create(LResponseDoc.JSONValue.GetValue<string>('error'));
 
         if LResponseDoc.StatusCode > 0 then
-          LStreamFoto.Free;
+          LStreamDoc.Free;
       end;
   except
     on E: Exception do

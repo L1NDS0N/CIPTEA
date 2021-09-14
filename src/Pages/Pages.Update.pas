@@ -28,7 +28,8 @@ uses
   FMX.gtxClasses,
   FMX.gtxDocumentViewer,
   gtClasses,
-  FMX.Effects;
+  FMX.Effects,
+  Configs.GLOBAL;
 
 type
   TPageUpdate = class(TForm, iRouter4DComponent)
@@ -65,11 +66,8 @@ type
     lblSelecioneFOto: TLabel;
     retBtnSalvar: TRectangle;
     lblSelecioneLaudo: TLabel;
-    gtDocumentViewer: TgtDocumentViewer;
     btnAmpliarDocumento: TSpeedButton;
     LayoutZoom: TLayout;
-    btnFecharDocumento: TSpeedButton;
-    rctTopDocument: TRectangle;
     ColorAnimation1: TColorAnimation;
     ShadowEffect1: TShadowEffect;
     lblSalvar: TLabel;
@@ -81,11 +79,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
-    procedure btnAmpliarDocumentoClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
+    procedure btnAmpliarDocumentoClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
+      Config: TConfigGlobal;
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -100,14 +99,10 @@ implementation
 
 uses
   Router4D,
+  Utils.Tools,
   Pages.Dashboard;
 {$R *.fmx}
 { TPageUpdate }
-
-procedure TPageUpdate.btnAmpliarDocumentoClick(Sender: TObject);
-begin
-  gtDocumentViewer.Size.Height := VertScrollBox.Height;
-end;
 
 procedure TPageUpdate.FormCreate(Sender: TObject);
 begin
@@ -171,13 +166,20 @@ begin
 
         LayoutZoom.Visible := true;
 
-        gtDocumentViewer.LoadFromFile(dlgLaudoMedico.FileName);
+        //gtDocumentViewer.LoadFromFile(dlgLaudoMedico.FileName);
       end
     else
       begin
         LayoutZoom.Visible := false;
         lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
       end;
+end;
+
+procedure TPageUpdate.btnAmpliarDocumentoClick(Sender: TObject);
+begin
+  if not(dlgLaudoMedico.FileName = EmptyStr) then
+    AbrirLinkNavegador(dlgLaudoMedico.FileName);
+  //AbrirLinkNavegador(Config.BaseURL + '/carteiras/' + serviceNew.mtCadastroCarteiraPTEAid.AsString + '/static/doc');
 end;
 
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
@@ -188,22 +190,21 @@ end;
 function TPageUpdate.Render: TFmxObject;
 begin
   Result := lytUpdate;
-  gtDocumentViewer.Size.Height := 0;
 end;
 
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
 begin
-  serviceNew.mtCadastroCarteiraPTEA.Edit;
-  serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
-  serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
-  serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
-  serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
-  serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
-  serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
-  serviceNew.Salvar;
+  //serviceNew.mtCadastroCarteiraPTEA.Edit;
+  //serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
+  //serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
+  //serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
+  //serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
+  //serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
+  //serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
+  //serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
+  //serviceNew.Salvar;
 
   serviceNew.StreamFiles;
   TRouter4D.Link.&To('Dashboard');
@@ -211,8 +212,9 @@ end;
 
 procedure TPageUpdate.UnRender;
 begin
-  if gtDocumentViewer.IsDocumentLoaded then
-    gtDocumentViewer.LoadFromStream(nil);
+  //if gtDocumentViewer.IsDocumentLoaded then
+  //gtDocumentViewer.LoadFromStream(nil);
+  serviceNew.mtCadastroCarteiraPTEA.EmptyDataSet;
   if not(imgFotoRosto.Bitmap.IsEmpty) then
     imgFotoRosto.Bitmap := nil;
 

@@ -55,6 +55,8 @@ contains
   Frames.DashboardDetail in 'Providers\Frames.DashboardDetail.pas' {FrameDashboardDetail: TFrame},
   Providers.Types in 'Providers\Providers.Types.pas',
   Pages.Update in 'Pages.Update.pas' {PageUpdate},
-  Services.Connection in '..\Services\Services.Connection.pas' {ServiceConnection: TDataModule};
+  Services.Connection in '..\Services\Services.Connection.pas' {ServiceConnection: TDataModule},
+  Utils.Tools in '..\Utils\Utils.Tools.pas',
+  Configs.GLOBAL in '..\Configs\Configs.GLOBAL.pas';
 
 end.

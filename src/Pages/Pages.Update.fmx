@@ -12,7 +12,7 @@ object PageUpdate: TPageUpdate
   object dlgLaudoMedico: TOpenDialog
     Filter = 'PDF|*.PDF'
     Left = 352
-    Top = 660
+    Top = 708
   end
   object lytUpdate: TLayout
     Align = Client
@@ -33,12 +33,12 @@ object PageUpdate: TPageUpdate
       object VertScrollBox: TVertScrollBox
         Align = Client
         Size.Width = 822.000000000000000000
-        Size.Height = 651.000000000000000000
+        Size.Height = 693.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         ShowScrollBars = False
         Viewport.Width = 822.000000000000000000
-        Viewport.Height = 651.000000000000000000
+        Viewport.Height = 693.000000000000000000
         object edtCpfResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
@@ -341,40 +341,6 @@ object PageUpdate: TPageUpdate
           end
         end
       end
-      object gtDocumentViewer: TgtDocumentViewer
-        Align = Bottom
-        Size.Width = 822.000000000000000000
-        Size.Height = 42.000000000000000000
-        Size.PlatformDefault = False
-        Position.X = 50.000000000000000000
-        Position.Y = 671.000000000000000000
-        TabOrder = 12
-        Display.PagedView.HorzPageSpacing = 4.000000000000000000
-        Display.PagedView.VertPageSpacing = 4.000000000000000000
-        Display.Zoom.IncrementPercent = 3333.333251953125000000
-        Display.Zoom.DecrementPercent = 1.666666626930237000
-        MouseMode = mmMarqueeZoom
-        Preferences.Interactivity.EnabledElements = []
-        Preferences.Fill.Kind = None
-        OperatingMode = omReading
-        object rctTopDocument: TRectangle
-          Align = Top
-          Fill.Color = claWhite
-          Size.Width = 822.000000000000000000
-          Size.Height = 42.000000000000000000
-          Size.PlatformDefault = False
-          Stroke.Kind = None
-          object btnFecharDocumento: TSpeedButton
-            Align = Right
-            Position.X = 760.000000000000000000
-            Size.Width = 62.000000000000000000
-            Size.Height = 42.000000000000000000
-            Size.PlatformDefault = False
-            StyleLookup = 'stoptoolbutton'
-            Text = 'Fechar'
-          end
-        end
-      end
     end
     object lytHeader: TLayout
       Align = MostTop
@@ -520,6 +486,6 @@ object PageUpdate: TPageUpdate
       'SGI;*.TIFF)|*.BMP;*.JPG;*.GIF;*.PCX;*.PNG;*.PSD;*.RAS;*.SGI;*.TI' +
       'FF;'
     Left = 136
-    Top = 660
+    Top = 700
   end
 end

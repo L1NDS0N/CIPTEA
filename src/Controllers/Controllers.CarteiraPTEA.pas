@@ -1,4 +1,4 @@
-unit Controllers.CarteiraPTEA;
+Ôªøunit Controllers.CarteiraPTEA;
 
 interface
 
@@ -50,6 +50,8 @@ begin
     LId := Req.Params.Items['id'];
     if LService.GetById(LId).IsEmpty then
       raise EHorseException.Create(THTTPStatus.NotFound, 'Not Found');
+    //n√£o devolver o path
+    LService.qryCadastroCarteiraPTEAfotoRostoPath.Visible := false;
     Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject());
   finally
     LService.Free;
@@ -175,7 +177,7 @@ begin
         Res.Status(THTTPStatus.NoContent);
     except
       on E: Exception do
-        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante extraÁ„o de imagem');
+        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante extra√ß√£o de imagem');
     end;
   finally
     LService.Free;
@@ -194,11 +196,14 @@ begin
 
   if FileExists(FullPath) then
     begin
-      LStream := TFileStream.Create(FullPath, fmOpenRead);
+      LStream := TFileStream.Create(FullPath, fmOpenRead or fmShareDenyNone);
       LStream.Position := 0;
 
       TMimeTypes.Default.GetFileInfo(FullPath, aType, aKind);
-      Res.Send<TStream>(LStream).ContentType(aType).Status(THTTPStatus.OK);
+      Res.Status(THTTPStatus.OK);
+      Res.RawWebResponse.ContentType := aType;
+      Res.RawWebResponse.ContentStream := LStream;
+      Res.RawWebResponse.SendResponse;
     end
   else
     Res.Status(THTTPStatus.NoContent);
@@ -219,7 +224,7 @@ begin
     if LStream.Size = 0 then
       raise EHorseException.Create(THTTPStatus.BadRequest, 'Erro ao processar a imagem');
 
-    //Assina a vari·vel buffer para obter o formato do arquivo
+    //Assina a vari√°vel buffer para obter o formato do arquivo
     LStream.ReadBuffer(Buffer, 2);
     if ImageFormatFromBuffer(Buffer) = EmptyStr then
       raise EHorseException.Create(THTTPStatus.BadRequest, 'Erro formato de imagem desconhecido');
@@ -233,7 +238,7 @@ begin
         LStream.SaveToFile(FullPath);
     except
       on E: Exception do
-        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravaÁ„o de imagem - ' + E.Message);
+        raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante grava√ß√£o de imagem - ' + E.Message);
     end;
 
     if FileExists(FullPath) then
@@ -263,9 +268,17 @@ begin
 
   except
     on E: Exception do
-      raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante gravaÁ„o do documento - ' +
+      raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante grava√ß√£o do documento - ' +
           E.Message);
   end;
+end;
+
+procedure DoGetHasDoc(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+begin
+  if FileExists(ExtractFileDir(ParamStr(0)) + '\static\' + Req.Params['id'] + '\laudomedico.pdf') then
+    Res.Send('ü§î').Status(THTTPStatus.OK)
+  else
+    Res.Status(THTTPStatus.NoContent);
 end;
 
 procedure Registry;
@@ -282,6 +295,7 @@ begin
 
   THorse.Get('/carteiras/:id/static/doc', DoGetStreamDoc);
   THorse.Put('/carteiras/:id/static/doc', DoPutStreamDoc);
+  THorse.Get('/carteiras/:id/has/doc', DoGetHasDoc);
 end;
 
 end.

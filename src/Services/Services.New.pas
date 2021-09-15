@@ -54,6 +54,11 @@ type
     qryArquivosCarteiraPTEAFotoStream: TBlobField;
     qryArquivosCarteiraPTEADocStream: TBlobField;
     qryArquivosCarteiraPTEAIfNoneMatch: TStringField;
+    qryArquivosCarteiraPTEAhasDoc: TBooleanField;
+    qryTemp: TFDQuery;
+    qryTempid: TFDAutoIncField;
+    qryTempFotoRostoPath: TStringField;
+    qryTempLaudoMedicoPath: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -65,7 +70,8 @@ type
       procedure GetById(const AId: string);
       procedure StreamFiles;
       procedure GetFiles;
-      function GetFilesById(AId: integer): TStream;
+      function GetImageStreamById(AId: integer): TStream;
+      function GetFileById(AId: integer): TFDQuery;
   end;
 
 var
@@ -94,6 +100,7 @@ begin
 
   Connection := TServiceConnection.Create(Self);
   qryArquivosCarteiraPTEA.Connection := Connection.LocalConnection;
+  qryTemp.Connection := Connection.LocalConnection;
 end;
 
 procedure TServiceNew.Delete(const AId: string);
@@ -124,9 +131,18 @@ begin
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 end;
 
+function TServiceNew.GetFileById(AId: integer): TFDQuery;
+begin
+  qryArquivosCarteiraPTEA.Close;
+  qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId.ToString;
+  qryArquivosCarteiraPTEA.Open;
+  Result := qryArquivosCarteiraPTEA;
+end;
+
 procedure TServiceNew.GetFiles;
 var
   LResponse: IResponse;
+  LResponseHasDoc: IResponse;
 begin
   mtPesquisaCarteiraPTEA.Open;
   mtPesquisaCarteiraPTEA.First;
@@ -136,6 +152,9 @@ begin
       qryArquivosCarteiraPTEA.ParamByName('IDCarteira').Value := mtPesquisaCarteiraPTEAid.Value;
       qryArquivosCarteiraPTEA.Open;
 
+      LResponseHasDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+        .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/has/doc').Get;
+
       if qryArquivosCarteiraPTEA.IsEmpty then
         begin
           LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
@@ -143,6 +162,10 @@ begin
           qryArquivosCarteiraPTEA.Append;
           qryArquivosCarteiraPTEAIDCarteira.Value := mtPesquisaCarteiraPTEAid.Value;
           qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
+          if LResponseHasDoc.StatusCode = 200 then
+            qryArquivosCarteiraPTEAhasDoc.Value := true
+          else if LResponseHasDoc.StatusCode = 204 then
+            qryArquivosCarteiraPTEAhasDoc.Value := false;
           qryArquivosCarteiraPTEA.Post;
         end
       else
@@ -152,7 +175,13 @@ begin
             .AddHeader('If-None-Match', qryArquivosCarteiraPTEAIfNoneMatch.Value).Get;
 
           qryArquivosCarteiraPTEA.Edit;
+          //etag
           qryArquivosCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
+          //hasDoc
+          if LResponseHasDoc.StatusCode = 200 then
+            qryArquivosCarteiraPTEAhasDoc.Value := true
+          else if LResponseHasDoc.StatusCode = 204 then
+            qryArquivosCarteiraPTEAhasDoc.Value := false;
           qryArquivosCarteiraPTEA.Post;
 
           if (LResponse.StatusCode in [200]) then
@@ -171,7 +200,7 @@ begin
     end;
 end;
 
-function TServiceNew.GetFilesById(AId: integer): TStream;
+function TServiceNew.GetImageStreamById(AId: integer): TStream;
 begin
   Result := TMemoryStream.Create;
   qryArquivosCarteiraPTEA.Close;

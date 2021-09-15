@@ -1,7 +1,7 @@
 object ServiceNew: TServiceNew
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 204
+  Height = 274
   Width = 154
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
@@ -190,6 +190,30 @@ object ServiceNew: TServiceNew
       FieldName = 'IfNoneMatch'
       Origin = 'IfNoneMatch'
       Size = 32767
+    end
+    object qryArquivosCarteiraPTEAhasDoc: TBooleanField
+      FieldName = 'hasDoc'
+    end
+  end
+  object qryTemp: TFDQuery
+    SQL.Strings = (
+      'select * from temp')
+    Left = 56
+    Top = 200
+    object qryTempid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object qryTempFotoRostoPath: TStringField
+      FieldName = 'FotoRostoPath'
+      Origin = 'FotoRostoPath'
+      Size = 254
+    end
+    object qryTempLaudoMedicoPath: TStringField
+      FieldName = 'LaudoMedicoPath'
+      Origin = 'LaudoMedicoPath'
+      Size = 254
     end
   end
 end

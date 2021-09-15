@@ -154,6 +154,10 @@
         </DCCReference>
         <DCCReference Include="..\Utils\Utils.Tools.pas"/>
         <DCCReference Include="..\Configs\Configs.GLOBAL.pas"/>
+        <DCCReference Include="Pages.Editor.pas">
+            <Form>PageEditor</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

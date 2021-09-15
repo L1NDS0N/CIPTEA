@@ -105,7 +105,7 @@ begin
           LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
           LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
 
-          LStream := serviceNew.GetFilesById(serviceNew.mtPesquisaCarteiraPTEAid.Value);
+          LStream := serviceNew.GetImageStreamById(serviceNew.mtPesquisaCarteiraPTEAid.Value);
           if LStream.Size > 0 then
             LFrame.Imagem.Bitmap.LoadFromStream(LStream);
 

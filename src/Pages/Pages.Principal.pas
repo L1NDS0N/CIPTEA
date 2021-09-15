@@ -18,7 +18,8 @@ uses
   FMX.StdCtrls,
   FMX.Objects,
   FMX.Layouts,
-  Router4D.History, FMX.Effects;
+  Router4D.History,
+  FMX.Effects;
 
 type
   TPagePrincipal = class(TForm)
@@ -45,7 +46,8 @@ uses
   Router4D,
   Pages.Dashboard,
   Pages.New,
-  Pages.Update;
+  Pages.Update,
+  Pages.Editor;
 
 {$R *.fmx}
 
@@ -59,6 +61,7 @@ begin
   TRouter4D.Switch.Router('Dashboard', TPageDashboard);
   TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);
+  TRouter4D.Switch.Router('Editor', TPageEditor);
   TRouter4D.Render<TPageDashboard>.SetElement(lytMaster, lytMaster);
   TRouter4D.Link.Animation(Animation);
 end;

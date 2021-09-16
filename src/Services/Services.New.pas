@@ -69,6 +69,7 @@ type
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
       procedure StreamFiles;
+      procedure PostStreamFoto(AId: string);
       procedure GetFiles;
       function GetImageStreamById(AId: integer): TStream;
       function GetFileById(AId: integer): TFDQuery;
@@ -234,6 +235,38 @@ begin
     raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
 end;
 
+procedure TServiceNew.PostStreamFoto(AId: string);
+var
+  LStreamFoto: TStream;
+  LResponseFoto: IResponse;
+begin
+  try
+    qryArquivosCarteiraPTEA.Close;
+    qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId;
+    qryArquivosCarteiraPTEA.Open;
+
+    if not(qryArquivosCarteiraPTEA.IsEmpty) then
+      if not(qryArquivosCarteiraPTEAFotoStream.IsNull) then
+        begin
+          LStreamFoto := TMemoryStream.Create;
+          qryArquivosCarteiraPTEAFotoStream.SaveToStream(LStreamFoto);
+          LStreamFoto.Position := 0;
+          LResponseFoto := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+            .ResourceSuffix(AId + '/static/foto').ContentType('application/octet-stream')
+            .AddBody(LStreamFoto, false).Put;
+
+          if not(LResponseFoto.StatusCode in [200, 201, 204]) then
+            raise Exception.Create(LResponseFoto.JSONValue.GetValue<string>('error'));
+          //destruir a stream da foto
+          if LResponseFoto.StatusCode > 0 then
+            LStreamFoto.Free;
+        end;
+  except
+    on E: Exception do
+      showmessage('Não foi possível enviar a foto para o servidor. ' + E.Message);
+  end;
+end;
+
 procedure TServiceNew.Salvar;
 var
   LRequest: IRequest;
@@ -254,29 +287,9 @@ end;
 
 procedure TServiceNew.StreamFiles;
 var
-  LStreamFoto, LStreamDoc: TFileStream;
-  LResponseFoto: IResponse;
+  LStreamDoc: TFileStream;
   LResponseDoc: IResponse;
 begin
-  try
-    if not(mtCadastroCarteiraPTEAfotoRostoPath.IsNull) then
-      begin
-        LStreamFoto := TFileStream.Create(mtCadastroCarteiraPTEAfotoRostoPath.Value, fmOpenRead);
-        LResponseFoto := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
-          .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/foto').ContentType('application/octet-stream')
-          .AddBody(LStreamFoto, false).Put;
-
-        if not(LResponseFoto.StatusCode in [200, 201, 204]) then
-          raise Exception.Create(LResponseFoto.JSONValue.GetValue<string>('error'));
-        //destruir a stream da foto
-        if LResponseFoto.StatusCode > 0 then
-          LStreamFoto.Free;
-      end;
-  except
-    on E: Exception do
-      showmessage(E.Message);
-  end;
-
   try
     if not(mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
       begin

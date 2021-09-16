@@ -204,6 +204,7 @@ object ServiceNew: TServiceNew
       FieldName = 'id'
       Origin = 'id'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object qryTempFotoRostoPath: TStringField
       FieldName = 'FotoRostoPath'

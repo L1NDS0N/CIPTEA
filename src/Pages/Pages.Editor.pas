@@ -52,7 +52,6 @@ type
     ColorAnimation3: TColorAnimation;
     Button1: TButton;
     procedure retBtnSalvarClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure ImageViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure ImageViewer1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
@@ -60,6 +59,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure track_zoomChange(Sender: TObject);
     procedure ImageViewer1MouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
+    procedure FormCreate(Sender: TObject);
     private
       ServiceNew: TServiceNew;
       qryFiles: TFDQuery;
@@ -140,6 +140,7 @@ end;
 function TPageEditor.Render: TFmxObject;
 begin
   Result := LayoutEditor;
+
 end;
 
 procedure TPageEditor.retBtnSalvarClick(Sender: TObject);
@@ -154,6 +155,8 @@ begin
     ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
     ServiceNew.qryArquivosCarteiraPTEA.Post;
 
+    ServiceNew.PostStreamFoto(AId);
+
     TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
   finally
     vFotoStream.Free;
@@ -167,7 +170,7 @@ end;
 
 procedure TPageEditor.UnRender;
 begin
-
+  ImageViewer1.Bitmap := nil;
 end;
 
 end.

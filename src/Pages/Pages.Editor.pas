@@ -35,7 +35,6 @@ uses
 type
   TPageEditor = class(TForm, iRouter4DComponent)
     layout_edit: TLayout;
-    img_rotate: TImage;
     track_zoom: TTrackBar;
     rect_foto: TRectangle;
     ImageViewer1: TImageViewer;
@@ -51,18 +50,21 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
+    Button1: TButton;
     procedure retBtnSalvarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure ImageViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure ImageViewer1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure ImageViewer1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    procedure img_rotateClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure track_zoomChange(Sender: TObject);
+    procedure ImageViewer1MouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     private
       ServiceNew: TServiceNew;
       qryFiles: TFDQuery;
       AId: string;
-      MouseIsDown: boolean;
+      MouseIsDown: Boolean;
       PX, PY: Single;
     public
       [Subscribe]
@@ -81,6 +83,11 @@ implementation
 procedure TPageEditor.btnVoltarClick(Sender: TObject);
 begin
   TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+end;
+
+procedure TPageEditor.Button1Click(Sender: TObject);
+begin
+  ImageViewer1.Bitmap.Rotate(-90);
 end;
 
 procedure TPageEditor.FormCreate(Sender: TObject);
@@ -111,9 +118,10 @@ begin
   MouseIsDown := false;
 end;
 
-procedure TPageEditor.img_rotateClick(Sender: TObject);
+procedure TPageEditor.ImageViewer1MouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer;
+  var Handled: Boolean);
 begin
-  ImageViewer1.Bitmap.Rotate(-90);
+  track_zoom.Value := ImageViewer1.BitmapScale;
 end;
 
 procedure TPageEditor.Props(aValue: TProps);
@@ -145,9 +153,16 @@ begin
     ServiceNew.qryArquivosCarteiraPTEA.Edit;
     ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
     ServiceNew.qryArquivosCarteiraPTEA.Post;
+
+    TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
   finally
     vFotoStream.Free;
   end;
+end;
+
+procedure TPageEditor.track_zoomChange(Sender: TObject);
+begin
+  ImageViewer1.BitmapScale := track_zoom.Value;
 end;
 
 procedure TPageEditor.UnRender;

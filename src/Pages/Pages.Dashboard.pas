@@ -72,7 +72,8 @@ uses
   Router4D,
   Frames.DashboardDetail,
   Pages.Update,
-  Router4D.Props;
+  Router4D.Props,
+  ToastMessage;
 
 procedure TPageDashboard.ListarCarteiras;
 var
@@ -115,7 +116,7 @@ begin
         end;
     except
       on E: Exception do
-        ShowMessage(E.Message);
+        TToastMessage.show(E.Message, 3, 41, ttDanger, tpTop);
     end;
   finally
     vsbCarteiras.EndUpdate;
@@ -141,7 +142,7 @@ begin
       ASender.DisposeOf;
     except
       on E: Exception do
-        ShowMessage(E.Message);
+        TToastMessage.show(E.Message, 3, 41, ttDanger, tpTop);
     end;
   finally
     serviceNew.Free;
@@ -157,6 +158,7 @@ function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
   Self.ListarCarteiras;
+
 end;
 
 procedure TPageDashboard.retBtnNewClick(Sender: TObject);

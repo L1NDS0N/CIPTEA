@@ -15,196 +15,222 @@ object PageEditor: TPageEditor
     Size.Height = 650.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    object rect_foto: TRectangle
-      Align = Center
-      Fill.Kind = None
-      Margins.Top = 20.000000000000000000
-      Size.Width = 728.000000000000000000
-      Size.Height = 437.000000000000000000
+    object rect_fundo_foto: TRectangle
+      Align = Client
+      Fill.Bitmap.WrapMode = TileStretch
+      Fill.Kind = Bitmap
+      Size.Width = 947.000000000000000000
+      Size.Height = 650.000000000000000000
       Size.PlatformDefault = False
       Stroke.Kind = None
-      object ImageViewer1: TImageViewer
-        Align = Scale
-        Position.X = 198.000000000000000000
-        Position.Y = -40.000000000000000000
-        Size.Width = 354.000000000000000000
-        Size.Height = 472.000000000000000000
+      object rect_fundo: TRectangle
+        Align = Client
+        Fill.Color = x7836393F
+        Size.Width = 947.000000000000000000
+        Size.Height = 650.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 0
-        OnMouseDown = ImageViewer1MouseDown
-        OnMouseMove = ImageViewer1MouseMove
-        OnMouseUp = ImageViewer1MouseUp
-        OnMouseWheel = ImageViewer1MouseWheel
-        BackgroundFill.Kind = None
-        ShowScrollBars = False
-        Viewport.Width = 354.000000000000000000
-        Viewport.Height = 472.000000000000000000
-      end
-      object Button1: TButton
-        Align = Scale
-        HelpType = htKeyword
-        Position.X = 483.000000000000000000
-        Position.Y = -39.000000000000000000
-        Size.Width = 67.000000000000000000
-        Size.Height = 40.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'refreshtoolbutton'
-        TabOrder = 1
-        Text = 'Button1'
-        OnClick = Button1Click
-      end
-      object track_zoom: TTrackBar
-        Align = Scale
-        CanParentFocus = True
-        Max = 3.000000000000000000
-        Min = 0.500000000000000000
-        Orientation = Horizontal
-        Margins.Right = 80.000000000000000000
-        Position.X = 243.000000000000000000
-        Position.Y = 400.000000000000000000
-        Size.Width = 270.000000000000000000
-        Size.Height = 19.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 2
-        Value = 0.500000000000000000
-        OnChange = track_zoomChange
-      end
-    end
-    object layout_edit: TLayout
-      Align = Bottom
-      Position.Y = 580.000000000000000000
-      Size.Width = 947.000000000000000000
-      Size.Height = 70.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      object retBtnSalvar: TRectangle
-        Align = Scale
-        Fill.Color = xC84682B4
-        Margins.Left = 2.000000000000000000
-        Margins.Top = 5.000000000000000000
-        Margins.Right = 2.000000000000000000
-        Margins.Bottom = 2.000000000000000000
-        Position.X = 776.000000000000000000
-        Position.Y = 5.000000000000000000
-        Size.Width = 158.000000000000000000
-        Size.Height = 63.000000000000000000
-        Size.PlatformDefault = False
-        Stroke.Color = claSkyblue
-        XRadius = 5.000000000000000000
-        YRadius = 5.000000000000000000
-        OnClick = retBtnSalvarClick
-        object ColorAnimation1: TColorAnimation
-          Duration = 0.200000002980232200
-          PropertyName = 'Fill.Color'
-          StartValue = xC84682B4
-          StopValue = claSteelblue
-          Trigger = 'IsMouseOver=true'
-          TriggerInverse = 'IsMouseOver=false'
-        end
-        object ShadowEffect1: TShadowEffect
-          Distance = 2.000000000000000000
-          Direction = 90.000000000000000000
-          Softness = 0.200000002980232200
-          Opacity = 0.600000023841857900
-          ShadowColor = claBlack
-        end
-        object lblSalvar: TLabel
-          Align = VertCenter
-          AutoSize = True
-          StyledSettings = []
-          Position.Y = 22.000000000000000000
-          Size.Width = 158.000000000000000000
-          Size.Height = 18.000000000000000000
+        Stroke.Kind = None
+        object layout_edit: TLayout
+          Align = Bottom
+          Position.Y = 576.000000000000000000
+          Size.Width = 947.000000000000000000
+          Size.Height = 74.000000000000000000
           Size.PlatformDefault = False
-          TextSettings.Font.Family = 'Fira Code Retina'
-          TextSettings.Font.Size = 14.000000000000000000
-          TextSettings.Font.StyleExt = {00070000000000000004000000}
-          TextSettings.FontColor = claWhite
-          TextSettings.HorzAlign = Center
-          Text = 'Salvar'
           TabOrder = 0
+          object retBtnSalvar: TRectangle
+            Align = Scale
+            Fill.Color = xC84682B4
+            Margins.Left = 2.000000000000000000
+            Margins.Top = 5.000000000000000000
+            Margins.Right = 2.000000000000000000
+            Margins.Bottom = 2.000000000000000000
+            Position.X = 776.000000000000000000
+            Size.Width = 158.000000000000000000
+            Size.Height = 64.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Color = claSkyblue
+            XRadius = 5.000000000000000000
+            YRadius = 5.000000000000000000
+            OnClick = retBtnSalvarClick
+            object ColorAnimation1: TColorAnimation
+              Duration = 0.200000002980232200
+              PropertyName = 'Fill.Color'
+              StartValue = xC84682B4
+              StopValue = claSteelblue
+              Trigger = 'IsMouseOver=true'
+              TriggerInverse = 'IsMouseOver=false'
+            end
+            object ShadowEffect1: TShadowEffect
+              Distance = 2.000000000000000000
+              Direction = 90.000000000000000000
+              Softness = 0.200000002980232200
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+            object lblSalvar: TLabel
+              Align = VertCenter
+              AutoSize = True
+              StyledSettings = []
+              Position.Y = 23.000000000000000000
+              Size.Width = 158.000000000000000000
+              Size.Height = 18.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Family = 'Fira Code Retina'
+              TextSettings.Font.Size = 14.000000000000000000
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.FontColor = claWhite
+              TextSettings.HorzAlign = Center
+              Text = 'Salvar'
+              TabOrder = 0
+            end
+          end
         end
-      end
-    end
-    object lytHeader: TLayout
-      Align = MostTop
-      Size.Width = 947.000000000000000000
-      Size.Height = 63.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 9
-      object lblID: TLabel
-        Align = MostRight
-        StyledSettings = [Family, FontColor]
-        Position.X = 857.000000000000000000
-        Size.Width = 90.000000000000000000
-        Size.Height = 63.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00070000000000000004000000}
-        Text = 'ID'
-        TabOrder = 1
-      end
-      object lblTitle: TLabel
-        Align = VertCenter
-        AutoSize = True
-        StyledSettings = [FontColor]
-        Position.X = 96.000000000000000000
-        Position.Y = 21.000000000000000000
-        Size.Width = 761.000000000000000000
-        Size.Height = 20.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.Family = 'Fira Code Retina'
-        TextSettings.Font.Size = 16.000000000000000000
-        TextSettings.HorzAlign = Center
-        Text = 'Editar foto 3x4'
-        TabOrder = 0
-      end
-      object btnVoltar: TRectangle
-        Align = Left
-        Fill.Color = claNull
-        Margins.Left = 3.000000000000000000
-        Margins.Top = 3.000000000000000000
-        Margins.Right = 3.000000000000000000
-        Margins.Bottom = 3.000000000000000000
-        Position.X = 3.000000000000000000
-        Position.Y = 3.000000000000000000
-        Size.Width = 90.000000000000000000
-        Size.Height = 57.000000000000000000
-        Size.PlatformDefault = False
-        Stroke.Color = claNull
-        XRadius = 5.000000000000000000
-        YRadius = 5.000000000000000000
-        OnClick = btnVoltarClick
-        object ColorAnimation2: TColorAnimation
-          Duration = 0.200000002980232200
-          PropertyName = 'Fill.Color'
-          StartValue = claNull
-          StopValue = x1E36393F
-          Trigger = 'IsMouseOver=true'
-          TriggerInverse = 'IsMouseOver=false'
-        end
-        object lblBtnVoltar: TLabel
-          Align = HorzCenter
-          AutoSize = True
-          StyledSettings = []
-          Size.Width = 90.000000000000000000
-          Size.Height = 57.000000000000000000
+        object lytHeader: TLayout
+          Align = MostTop
+          Size.Width = 947.000000000000000000
+          Size.Height = 63.000000000000000000
           Size.PlatformDefault = False
-          TextSettings.Font.Family = 'Fira Code Retina'
-          TextSettings.Font.Size = 18.000000000000000000
-          TextSettings.Font.StyleExt = {00070000000000000004000000}
-          TextSettings.FontColor = xFF202225
-          TextSettings.HorzAlign = Center
-          Text = '<--'
-          TabOrder = 0
+          TabOrder = 1
+          object lblID: TLabel
+            Align = MostRight
+            StyledSettings = [Family]
+            Position.X = 857.000000000000000000
+            Size.Width = 90.000000000000000000
+            Size.Height = 63.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 14.000000000000000000
+            TextSettings.Font.StyleExt = {00070000000000000004000000}
+            TextSettings.FontColor = claSnow
+            Text = 'ID'
+            TabOrder = 1
+          end
+          object lblTitle: TLabel
+            Align = VertCenter
+            AutoSize = True
+            StyledSettings = []
+            Position.X = 96.000000000000000000
+            Position.Y = 21.000000000000000000
+            Size.Width = 761.000000000000000000
+            Size.Height = 20.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Family = 'Fira Code Retina'
+            TextSettings.Font.Size = 16.000000000000000000
+            TextSettings.FontColor = claSnow
+            TextSettings.HorzAlign = Center
+            Text = 'Editar foto 3x4'
+            TabOrder = 0
+          end
+          object btnVoltar: TRectangle
+            Align = Left
+            Fill.Color = claNull
+            Margins.Left = 3.000000000000000000
+            Margins.Top = 3.000000000000000000
+            Margins.Right = 3.000000000000000000
+            Margins.Bottom = 3.000000000000000000
+            Position.X = 3.000000000000000000
+            Position.Y = 3.000000000000000000
+            Size.Width = 90.000000000000000000
+            Size.Height = 57.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Color = claNull
+            XRadius = 5.000000000000000000
+            YRadius = 5.000000000000000000
+            OnClick = btnVoltarClick
+            object ColorAnimation2: TColorAnimation
+              Duration = 0.200000002980232200
+              PropertyName = 'Fill.Color'
+              StartValue = claNull
+              StopValue = x1E36393F
+              Trigger = 'IsMouseOver=true'
+              TriggerInverse = 'IsMouseOver=false'
+            end
+            object lblBtnVoltar: TLabel
+              Align = HorzCenter
+              AutoSize = True
+              StyledSettings = []
+              Size.Width = 90.000000000000000000
+              Size.Height = 57.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Family = 'Fira Code Retina'
+              TextSettings.Font.Size = 18.000000000000000000
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.FontColor = claSnow
+              TextSettings.HorzAlign = Center
+              Text = '<--'
+              TabOrder = 0
+            end
+            object ColorAnimation3: TColorAnimation
+              Duration = 0.200000002980232200
+              PropertyName = 'Stroke.Color'
+              StartValue = claNull
+              StopValue = x5A36393F
+              Trigger = 'IsMouseOver=true'
+              TriggerInverse = 'IsMouseOver=false'
+            end
+          end
         end
-        object ColorAnimation3: TColorAnimation
-          Duration = 0.200000002980232200
-          PropertyName = 'Stroke.Color'
-          StartValue = claNull
-          StopValue = x5A36393F
-          Trigger = 'IsMouseOver=true'
-          TriggerInverse = 'IsMouseOver=false'
+        object rect_foto: TRectangle
+          Align = Center
+          Fill.Kind = None
+          Margins.Top = 20.000000000000000000
+          Size.Width = 728.000000000000000000
+          Size.Height = 437.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          object ImageViewer1: TImageViewer
+            Align = Scale
+            Cursor = crSizeAll
+            Position.X = 198.000000000000000000
+            Position.Y = -40.000000000000000000
+            Size.Width = 354.000000000000000000
+            Size.Height = 472.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            OnMouseDown = ImageViewer1MouseDown
+            OnMouseMove = ImageViewer1MouseMove
+            OnMouseUp = ImageViewer1MouseUp
+            OnMouseWheel = ImageViewer1MouseWheel
+            BackgroundFill.Kind = None
+            ShowScrollBars = False
+            Viewport.Width = 350.000000000000000000
+            Viewport.Height = 468.000000000000000000
+            object ShadowEffect2: TShadowEffect
+              Distance = 2.000000000000000000
+              Direction = 90.000000000000000000
+              Softness = 0.200000002980232200
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+          object Button1: TButton
+            Align = Scale
+            HelpType = htKeyword
+            Position.X = 483.000000000000000000
+            Position.Y = -39.000000000000000000
+            Size.Width = 67.000000000000000000
+            Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'refreshtoolbutton'
+            TabOrder = 1
+            Text = 'Button1'
+            OnClick = Button1Click
+          end
+          object track_zoom: TTrackBar
+            Align = Scale
+            CanParentFocus = True
+            Max = 3.000000000000000000
+            Min = 0.500000000000000000
+            Orientation = Horizontal
+            Margins.Right = 80.000000000000000000
+            Position.X = 243.000000000000000000
+            Position.Y = 400.000000000000000000
+            Size.Width = 270.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Value = 0.500000000000000000
+            OnChange = track_zoomChange
+          end
         end
       end
     end

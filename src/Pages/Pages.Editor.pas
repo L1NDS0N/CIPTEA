@@ -51,6 +51,9 @@ type
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     Button1: TButton;
+    rect_fundo_foto: TRectangle;
+    rect_fundo: TRectangle;
+    ShadowEffect2: TShadowEffect;
     procedure retBtnSalvarClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure ImageViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
@@ -134,6 +137,7 @@ begin
   ServiceNew.qryTemp.Close;
   ServiceNew.qryTemp.Open;
   ServiceNew.qryTemp.First;
+  rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
   ImageViewer1.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
 end;
 

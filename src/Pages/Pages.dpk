@@ -58,6 +58,7 @@ contains
   Services.Connection in '..\Services\Services.Connection.pas' {ServiceConnection: TDataModule},
   Utils.Tools in '..\Utils\Utils.Tools.pas',
   Configs.GLOBAL in '..\Configs\Configs.GLOBAL.pas',
-  Pages.Editor in 'Pages.Editor.pas' {PageEditor};
+  Pages.Editor in 'Pages.Editor.pas' {PageEditor},
+  ToastMessage in '..\Providers\ToastMessage.pas';
 
 end.

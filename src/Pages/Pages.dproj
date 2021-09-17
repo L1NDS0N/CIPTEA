@@ -158,6 +158,7 @@
             <Form>PageEditor</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="..\Providers\ToastMessage.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

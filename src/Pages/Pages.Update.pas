@@ -210,8 +210,8 @@ begin
   serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
   serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
   serviceNew.Salvar;
-
-  serviceNew.StreamFiles;
+  if not(dlgLaudoMedico.FileName = EmptyStr) then
+    serviceNew.PostStreamDoc;
   TRouter4D.Link.&To('Dashboard');
 end;
 

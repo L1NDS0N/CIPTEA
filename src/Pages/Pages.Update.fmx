@@ -280,6 +280,7 @@ object PageUpdate: TPageUpdate
               Size.Width = 200.000000000000000000
               Size.Height = 200.000000000000000000
               Size.PlatformDefault = False
+              WrapMode = Stretch
               OnClick = rctFotoRostoClick
               object lblSelecioneFOto: TLabel
                 Align = Center

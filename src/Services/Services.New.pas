@@ -68,7 +68,7 @@ type
       procedure Listar;
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
-      procedure StreamFiles;
+      procedure PostStreamDoc;
       procedure PostStreamFoto(AId: string);
       procedure GetFiles;
       function GetImageStreamById(AId: integer): TStream;
@@ -285,7 +285,7 @@ begin
   mtCadastroCarteiraPTEA.EmptyDataSet;
 end;
 
-procedure TServiceNew.StreamFiles;
+procedure TServiceNew.PostStreamDoc;
 var
   LStreamDoc: TFileStream;
   LResponseDoc: IResponse;
@@ -306,7 +306,7 @@ begin
       end;
   except
     on E: Exception do
-      showmessage(E.Message);
+      showmessage('Não foi possível enviar o laudo para o servidor. '+E.Message);
   end;
 end;
 

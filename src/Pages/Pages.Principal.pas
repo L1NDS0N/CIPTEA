@@ -69,7 +69,7 @@ end;
 procedure TPagePrincipal.Animation(aLayout: TFMXObject);
 begin
   TLayout(aLayout).Opacity := 0;
-  TLayout(aLayout).AnimateFloat('Opacity', 1, 0.9);
+  TLayout(aLayout).AnimateFloat('Opacity', 1, 0.7);
 end;
 
 Initialization

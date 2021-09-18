@@ -38,8 +38,8 @@ type
 
   TToastMessage = class
     published
-      class procedure show(text: String; Second: Integer = 3; Height: Integer = 41;
-        ToastType: TTypeToast = TTypeToast.ttInfo; position: TToastPosition = TToastPosition.tpTop);
+      class procedure show(text: String; ToastType: TTypeToast = TTypeToast.ttInfo;
+          position: TToastPosition = TToastPosition.tpTop; Second: Integer = 3; Height: Integer = 41);
   end;
 
 implementation
@@ -51,8 +51,8 @@ Var
   txMessage: TText;
   { TToastMessage }
 
-class procedure TToastMessage.show(text: String; Second: Integer = 3; Height: Integer = 41;
-  ToastType: TTypeToast = TTypeToast.ttInfo; position: TToastPosition = TToastPosition.tpTop);
+class procedure TToastMessage.show(text: String; ToastType: TTypeToast = TTypeToast.ttInfo;
+  position: TToastPosition = TToastPosition.tpTop; Second: Integer = 3; Height: Integer = 41);
 Var
   TextCollor: TMyColor;
   BalloonCollor: TMyColor;

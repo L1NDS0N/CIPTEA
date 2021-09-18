@@ -97,8 +97,10 @@ implementation
 
 uses
   Utils.Tools,
+  Pages.Principal,
   Pages.Dashboard,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client,
+  ToastMessage;
 {$R *.fmx}
 { TPageUpdate }
 
@@ -112,23 +114,32 @@ var
   streamImage: TMemoryStream;
 begin
   try
-    if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToUpdate') then
-      serviceNew.GetById(aValue.PropString);
+    try
+      if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToUpdate') then
+        serviceNew.GetById(aValue.PropString);
 
-    lblID.Text := '#' + aValue.PropString;
-    edtNomeResponsavel.Text := serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString;
-    edtCpfResponsavel.Text := serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString;
-    edtCpfTitular.Text := serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString;
-    edtDataNascimento.Date := serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime;
-    edtEmailContato.Text := serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString;
-    edtNomeTitular.Text := serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString;
-    edtNumeroContato.Text := serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString;
-    edtRgResponsavel.Text := serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString;
-    edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
-    imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetImageStreamById(aValue.PropString.ToInteger));
-  finally
-    aValue.Free;
-    VerificacoesUX;
+      lblID.Text := '#' + aValue.PropString;
+      edtNomeResponsavel.Text := serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString;
+      edtCpfResponsavel.Text := serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString;
+      edtCpfTitular.Text := serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString;
+      edtDataNascimento.Date := serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime;
+      edtEmailContato.Text := serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString;
+      edtNomeTitular.Text := serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString;
+      edtNumeroContato.Text := serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString;
+      edtRgResponsavel.Text := serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString;
+      edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
+      imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetImageStreamById(aValue.PropString.ToInteger));
+    finally
+      aValue.Free;
+      VerificacoesUX;
+    end;
+  except
+    on E: Exception do
+      begin
+        serviceNew.mtCadastroCarteiraPTEA.EmptyDataSet;
+        TToastMessage.show('Erro durante listagem dos dados da carteirinha #' + aValue.PropString, ttDanger);
+        abort;
+      end;
   end;
 end;
 
@@ -149,10 +160,7 @@ begin
             .Key('IdCarteiraToUpdate'));
       end;
 
-  if imgFotoRosto.Bitmap.IsEmpty then
-    lblSelecioneFOto.Visible := true
-  else
-    lblSelecioneFOto.Visible := false;
+  VerificacoesUX;
 end;
 
 procedure TPageUpdate.rctLaudoMedicoClick(Sender: TObject);
@@ -199,20 +207,24 @@ end;
 
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
 begin
-  serviceNew.mtCadastroCarteiraPTEA.Edit;
-  serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
-  serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
-  serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
-  serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
-  serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
-  serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
-  serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
-  serviceNew.Salvar;
-  if not(dlgLaudoMedico.FileName = EmptyStr) then
-    serviceNew.PostStreamDoc;
-  TRouter4D.Link.&To('Dashboard');
+  try
+    serviceNew.mtCadastroCarteiraPTEA.Edit;
+    serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
+    serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+    serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
+    serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
+    serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
+    serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
+    serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
+    serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
+    serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
+    serviceNew.Salvar;
+  finally
+    TToastMessage.show('Alterações na carteirinha #' + serviceNew.mtCadastroCarteiraPTEAid.AsString +
+        ' foram salvas com sucesso!', ttSuccess);
+    TRouter4D.Link.&To('Dashboard');
+  end;
+
 end;
 
 procedure TPageUpdate.UnRender;
@@ -237,7 +249,9 @@ begin
         lblSelecioneLaudo.Text := 'Este registro contém um laudo salvo, clique para visualizar no navegador';
       end;
 
-  if not(imgFotoRosto.Bitmap.IsEmpty) then
+  if imgFotoRosto.Bitmap.IsEmpty then
+    lblSelecioneFOto.Visible := true
+  else
     lblSelecioneFOto.Visible := false;
 
 end;

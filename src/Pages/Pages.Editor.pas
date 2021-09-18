@@ -81,6 +81,9 @@ var
 
 implementation
 
+uses
+  ToastMessage;
+
 {$R *.fmx}
 
 procedure TPageEditor.btnVoltarClick(Sender: TObject);
@@ -144,7 +147,6 @@ end;
 function TPageEditor.Render: TFmxObject;
 begin
   Result := LayoutEditor;
-
 end;
 
 procedure TPageEditor.retBtnSalvarClick(Sender: TObject);
@@ -162,6 +164,7 @@ begin
     ServiceNew.PostStreamFoto(AId);
 
     TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+    TToastMessage.show('A imagem foi salva com sucesso', ttSuccess);
   finally
     vFotoStream.Free;
   end;

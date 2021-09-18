@@ -116,7 +116,7 @@ begin
         end;
     except
       on E: Exception do
-        TToastMessage.show(E.Message, 3, 41, ttDanger, tpTop);
+        TToastMessage.show(E.Message, ttDanger);
     end;
   finally
     vsbCarteiras.EndUpdate;
@@ -129,41 +129,56 @@ var
   serviceNew: TServiceNew;
 begin
   try
-    serviceNew := TServiceNew.Create(nil);
     try
+      serviceNew := TServiceNew.Create(nil);
       TDialogService.MessageDialog('Tem certeza que deseja deletar?', TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo,
         TMsgDlgBtn.mbNo, 0,
           procedure(const AResult: TModalResult)
         begin
           if AResult <> mrYes then
-            Abort;
+            TToastMessage.show('Deleção da carteirinha #' + AId + ' cancelada.')
+          else
+            begin
+              serviceNew.Delete(AId);
+              ASender.DisposeOf;
+              TToastMessage.show('Carteirinha #' + AId + ' deletada com sucesso!', ttSuccess);
+            end;
         end);
-      serviceNew.Delete(AId);
-      ASender.DisposeOf;
-    except
-      on E: Exception do
-        TToastMessage.show(E.Message, 3, 41, ttDanger, tpTop);
+    finally
+      serviceNew.Free;
     end;
-  finally
-    serviceNew.Free;
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante deleção - ' + E.Message, ttDanger);
   end;
 end;
 
 procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
 begin
-  TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+  try
+    TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+  except
+    on E: Exception do
+      begin
+        TToastMessage.show('Erro durante navegação para página de edição - ' + E.Message, ttDanger);
+      end;
+  end;
 end;
 
 function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
   Self.ListarCarteiras;
-
 end;
 
 procedure TPageDashboard.retBtnNewClick(Sender: TObject);
 begin
-  TRouter4D.Link.&To('New');
+  try
+    TRouter4D.Link.&To('New');
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante navegação para página de nova carteira - ' + E.Message, ttDanger);
+  end;
 end;
 
 procedure TPageDashboard.UnRender;

@@ -135,12 +135,6 @@ object ServiceNew: TServiceNew
       FieldName = 'DataNascimento'
       Origin = 'DataNascimento'
     end
-    object mtCadastroCarteiraPTEAfotoRostoPath: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'fotoRostoPath'
-      Origin = 'fotoRostoPath'
-      Size = 254
-    end
     object mtCadastroCarteiraPTEAEmailContato: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'EmailContato'

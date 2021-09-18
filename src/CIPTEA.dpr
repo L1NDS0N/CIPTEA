@@ -1,4 +1,4 @@
-program ProjectCIPTEA;
+program CIPTEA;
 
 uses
   System.StartUpCopy,

@@ -17,7 +17,9 @@ uses
   FMX.Ani,
   FMX.Objects,
   FMX.Controls.Presentation,
-  Providers.Types, FMX.Layouts, FMX.Effects;
+  Providers.Types,
+  FMX.Layouts,
+  FMX.Effects;
 
 type
   TFrameDashboardDetail = class(TFrame)
@@ -43,17 +45,24 @@ type
     lytLabelsCenter: TLayout;
     ShadowEffect2: TShadowEffect;
     ShadowEffect3: TShadowEffect;
+    crlPrint: TCircle;
+    imgPrint: TPath;
+    ColorAnimation3: TColorAnimation;
+    ShadowEffect4: TShadowEffect;
     procedure crlEditClick(Sender: TObject);
     procedure retContentClick(Sender: TObject);
     procedure crlDeleteClick(Sender: TObject);
+    procedure crlPrintClick(Sender: TObject);
     private
       FId: string;
       FOnDelete: TEventCallBack;
       FOnUpdate: TEventCallBack;
+      FOnPrint: TEventCallBack;
     public
       property Id: string read FId write FId;
       property OnDelete: TEventCallBack read FOnDelete write FOnDelete;
       property OnUpdate: TEventCallBack read FOnUpdate write FOnUpdate;
+      property OnPrint: TEventCallBack read FOnPrint write FOnPrint;
   end;
 
 implementation
@@ -73,6 +82,14 @@ begin
   {$IFDEF MSWINDOWS}
   if Assigned(FOnUpdate) then
     FOnUpdate(Self, FId);
+  {$ENDIF}
+end;
+
+procedure TFrameDashboardDetail.crlPrintClick(Sender: TObject);
+begin
+  {$IFDEF MSWINDOWS}
+  if Assigned(FOnPrint) then
+    FOnPrint(Self, FId);
   {$ENDIF}
 end;
 

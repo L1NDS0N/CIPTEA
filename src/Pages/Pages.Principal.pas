@@ -47,7 +47,8 @@ uses
   Pages.Dashboard,
   Pages.New,
   Pages.Update,
-  Pages.Editor;
+  Pages.Editor,
+  Pages.Print;
 
 {$R *.fmx}
 
@@ -62,6 +63,7 @@ begin
   TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);
   TRouter4D.Switch.Router('Editor', TPageEditor);
+  TRouter4D.Switch.Router('Print', TPagePrint);
   TRouter4D.Render<TPageDashboard>.SetElement(lytMaster, lytMaster);
   TRouter4D.Link.Animation(Animation);
 end;

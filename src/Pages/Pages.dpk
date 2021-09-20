@@ -59,6 +59,7 @@ contains
   Utils.Tools in '..\Utils\Utils.Tools.pas',
   Configs.GLOBAL in '..\Configs\Configs.GLOBAL.pas',
   Pages.Editor in 'Pages.Editor.pas' {PageEditor},
-  ToastMessage in '..\Providers\ToastMessage.pas';
+  ToastMessage in '..\Providers\ToastMessage.pas',
+  Pages.Print in 'Pages.Print.pas' {PagePrint};
 
 end.

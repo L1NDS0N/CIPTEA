@@ -53,6 +53,7 @@ type
     private
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
       procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
+      procedure OnPrintCarteira(const ASender: TFrame; const AId: string);
     public
       procedure ListarCarteiras;
       function Render: TFMXObject;
@@ -112,16 +113,18 @@ begin
 
           LFrame.OnDelete := Self.OnDeleteCarteira;
           LFrame.OnUpdate := Self.OnUpdateCarteira;
+          LFrame.OnPrint := Self.OnPrintCarteira;
           serviceNew.mtPesquisaCarteiraPTEA.Next;
         end;
-    except
-      on E: Exception do
-        TToastMessage.show(E.Message, ttDanger);
+    finally
+      vsbCarteiras.EndUpdate;
+      serviceNew.Free;
     end;
-  finally
-    vsbCarteiras.EndUpdate;
-    serviceNew.Free;
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
   end;
+
 end;
 
 procedure TPageDashboard.OnDeleteCarteira(const ASender: TFrame; const AId: string);
@@ -150,6 +153,18 @@ begin
   except
     on E: Exception do
       TToastMessage.show('Erro durante deleção - ' + E.Message, ttDanger);
+  end;
+end;
+
+procedure TPageDashboard.OnPrintCarteira(const ASender: TFrame; const AId: string);
+begin
+  try
+    TRouter4D.Link.&To('Print', TProps.Create.PropString(AId).Key('IdCarteiraToPrint'));
+  except
+    on E: Exception do
+      begin
+        TToastMessage.show('Erro durante navegação para página de impressão - ' + E.Message, ttDanger);
+      end;
   end;
 end;
 

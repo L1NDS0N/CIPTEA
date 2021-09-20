@@ -159,6 +159,10 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="..\Providers\ToastMessage.pas"/>
+        <DCCReference Include="Pages.Print.pas">
+            <Form>PagePrint</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

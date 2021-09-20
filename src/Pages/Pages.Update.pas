@@ -1,4 +1,4 @@
-unit Pages.Update;
+﻿unit Pages.Update;
 
 interface
 
@@ -73,6 +73,8 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
+    IconLaudoMedico: TImage;
+    IconFotoRosto: TImage;
     procedure FormCreate(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
@@ -136,8 +138,7 @@ begin
   except
     on E: Exception do
       begin
-        serviceNew.mtCadastroCarteiraPTEA.EmptyDataSet;
-        TToastMessage.show('Erro durante listagem dos dados da carteirinha #' + aValue.PropString, ttDanger);
+        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString, ttDanger);
         abort;
       end;
   end;
@@ -145,22 +146,28 @@ end;
 
 procedure TPageUpdate.rctFotoRostoClick(Sender: TObject);
 begin
-  if dlgFotoRosto.Execute then
-    if dlgFotoRosto.FileName <> EmptyStr then
-      begin
-        serviceNew.qryTemp.Open;
-        serviceNew.qryTemp.First;
-        serviceNew.qryTemp.Edit;
-        serviceNew.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
-        serviceNew.qryTemp.Post;
+  try
+    if dlgFotoRosto.Execute then
+      if dlgFotoRosto.FileName <> EmptyStr then
+        begin
+          serviceNew.qryTemp.Open;
+          serviceNew.qryTemp.First;
+          serviceNew.qryTemp.Edit;
+          serviceNew.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
+          serviceNew.qryTemp.Post;
 
-        imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
-
-        TRouter4D.Link.&To('Editor', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
-            .Key('IdCarteiraToUpdate'));
-      end;
-
-  VerificacoesUX;
+          imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
+          try
+            TRouter4D.Link.&To('Editor', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+                .Key('IdCarteiraToUpdate'));
+          except
+            on E: Exception do
+              TToastMessage.show('Erro durante navegação para a página de edição de imagem - ' + E.Message, ttDanger);
+          end;
+        end;
+  finally
+    VerificacoesUX;
+  end;
 end;
 
 procedure TPageUpdate.rctLaudoMedicoClick(Sender: TObject);
@@ -181,7 +188,7 @@ begin
     else
       begin
         LayoutZoom.Visible := false;
-        lblSelecioneLaudo.Text := 'Selecione o laudo m�dico em PDF';
+        lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
       end;
 end;
 
@@ -197,7 +204,13 @@ end;
 
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
 begin
-  TRouter4D.Link.&To('Dashboard');
+  try
+    TRouter4D.Link.&To('Dashboard');
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+  end;
+
 end;
 
 function TPageUpdate.Render: TFmxObject;
@@ -206,35 +219,53 @@ begin
 end;
 
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
+var
+  AID: string;
 begin
-  try
-    serviceNew.mtCadastroCarteiraPTEA.Edit;
-    serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
-    serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-    serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
-    serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
-    serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
-    serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
-    serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
-    serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
-    serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
-    serviceNew.Salvar;
-  finally
-    TToastMessage.show('Altera��es na carteirinha #' + serviceNew.mtCadastroCarteiraPTEAid.AsString +
-        ' foram salvas com sucesso!', ttSuccess);
-    TRouter4D.Link.&To('Dashboard');
-  end;
 
+  AID := serviceNew.mtCadastroCarteiraPTEAid.AsString;
+  try
+    try
+      serviceNew.mtCadastroCarteiraPTEA.Edit;
+
+      if not(serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
+        serviceNew.PostStreamDoc;
+
+      serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
+      serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
+      serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
+      serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
+      serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
+      serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
+      serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
+      serviceNew.Salvar;
+    finally
+      TToastMessage.show('Alterações na carteirinha #' + AID + ' foram salvas com sucesso!', ttSuccess);
+      try
+        TRouter4D.Link.&To('Dashboard');
+      except
+        on E: Exception do
+          TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+      end;
+    end;
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante regravação dos campos da página de edição - ' + E.Message, ttDanger);
+  end;
 end;
 
 procedure TPageUpdate.UnRender;
 begin
-  serviceNew.mtCadastroCarteiraPTEA.EmptyDataSet;
+  dlgLaudoMedico.FileName := EmptyStr;
+
   if not(imgFotoRosto.Bitmap.IsEmpty) then
     imgFotoRosto.Bitmap := nil;
 
   LayoutZoom.Visible := false;
-  lblSelecioneLaudo.Text := 'Selecione o laudo m�dico em PDF';
+
+  lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
 end;
 
 procedure TPageUpdate.VerificacoesUX;
@@ -246,7 +277,7 @@ begin
     if qryResult.FieldByName('hasDoc').AsBoolean then
       begin
         LayoutZoom.Visible := true;
-        lblSelecioneLaudo.Text := 'Este registro cont�m um laudo salvo, clique para visualizar no navegador';
+        lblSelecioneLaudo.Text := 'Este registro contém um laudo salvo, clique no 👁 para visualizar no navegador';
       end;
 
   if imgFotoRosto.Bitmap.IsEmpty then

@@ -78,14 +78,21 @@ implementation
 
 uses
   Pages.Dashboard,
-  Router4D;
+  Router4D,
+  ToastMessage;
 
 {$R *.fmx}
 { TPageNew }
 
 procedure TPageNew.btnVoltarClick(Sender: TObject);
 begin
-  TRouter4D.Link.&To('Dashboard');
+  try
+    TRouter4D.Link.&To('Dashboard');
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+  end;
+
 end;
 
 procedure TPageNew.FormCreate(Sender: TObject);
@@ -135,20 +142,24 @@ begin
       serviceNew.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
       serviceNew.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
       serviceNew.Salvar;
-    except
-      on E: Exception do
-        raise Exception.Create('Error Message: ' + E.Message);
+    finally
+      try
+        TRouter4D.Link.&To('Dashboard');
+      except
+        on E: Exception do
+          TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+      end;
     end;
-  finally
-    Self.LimparCampos;
-    TRouter4D.Link.&To('Dashboard');
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante gravação dos dados - ' + E.Message, ttDanger);
   end;
 
 end;
 
 procedure TPageNew.UnRender;
 begin
-  //
+  Self.LimparCampos;
 end;
 
 end.

@@ -51,8 +51,8 @@ begin
     if LService.GetById(LId).IsEmpty then
       raise EHorseException.Create(THTTPStatus.NotFound, 'Not Found');
     //não devolver o path
-    LService.qryCadastroCarteiraPTEAfotoRostoPath.Visible := false;
-    Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject());
+    LService.qryPesquisaCarteiraPTEAfotoRostoPath.Visible := false;
+    Res.Send(LService.qryPesquisaCarteiraPTEA.ToJSONObject());
   finally
     LService.Free;
   end;
@@ -64,15 +64,23 @@ var
   LService: TServiceCarteiraPTEA;
   LData: TJsonObject;
 begin
-  LService := TServiceCarteiraPTEA.Create(nil);
   try
-    LData := Req.Body<TJsonObject>;
-    if LService.Append(LData) then
-      Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject).Status(201);
-  finally
-    LService.Free;
+    LService := TServiceCarteiraPTEA.Create(nil);
+    try
+      LData := Req.Body<TJsonObject>;
+      if not(LService.GetByFieldValue('CpfTitular', LData.GetValue('cpftitular').ToString).IsEmpty) then
+        Res.Send(TJsonObject.Create.AddPair('error',
+            'Não foi possível gravar estes dados devido a uma possível duplicata de cpf'))
+          .Status(THTTPStatus.BadRequest)
+      else if LService.Append(LData) then
+        Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject).Status(201);
+    finally
+      LService.Free;
+    end;
+  except
+    on E: Exception do
+      EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante a gravação do registro ' + E.Message);
   end;
-
 end;
 
 procedure DoUpdate(Req: THorseRequest; Res: THorseResponse; Next: TProc);
@@ -143,8 +151,8 @@ begin
     if LService.GetById(LId).IsEmpty then
       raise EHorseException.Create(THTTPStatus.NotFound, 'Not Found');
 
-    Res.Send(TJsonObject.Create.AddPair('AlteradoEm', LService.qryCadastroCarteiraPTEAAlteradoEm.AsString).AddPair('ID',
-        LService.qryCadastroCarteiraPTEAid.AsString)).Status(THTTPStatus.OK);
+    Res.Send(TJsonObject.Create.AddPair('AlteradoEm', LService.qryPesquisaCarteiraPTEAAlteradoEm.AsString).AddPair('ID',
+        LService.qryPesquisaCarteiraPTEAid.AsString)).Status(THTTPStatus.OK);
   finally
     LService.Free;
   end;

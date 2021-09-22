@@ -69,6 +69,7 @@ type
       function UpdateAField(const AField: string; AValue: Variant; AId: integer): Boolean;
       function GetById(const AId: string): TFDQuery;
       function GetAFieldById(const AField: string; const AId: string): string;
+      function GetByFieldValue(const AField: string; const AValue: string): TFDQuery;
       procedure ConnectionConfig;
 
   end;
@@ -122,19 +123,27 @@ end;
 
 function TServiceCarteiraPTEA.GetAFieldById(const AField: string; const AId: string): string;
 begin
-  qryCadastroCarteiraPTEA.SQL.Clear;
-  qryCadastroCarteiraPTEA.SQL.Add('select * from carteiraptea where id = :id');
-  qryCadastroCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
-  qryCadastroCarteiraPTEA.Open();
-  Result := qryCadastroCarteiraPTEA.FieldByName(AField).AsString;
+  qryPesquisaCarteiraPTEA.SQL.Clear;
+  qryPesquisaCarteiraPTEA.SQL.Add('select * from carteiraptea where id = :id');
+  qryPesquisaCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
+  qryPesquisaCarteiraPTEA.Open();
+  Result := qryPesquisaCarteiraPTEA.FieldByName(AField).AsString;
+end;
+
+function TServiceCarteiraPTEA.GetByFieldValue(const AField: string; const AValue: string): TFDQuery;
+begin
+  qryPesquisaCarteiraPTEA.SQL.Clear;
+  qryPesquisaCarteiraPTEA.SQL.Add('select * from carteiraptea where ' + AField + ' = ' + AValue);
+  qryPesquisaCarteiraPTEA.Open;
+  Result := qryPesquisaCarteiraPTEA;
 end;
 
 function TServiceCarteiraPTEA.GetById(const AId: string): TFDQuery;
 begin
-  qryCadastroCarteiraPTEA.SQL.Add('where id = :id');
-  qryCadastroCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
-  qryCadastroCarteiraPTEA.Open();
-  Result := qryCadastroCarteiraPTEA;
+  qryPesquisaCarteiraPTEA.SQL.Add('where id = :id');
+  qryPesquisaCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
+  qryPesquisaCarteiraPTEA.Open();
+  Result := qryPesquisaCarteiraPTEA;
 end;
 
 function TServiceCarteiraPTEA.ListAll: TFDQuery;

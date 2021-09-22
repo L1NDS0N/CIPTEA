@@ -39,6 +39,7 @@ object PageNew: TPageNew
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 6
+          MaxLength = 14
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 345.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -46,11 +47,13 @@ object PageNew: TPageNew
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtCpfResponsavelKeyDown
         end
         object edtCpfTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 7
+          MaxLength = 14
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 399.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -58,9 +61,10 @@ object PageNew: TPageNew
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtCpfTitularKeyDown
         end
         object edtDataNascimento: TDateEdit
-          Date = 44412.000000000000000000
+          Date = 44461.000000000000000000
           Align = Top
           Margins.Right = 500.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -71,11 +75,14 @@ object PageNew: TPageNew
           StyledSettings = [Size, Style, FontColor]
           TabOrder = 8
           TextSettings.Font.Family = 'Fira Code Retina'
+          ParentShowHint = False
+          ShowHint = False
         end
         object edtEmailContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 0
+          KeyboardType = EmailAddress
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 22.000000000000000000
           Margins.Bottom = 5.000000000000000000
@@ -83,6 +90,7 @@ object PageNew: TPageNew
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
+          OnExit = ValidarCampos
         end
         object edtNomeResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -322,6 +330,13 @@ object PageNew: TPageNew
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
+      end
+      object Button1: TButton
+        Position.X = 632.000000000000000000
+        Position.Y = 25.000000000000000000
+        TabOrder = 1
+        Text = 'validar'
+        OnClick = Button1Click
       end
     end
     object FloatAnimation: TFloatAnimation

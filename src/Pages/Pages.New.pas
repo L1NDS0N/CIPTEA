@@ -4,12 +4,14 @@ interface
 
 uses
   Services.New,
+  MaskUtils,
   Router4D.Interfaces,
   System.SysUtils,
   System.Types,
   System.UITypes,
   System.Classes,
   System.Variants,
+  System.StrUtils,
   FMX.Types,
   FMX.Controls,
   FMX.Forms,
@@ -58,10 +60,15 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
+    Button1: TButton;
     procedure btnVoltarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
+    procedure edtCpfResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtCpfTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure Button1Click(Sender: TObject);
+    procedure ValidarCampos(Sender: TObject);
     private
       serviceNew: TServiceNew;
       procedure LimparCampos;
@@ -77,6 +84,7 @@ var
 implementation
 
 uses
+  Utils.Tools,
   Pages.Dashboard,
   Router4D,
   ToastMessage;
@@ -95,9 +103,24 @@ begin
 
 end;
 
+procedure TPageNew.Button1Click(Sender: TObject);
+begin
+  ValidarCampos(nil);
+end;
+
+procedure TPageNew.edtCpfResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  TEdit(Sender).Text := FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+end;
+
+procedure TPageNew.edtCpfTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  TEdit(Sender).Text := FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+end;
+
 procedure TPageNew.FormCreate(Sender: TObject);
 begin
-  serviceNew := TServiceNew.Create(Self);
+  serviceNew := TServiceNew.Create(self);
 end;
 
 procedure TPageNew.FormDestroy(Sender: TObject);
@@ -125,8 +148,10 @@ end;
 
 procedure TPageNew.retBtnSalvarClick(Sender: TObject);
 begin
+  self.ValidarCampos(nil);
   try
     try
+
       if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
         serviceNew.mtCadastroCarteiraPTEA.Edit
       else
@@ -159,7 +184,49 @@ end;
 
 procedure TPageNew.UnRender;
 begin
-  Self.LimparCampos;
+  self.LimparCampos;
+end;
+
+procedure TPageNew.ValidarCampos(Sender: TObject);
+begin
+  if not(Sender = nil) then
+    case IndexStr(TEdit(Sender).Name, ['edtEmailContato']) of
+      0:
+        begin
+          if NOT(edtEmailContato.Text.IsEmpty) AND not(EmailIsValid(edtEmailContato.Text)) then
+            begin
+              TToastMessage.show('O valor (' + edtEmailContato.Text + ') inserido no campo de e-mail é inválido ');
+              abort;
+            end;
+        end;
+
+    end
+  else
+    begin
+      if NOT(edtEmailContato.Text.IsEmpty) AND not(EmailIsValid(edtEmailContato.Text)) then
+        begin
+          edtEmailContato.SetFocus;
+          TToastMessage.show('O valor (' + edtEmailContato.Text + ') inserido no campo de e-mail é inválido ');
+          abort;
+        end;
+
+      if NOT(edtCpfResponsavel.Text.IsEmpty) AND not(CPFIsValid(edtCpfResponsavel.Text)) then
+        begin
+          edtCpfResponsavel.SetFocus;
+          TToastMessage.show('O valor (' + edtCpfResponsavel.Text + ') inserido no campo de CPF é inválido ');
+          abort;
+        end;
+
+      if NOT(edtCpfTitular.Text.IsEmpty) AND not(CPFIsValid(edtCpfTitular.Text)) then
+        begin
+          edtCpfTitular.SetFocus;
+          TToastMessage.show('O valor (' + edtCpfTitular.Text + ') inserido no campo de CPF é inválido ');
+          abort;
+        end;
+
+      Sender := nil;
+    end;
+
 end;
 
 end.

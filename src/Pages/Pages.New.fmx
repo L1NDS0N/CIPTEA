@@ -264,12 +264,12 @@ object PageNew: TPageNew
         AutoSize = True
         StyledSettings = [Style, FontColor]
         Position.X = 96.000000000000000000
-        Position.Y = 22.000000000000000000
+        Position.Y = 21.000000000000000000
         Size.Width = 696.000000000000000000
-        Size.Height = 18.000000000000000000
+        Size.Height = 20.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Family = 'Fira Code Retina'
-        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.Size = 16.000000000000000000
         TextSettings.HorzAlign = Center
         Text = 'Nova carteirinha'
         TabOrder = 0

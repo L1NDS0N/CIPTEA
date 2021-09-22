@@ -23,7 +23,6 @@ uses
   FMX.Grid.Style,
   FMX.ScrollBox,
   FMX.Grid,
-  Data.DB,
   Data.Bind.EngExt,
   FMX.Bind.DBEngExt,
   FMX.Bind.Grid,
@@ -37,7 +36,9 @@ uses
   FMX.TabControl,
   FMX.Objects,
   FMX.Ani,
-  FMX.Effects;
+  FMX.Effects,
+  FMX.Edit,
+  FMX.ComboEdit;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
@@ -49,11 +50,28 @@ type
     lblNovo: TLabel;
     ColorAnimation1: TColorAnimation;
     ShadowEffect1: TShadowEffect;
+    Layout2: TLayout;
+    lytSearchBox: TLayout;
+    ComboEdit: TComboEdit;
+    rectSearchBox: TRoundRect;
+    Line2: TLine;
+    rectLupa: TRoundRect;
+    Path1: TPath;
+    FloatAnimation1: TFloatAnimation;
+    ColorAnimation2: TColorAnimation;
+    SpeedButton1: TSpeedButton;
     procedure retBtnNewClick(Sender: TObject);
+    procedure ComboEditClick(Sender: TObject);
+    procedure ComboEditTyping(Sender: TObject);
+    procedure rectLupaClick(Sender: TObject);
+    procedure ComboEditChangeTracking(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
     private
+      serviceNew: TServiceNew;
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
       procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
       procedure OnPrintCarteira(const ASender: TFrame; const AId: string);
+
     public
       procedure ListarCarteiras;
       function Render: TFMXObject;
@@ -74,16 +92,43 @@ uses
   Frames.DashboardDetail,
   Pages.Update,
   Router4D.Props,
-  ToastMessage;
+  ToastMessage,
+  Data.DB;
+
+procedure TPageDashboard.ComboEditChangeTracking(Sender: TObject);
+begin
+  ComboEdit.OnTyping(nil);
+end;
+
+procedure TPageDashboard.ComboEditClick(Sender: TObject);
+begin
+  ComboEdit.DropDown;
+end;
+
+procedure TPageDashboard.ComboEditTyping(Sender: TObject);
+begin
+  FloatAnimation1.Start;
+  with serviceNew do
+    begin
+      mtPesquisaCarteiraPTEA.Filtered := false;
+      mtPesquisaCarteiraPTEA.FilterOptions := [foCaseInsensitive];
+
+      mtPesquisaCarteiraPTEA.Filter := 'NomeTitular like ' + QuotedStr('%' + ComboEdit.Text + '%') +
+        'or CpfTitular like' + QuotedStr('%' + ComboEdit.Text + '%');
+      mtPesquisaCarteiraPTEA.Filtered := true;
+      ListarCarteiras;
+      mtPesquisaCarteiraPTEA.Filtered := false;
+    end;
+  //FloatAnimation1.Stop;
+end;
 
 procedure TPageDashboard.ListarCarteiras;
 var
-  serviceNew: TServiceNew;
   LFrame: TFrameDashboardDetail;
   I: Integer;
   LStream: TStream;
 begin
-  serviceNew := TServiceNew.Create(Self);
+
   vsbCarteiras.BeginUpdate;
   try
     try
@@ -92,6 +137,7 @@ begin
 
       serviceNew.Listar;
       serviceNew.GetFiles;
+      ComboEdit.Clear;
 
       serviceNew.mtPesquisaCarteiraPTEA.First;
       while not serviceNew.mtPesquisaCarteiraPTEA.Eof do
@@ -111,14 +157,15 @@ begin
           if LStream.Size > 0 then
             LFrame.Imagem.Bitmap.LoadFromStream(LStream);
 
-          LFrame.OnDelete := Self.OnDeleteCarteira;
-          LFrame.OnUpdate := Self.OnUpdateCarteira;
-          LFrame.OnPrint := Self.OnPrintCarteira;
+          LFrame.OnDelete := self.OnDeleteCarteira;
+          LFrame.OnUpdate := self.OnUpdateCarteira;
+          LFrame.OnPrint := self.OnPrintCarteira;
+
+          ComboEdit.Items.Add(serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString);
           serviceNew.mtPesquisaCarteiraPTEA.Next;
         end;
     finally
       vsbCarteiras.EndUpdate;
-      serviceNew.Free;
     end;
   except
     on E: Exception do
@@ -180,10 +227,17 @@ begin
   end;
 end;
 
+procedure TPageDashboard.rectLupaClick(Sender: TObject);
+begin
+  ComboEdit.OnTyping(nil);
+end;
+
 function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
-  Self.ListarCarteiras;
+  serviceNew := TServiceNew.Create(self);
+  self.ListarCarteiras;
+
 end;
 
 procedure TPageDashboard.retBtnNewClick(Sender: TObject);
@@ -196,9 +250,14 @@ begin
   end;
 end;
 
+procedure TPageDashboard.SpeedButton1Click(Sender: TObject);
+begin
+  ComboEdit.Text := EmptyStr;
+end;
+
 procedure TPageDashboard.UnRender;
 begin
-
+  serviceNew.Free;
 end;
 
 end.

@@ -128,7 +128,8 @@ begin
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString, ttDanger);
+        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString + ' - ' +
+            E.Message, ttDanger);
         abort;
       end;
   end;
@@ -137,41 +138,49 @@ end;
 function TPagePrint.Render: TFmxObject;
 begin
   Result := lytPrincipal;
-
-  { tempBMP.SaveToFile('c:\temp\debugme.bmp');
-
-    RecFull := RectF(0, 0, aBMP.Width, aBMP.Height);
-
-    RecLeft := RectF(0, 0, round(aBMP.Width / 3),
-    round(aBMP.Height / 1));
-
-    aBMP.Canvas.DrawBitmap(tempBMP, RecFull, RecLeft, 50, True);
-
-    aBMP.Canvas.EndScene;
-
-    aBMP.SaveToFile('c:\temp\debugme2.bmp'); }
 end;
 
 procedure TPagePrint.retBtnSalvarClick(Sender: TObject);
 var
   rectPage, rectContent: TRectF;
-  image1: TBitmap;
+  image1, image2: TBitmap;
 begin
-
-  if PrintDialog.Execute then
-    begin
-
-      with Printer do
+  try
+    try
+      VertScrollBox.ScrollBy(0, 1000);
+      if PrintDialog.Execute then
         begin
-          BeginDoc;
-          image1 := VertScrollBox.MakeScreenshot;
-          rectPage := RectF(0, 0, 1920, 1080);
-          rectContent := RectF(0, 0, round(image1.Width * 8), round(image1.Height * 4.5));
-          Canvas.DrawBitmap(image1, rectPage, rectContent, 1, false);
-          image1.Free;
-          EndDoc;
+          with Printer do
+            begin
+              BeginDoc;
+              image1 := rect_frente.MakeScreenshot;
+              image2 := rect_costas.MakeScreenshot;
+              rectPage := RectF(0, 0, 1004, 591);
+              rectContent := RectF(0, 0, round(image1.Width * 4), round(image1.Height * 4));
+              with Canvas do
+                begin
+                  DrawBitmap(image1, rectPage, rectContent, 1, true);
+                  DrawBitmap(image2, rectPage, RectF(0, round(image1.Height * 3.1), round(image2.Width * 4),
+                      round(image2.Height * 4) + round(image1.Height * 3.1)), 1, true);
+                end;
+              EndDoc;
+              TToastMessage.show('Carteirinha enviada para impressão.', ttSuccess);
+              try
+                TRouter4D.Link.&To('Dashboard');
+              except
+                on E: Exception do
+                  TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+              end;
+            end;
         end;
+    finally
+      image1.Free;
+      image2.Free;
     end;
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante geração do arquivo para impressão - ' + E.Message, ttDanger);
+  end;
 end;
 
 procedure TPagePrint.UnRender;

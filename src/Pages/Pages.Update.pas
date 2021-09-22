@@ -138,7 +138,8 @@ begin
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString, ttDanger);
+        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString + ' - ' +
+            E.Message, ttDanger);
         abort;
       end;
   end;

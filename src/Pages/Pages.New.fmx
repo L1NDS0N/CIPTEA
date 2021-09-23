@@ -8,7 +8,6 @@ object PageNew: TPageNew
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   DesignerMasterStyle = 0
   object lytNew: TLayout
     Align = Client
@@ -46,8 +45,17 @@ object PageNew: TPageNew
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '741.852.963-00'
           StyledSettings = [Size, Style, FontColor]
           OnKeyDown = edtCpfResponsavelKeyDown
+          object ClearEditButton2: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtCpfTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -60,8 +68,17 @@ object PageNew: TPageNew
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '741.852.963-00'
           StyledSettings = [Size, Style, FontColor]
           OnKeyDown = edtCpfTitularKeyDown
+          object ClearEditButton1: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtDataNascimento: TDateEdit
           Date = 44461.000000000000000000
@@ -75,6 +92,7 @@ object PageNew: TPageNew
           StyledSettings = [Size, Style, FontColor]
           TabOrder = 8
           TextSettings.Font.Family = 'Fira Code Retina'
+          TextSettings.HorzAlign = Center
           ParentShowHint = False
           ShowHint = False
         end
@@ -82,15 +100,22 @@ object PageNew: TPageNew
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 0
-          KeyboardType = EmailAddress
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 22.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = 'exemplo@email.com'
           StyledSettings = [Size, Style, FontColor]
-          OnExit = ValidarCampos
+          object ClearEditButton8: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtNomeResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -102,7 +127,17 @@ object PageNew: TPageNew
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = 'FULANO DE TAL DA SILVA'
           StyledSettings = [Size, Style, FontColor]
+          CharCase = ecUpperCase
+          object ClearEditButton4: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtNomeTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -114,43 +149,112 @@ object PageNew: TPageNew
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = 'SICLANO FILHO DE FULANO DA SILVA'
           StyledSettings = [Size, Style, FontColor]
+          CharCase = ecUpperCase
+          object ClearEditButton3: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtNumeroContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 1
+          KeyboardType = PhonePad
+          MaxLength = 15
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 76.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '(00) 98764-3210'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtNumeroContatoKeyDown
+          object ClearEditButton7: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtRgResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 2
+          MaxLength = 20
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 129.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '987654321 ou 987.654.321'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtRgResponsavelKeyDown
+          object ClearEditButton6: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object cbResponsavel: TCheckBox
+            Align = Scale
+            ClipParent = True
+            StyledSettings = [Family, Size, Style]
+            Position.X = 544.000000000000000000
+            Size.Width = 110.000000000000000000
+            Size.Height = 27.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Aplicar m'#225'scara'
+            TextSettings.FontColor = claGray
+            OnChange = cbResponsavelChange
+          end
         end
         object edtRgTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
           TabOrder = 3
+          MaxLength = 20
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 183.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 692.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '987654321 ou 987.654.321'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtRgTitularKeyDown
+          object ClearEditButton5: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object cbTitular: TCheckBox
+            Align = Scale
+            StyledSettings = [Family, Size, Style]
+            Position.X = 544.000000000000000000
+            Size.Width = 108.000000000000000000
+            Size.Height = 27.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Aplicar m'#225'scara'
+            TextSettings.FontColor = claGray
+            OnChange = cbTitularChange
+          end
         end
         object lblcpfResponsavel: TLabel
           Align = Top
@@ -330,13 +434,6 @@ object PageNew: TPageNew
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
-      end
-      object Button1: TButton
-        Position.X = 632.000000000000000000
-        Position.Y = 25.000000000000000000
-        TabOrder = 1
-        Text = 'validar'
-        OnClick = Button1Click
       end
     end
     object FloatAnimation: TFloatAnimation

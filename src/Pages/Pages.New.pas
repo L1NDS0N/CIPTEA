@@ -60,15 +60,27 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
-    Button1: TButton;
+    ClearEditButton1: TClearEditButton;
+    ClearEditButton2: TClearEditButton;
+    ClearEditButton3: TClearEditButton;
+    ClearEditButton4: TClearEditButton;
+    ClearEditButton5: TClearEditButton;
+    ClearEditButton6: TClearEditButton;
+    ClearEditButton7: TClearEditButton;
+    ClearEditButton8: TClearEditButton;
+    cbTitular: TCheckBox;
+    cbResponsavel: TCheckBox;
+    procedure ValidarCampos(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     procedure edtCpfResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure edtCpfTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
-    procedure Button1Click(Sender: TObject);
-    procedure ValidarCampos(Sender: TObject);
+    procedure edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtNumeroContatoKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtRgResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure cbTitularChange(Sender: TObject);
+    procedure cbResponsavelChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     private
       serviceNew: TServiceNew;
       procedure LimparCampos;
@@ -103,29 +115,56 @@ begin
 
 end;
 
-procedure TPageNew.Button1Click(Sender: TObject);
+procedure TPageNew.cbResponsavelChange(Sender: TObject);
 begin
-  ValidarCampos(nil);
+  if cbResponsavel.IsChecked then
+    edtRgResponsavel.Text := FormatMaskText('000.000.000', edtRgResponsavel.Text)
+  else
+    edtRgResponsavel.MaxLength := 20;
+end;
+
+procedure TPageNew.cbTitularChange(Sender: TObject);
+begin
+  if cbTitular.IsChecked then
+    edtRgTitular.Text := FormatMaskText('000.000.000', edtRgTitular.Text)
+  else
+    edtRgTitular.MaxLength := 20;
 end;
 
 procedure TPageNew.edtCpfResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 begin
-  TEdit(Sender).Text := FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+  FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
 end;
 
 procedure TPageNew.edtCpfTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 begin
-  TEdit(Sender).Text := FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+  FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+end;
+
+procedure TPageNew.edtNumeroContatoKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  FormatMaskByEditObject(Sender, '(00) 00000-0000', KeyChar);
+end;
+
+procedure TPageNew.edtRgResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  if cbResponsavel.IsChecked then
+    FormatMaskByEditObject(Sender, '999.999.999', KeyChar);
+end;
+
+procedure TPageNew.edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  if cbTitular.IsChecked then
+    FormatMaskByEditObject(Sender, '999.999.999', KeyChar);
 end;
 
 procedure TPageNew.FormCreate(Sender: TObject);
 begin
-  serviceNew := TServiceNew.Create(self);
-end;
-
-procedure TPageNew.FormDestroy(Sender: TObject);
-begin
-  serviceNew.Free;
+  edtEmailContato.OnExit := Self.ValidarCampos;
+  edtCpfResponsavel.OnExit := Self.ValidarCampos;
+  edtCpfTitular.OnExit := Self.ValidarCampos;
+  edtNomeResponsavel.OnExit := Self.ValidarCampos;
+  edtNomeTitular.OnExit := Self.ValidarCampos;
 end;
 
 procedure TPageNew.LimparCampos;
@@ -144,11 +183,12 @@ end;
 function TPageNew.Render: TFmxObject;
 begin
   Result := lytNew;
+  serviceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPageNew.retBtnSalvarClick(Sender: TObject);
 begin
-  self.ValidarCampos(nil);
+  Self.ValidarCampos(Sender);
   try
     try
 
@@ -184,49 +224,69 @@ end;
 
 procedure TPageNew.UnRender;
 begin
-  self.LimparCampos;
+  Self.LimparCampos;
+  serviceNew.Free;
 end;
 
 procedure TPageNew.ValidarCampos(Sender: TObject);
 begin
-  if not(Sender = nil) then
-    case IndexStr(TEdit(Sender).Name, ['edtEmailContato']) of
-      0:
-        begin
-          if NOT(edtEmailContato.Text.IsEmpty) AND not(EmailIsValid(edtEmailContato.Text)) then
-            begin
-              TToastMessage.show('O valor (' + edtEmailContato.Text + ') inserido no campo de e-mail é inválido ');
-              abort;
-            end;
-        end;
+  if screen.ActiveForm <> nil then
+    with TEdit(Sender) do
+      begin
+        if Sender <> nil then
+          case IndexStr(Name, ['retBtnSalvar', 'edtEmailContato', 'edtCpfResponsavel', 'edtCpfTitular',
+              'edtNomeTitular', 'edtNomeResponsavel']) of
+            0:
+              begin
+                Self.ValidarCampos(edtEmailContato);
+                Self.ValidarCampos(edtCpfResponsavel);
+                Self.ValidarCampos(edtCpfTitular);
+                Self.ValidarCampos(edtNomeTitular);
+                Self.ValidarCampos(edtNomeResponsavel);
+              end;
+            1:
+              begin
+                if NOT(Text.IsEmpty) AND not(EmailIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de e-mail é inválido ');
+                    abort;
+                  end;
+              end;
+            2:
+              begin
+                if NOT(Text.IsEmpty) AND not(CPFIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de CPF é inválido ');
+                    abort;
+                  end;
+              end;
+            3:
+              begin
+                if NOT(Text.IsEmpty) AND not(CPFIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de CPF é inválido ');
+                    abort;
+                  end;
+              end;
+            4:
+              begin
+                if NOT(Text.IsEmpty) AND not(NameFieldIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de nome é inválido ');
+                    abort;
+                  end;
+              end;
+            5:
+              begin
+                if NOT(Text.IsEmpty) AND not(NameFieldIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de nome é inválido ');
+                    abort;
+                  end;
+              end;
 
-    end
-  else
-    begin
-      if NOT(edtEmailContato.Text.IsEmpty) AND not(EmailIsValid(edtEmailContato.Text)) then
-        begin
-          edtEmailContato.SetFocus;
-          TToastMessage.show('O valor (' + edtEmailContato.Text + ') inserido no campo de e-mail é inválido ');
-          abort;
-        end;
-
-      if NOT(edtCpfResponsavel.Text.IsEmpty) AND not(CPFIsValid(edtCpfResponsavel.Text)) then
-        begin
-          edtCpfResponsavel.SetFocus;
-          TToastMessage.show('O valor (' + edtCpfResponsavel.Text + ') inserido no campo de CPF é inválido ');
-          abort;
-        end;
-
-      if NOT(edtCpfTitular.Text.IsEmpty) AND not(CPFIsValid(edtCpfTitular.Text)) then
-        begin
-          edtCpfTitular.SetFocus;
-          TToastMessage.show('O valor (' + edtCpfTitular.Text + ') inserido no campo de CPF é inválido ');
-          abort;
-        end;
-
-      Sender := nil;
-    end;
-
+          end;
+      end;
 end;
 
 end.

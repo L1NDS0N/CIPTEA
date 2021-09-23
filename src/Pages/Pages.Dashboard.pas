@@ -60,6 +60,7 @@ type
     FloatAnimation1: TFloatAnimation;
     ColorAnimation2: TColorAnimation;
     SpeedButton1: TSpeedButton;
+    ShadowEffect4: TShadowEffect;
     procedure retBtnNewClick(Sender: TObject);
     procedure ComboEditClick(Sender: TObject);
     procedure ComboEditTyping(Sender: TObject);
@@ -102,6 +103,7 @@ end;
 
 procedure TPageDashboard.ComboEditClick(Sender: TObject);
 begin
+  ComboEdit.SelectAll;
   ComboEdit.DropDown;
 end;
 
@@ -119,7 +121,6 @@ begin
       ListarCarteiras;
       mtPesquisaCarteiraPTEA.Filtered := false;
     end;
-  //FloatAnimation1.Stop;
 end;
 
 procedure TPageDashboard.ListarCarteiras;

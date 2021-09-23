@@ -55,7 +55,9 @@ object PageDashboard: TPageDashboard
           Size.Width = 600.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
-          Stroke.Kind = None
+          Stroke.Color = claGray
+          Stroke.Thickness = 0.500000000000000000
+          Stroke.Cap = Round
           object ComboEdit: TComboEdit
             Touch.InteractiveGestures = [LongTap, DoubleTap]
             Align = Scale
@@ -76,7 +78,7 @@ object PageDashboard: TPageDashboard
             HelpType = htKeyword
             Hint = 'Busque por cpf ou nome'
             StyledSettings = []
-            Size.Width = 541.000000000000000000
+            Size.Width = 537.000000000000000000
             Size.Height = 37.000000000000000000
             Size.PlatformDefault = False
             Caret.Color = claWhite
@@ -88,17 +90,17 @@ object PageDashboard: TPageDashboard
               Locked = True
               LineType = Diagonal
               Position.Y = 36.000000000000000000
-              Size.Width = 541.000000000000000000
+              Size.Width = 537.000000000000000000
               Size.Height = 1.000000000000000000
               Size.PlatformDefault = False
               Stroke.Color = claWhitesmoke
-              Stroke.Thickness = 0.500000000000000000
+              Stroke.Thickness = 0.200000002980232200
               Stroke.Cap = Round
             end
             object SpeedButton1: TSpeedButton
               Align = Right
               StyledSettings = [Family]
-              Position.X = 492.000000000000000000
+              Position.X = 488.000000000000000000
               Size.Width = 49.000000000000000000
               Size.Height = 36.000000000000000000
               Size.PlatformDefault = False
@@ -150,6 +152,13 @@ object PageDashboard: TPageDashboard
               Size.PlatformDefault = False
               Stroke.Kind = None
               WrapMode = Fit
+              object ShadowEffect4: TShadowEffect
+                Distance = 1.000000000000000000
+                Direction = 90.000000000000000000
+                Softness = 0.200000002980232200
+                Opacity = 0.300000011920929000
+                ShadowColor = claBlack
+              end
             end
             object FloatAnimation1: TFloatAnimation
               AnimationType = InOut

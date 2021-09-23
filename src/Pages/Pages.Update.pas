@@ -75,16 +75,35 @@ type
     ColorAnimation3: TColorAnimation;
     IconLaudoMedico: TImage;
     IconFotoRosto: TImage;
+    ClearEditButton1: TClearEditButton;
+    ClearEditButton2: TClearEditButton;
+    ClearEditButton3: TClearEditButton;
+    ClearEditButton4: TClearEditButton;
+    ClearEditButton5: TClearEditButton;
+    ClearEditButton6: TClearEditButton;
+    ClearEditButton7: TClearEditButton;
+    ClearEditButton8: TClearEditButton;
+    cbTitular: TCheckBox;
+    cbResponsavel: TCheckBox;
+    procedure ValidarCampos(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure btnAmpliarDocumentoClick(Sender: TObject);
+    procedure cbResponsavelChange(Sender: TObject);
+    procedure cbTitularChange(Sender: TObject);
+    procedure edtCpfResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtCpfTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtNumeroContatoKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtRgResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     private
       serviceNew: TServiceNew;
       Config: TConfigGlobal;
       procedure VerificacoesUX;
+      procedure LimparCampos;
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -102,13 +121,32 @@ uses
   Pages.Principal,
   Pages.Dashboard,
   FireDAC.Comp.Client,
-  ToastMessage;
+  ToastMessage,
+  System.MaskUtils,
+  System.StrUtils;
 {$R *.fmx}
 { TPageUpdate }
 
 procedure TPageUpdate.FormCreate(Sender: TObject);
 begin
-  serviceNew := TServiceNew.Create(Self);
+  edtEmailContato.OnExit := Self.ValidarCampos;
+  edtCpfResponsavel.OnExit := Self.ValidarCampos;
+  edtCpfTitular.OnExit := Self.ValidarCampos;
+  edtNomeResponsavel.OnExit := Self.ValidarCampos;
+  edtNomeTitular.OnExit := Self.ValidarCampos;
+end;
+
+procedure TPageUpdate.LimparCampos;
+begin
+  edtEmailContato.Text := EmptyStr;
+  edtNomeTitular.Text := EmptyStr;
+  edtCpfResponsavel.Text := EmptyStr;
+  edtNomeResponsavel.Text := EmptyStr;
+  edtRgResponsavel.Text := EmptyStr;
+  edtCpfTitular.Text := EmptyStr;
+  edtRgTitular.Text := EmptyStr;
+  edtDataNascimento.Date := Now;
+  edtNumeroContato.Text := EmptyStr;
 end;
 
 procedure TPageUpdate.Props(aValue: TProps);
@@ -214,9 +252,53 @@ begin
 
 end;
 
+procedure TPageUpdate.cbResponsavelChange(Sender: TObject);
+begin
+  if cbResponsavel.IsChecked then
+    edtRgResponsavel.Text := FormatMaskText('000.000.000', edtRgResponsavel.Text)
+  else
+    edtRgResponsavel.MaxLength := 20;
+end;
+
+procedure TPageUpdate.cbTitularChange(Sender: TObject);
+begin
+  if cbTitular.IsChecked then
+    edtRgTitular.Text := FormatMaskText('000.000.000', edtRgTitular.Text)
+  else
+    edtRgTitular.MaxLength := 20;
+end;
+
+procedure TPageUpdate.edtCpfResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+end;
+
+procedure TPageUpdate.edtCpfTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  FormatMaskByEditObject(Sender, '000.000.000-00', KeyChar);
+end;
+
+procedure TPageUpdate.edtNumeroContatoKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  FormatMaskByEditObject(Sender, '(00) 00000-0000', KeyChar);
+end;
+
+procedure TPageUpdate.edtRgResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  if cbResponsavel.IsChecked then
+    FormatMaskByEditObject(Sender, '999.999.999', KeyChar);
+end;
+
+procedure TPageUpdate.edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  if cbTitular.IsChecked then
+    FormatMaskByEditObject(Sender, '999.999.999', KeyChar);
+end;
+
 function TPageUpdate.Render: TFmxObject;
 begin
   Result := lytUpdate;
+  serviceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
@@ -267,6 +349,70 @@ begin
   LayoutZoom.Visible := false;
 
   lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
+
+  serviceNew.Free;
+  Self.LimparCampos;
+end;
+
+procedure TPageUpdate.ValidarCampos(Sender: TObject);
+begin
+  if screen.ActiveForm <> nil then
+    with TEdit(Sender) do
+      begin
+        if Sender <> nil then
+          case IndexStr(Name, ['retBtnSalvar', 'edtEmailContato', 'edtCpfResponsavel', 'edtCpfTitular',
+              'edtNomeTitular', 'edtNomeResponsavel']) of
+            0:
+              begin
+                Self.ValidarCampos(edtEmailContato);
+                Self.ValidarCampos(edtCpfResponsavel);
+                Self.ValidarCampos(edtCpfTitular);
+                Self.ValidarCampos(edtNomeTitular);
+                Self.ValidarCampos(edtNomeResponsavel);
+              end;
+            1:
+              begin
+                if NOT(Text.IsEmpty) AND not(EmailIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de e-mail é inválido ');
+                    abort;
+                  end;
+              end;
+            2:
+              begin
+                if NOT(Text.IsEmpty) AND not(CPFIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de CPF é inválido ');
+                    abort;
+                  end;
+              end;
+            3:
+              begin
+                if NOT(Text.IsEmpty) AND not(CPFIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de CPF é inválido ');
+                    abort;
+                  end;
+              end;
+            4:
+              begin
+                if NOT(Text.IsEmpty) AND not(NameFieldIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de nome é inválido ');
+                    abort;
+                  end;
+              end;
+            5:
+              begin
+                if NOT(Text.IsEmpty) AND not(NameFieldIsValid(Text)) then
+                  begin
+                    TToastMessage.show('O valor (' + Text + ') inserido no campo de nome é inválido ');
+                    abort;
+                  end;
+              end;
+
+          end;
+      end;
 end;
 
 procedure TPageUpdate.VerificacoesUX;

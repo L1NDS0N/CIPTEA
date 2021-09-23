@@ -3,7 +3,7 @@ object PageUpdate: TPageUpdate
   Top = 0
   Caption = 'Atualizar Carteirinha'
   ClientHeight = 896
-  ClientWidth = 922
+  ClientWidth = 862
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -16,7 +16,7 @@ object PageUpdate: TPageUpdate
   end
   object lytUpdate: TLayout
     Align = Client
-    Size.Width = 922.000000000000000000
+    Size.Width = 862.000000000000000000
     Size.Height = 896.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
@@ -26,18 +26,18 @@ object PageUpdate: TPageUpdate
       Padding.Top = 20.000000000000000000
       Padding.Right = 50.000000000000000000
       Padding.Bottom = 50.000000000000000000
-      Size.Width = 922.000000000000000000
+      Size.Width = 862.000000000000000000
       Size.Height = 763.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object VertScrollBox: TVertScrollBox
         Align = Client
-        Size.Width = 822.000000000000000000
+        Size.Width = 762.000000000000000000
         Size.Height = 693.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         ShowScrollBars = False
-        Viewport.Width = 822.000000000000000000
+        Viewport.Width = 762.000000000000000000
         Viewport.Height = 693.000000000000000000
         object edtCpfResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -46,10 +46,20 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 345.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '741.852.963-00'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtCpfResponsavelKeyDown
+          object ClearEditButton7: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtCpfTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -58,10 +68,20 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 399.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '741.852.963-00'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtCpfTitularKeyDown
+          object ClearEditButton8: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtDataNascimento: TDateEdit
           Date = 44412.000000000000000000
@@ -69,12 +89,13 @@ object PageUpdate: TPageUpdate
           Margins.Right = 500.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Position.Y = 453.000000000000000000
-          Size.Width = 322.000000000000000000
+          Size.Width = 262.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
           StyledSettings = [Size, Style, FontColor]
           TabOrder = 8
           TextSettings.Font.Family = 'Fira Code Retina'
+          TextSettings.HorzAlign = Center
         end
         object edtEmailContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -83,10 +104,19 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 22.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = 'exemplo@email.com'
           StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton1: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtNomeResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -95,10 +125,19 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 237.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = 'FULANO DE TAL DA SILVA'
           StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton5: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtNomeTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -107,10 +146,19 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 291.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = 'SICLANO FILHO DE FULANO DA SILVA'
           StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton6: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtNumeroContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -119,10 +167,20 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 76.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '(00) 98764-3210'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtNumeroContatoKeyDown
+          object ClearEditButton2: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
         end
         object edtRgResponsavel: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -131,10 +189,33 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 129.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '987654321 ou 987.654.321'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtRgResponsavelKeyDown
+          object ClearEditButton3: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object cbResponsavel: TCheckBox
+            Align = Scale
+            StyledSettings = [Family, Size, Style]
+            Position.X = 612.000000000000000000
+            Position.Y = -1.000000000000000000
+            Size.Width = 117.000000000000000000
+            Size.Height = 27.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Aplicar m'#225'scara'
+            TextSettings.FontColor = claGray
+            OnChange = cbResponsavelChange
+          end
         end
         object edtRgTitular: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -143,17 +224,40 @@ object PageUpdate: TPageUpdate
           TextSettings.Font.Family = 'Fira Code Retina'
           Position.Y = 183.000000000000000000
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 27.000000000000000000
           Size.PlatformDefault = False
+          TextPrompt = '987654321 ou 987.654.321'
           StyledSettings = [Size, Style, FontColor]
+          OnKeyDown = edtRgTitularKeyDown
+          object ClearEditButton4: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object cbTitular: TCheckBox
+            Align = Scale
+            StyledSettings = [Family, Size, Style]
+            Position.X = 613.000000000000000000
+            Position.Y = -1.000000000000000000
+            Size.Width = 116.000000000000000000
+            Size.Height = 27.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Aplicar m'#225'scara'
+            TextSettings.FontColor = claGray
+            OnChange = cbTitularChange
+          end
         end
         object lblcpfResponsavel: TLabel
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 323.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -165,7 +269,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 377.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -177,7 +281,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 431.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -188,7 +292,7 @@ object PageUpdate: TPageUpdate
           Align = Top
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -200,7 +304,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 215.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -212,7 +316,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 269.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -224,7 +328,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 54.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -236,7 +340,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 108.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 16.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -248,7 +352,7 @@ object PageUpdate: TPageUpdate
           StyledSettings = [Size, Style, FontColor]
           Margins.Bottom = 5.000000000000000000
           Position.Y = 161.000000000000000000
-          Size.Width = 822.000000000000000000
+          Size.Width = 762.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Family = 'Fira Code Retina'
@@ -259,8 +363,8 @@ object PageUpdate: TPageUpdate
           Align = Top
           Margins.Top = 12.000000000000000000
           Position.Y = 497.000000000000000000
-          Size.Width = 822.000000000000000000
-          Size.Height = 266.670013427734400000
+          Size.Width = 762.000000000000000000
+          Size.Height = 266.670043945312500000
           Size.PlatformDefault = False
           TabOrder = 18
           object rctFotoRosto: TRectangle
@@ -789,14 +893,14 @@ object PageUpdate: TPageUpdate
     end
     object lytHeader: TLayout
       Align = MostTop
-      Size.Width = 922.000000000000000000
+      Size.Width = 862.000000000000000000
       Size.Height = 63.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 9
       object lblID: TLabel
         Align = MostRight
         StyledSettings = [Family, FontColor]
-        Position.X = 832.000000000000000000
+        Position.X = 772.000000000000000000
         Size.Width = 90.000000000000000000
         Size.Height = 63.000000000000000000
         Size.PlatformDefault = False
@@ -811,7 +915,7 @@ object PageUpdate: TPageUpdate
         StyledSettings = [FontColor]
         Position.X = 96.000000000000000000
         Position.Y = 21.000000000000000000
-        Size.Width = 736.000000000000000000
+        Size.Width = 676.000000000000000000
         Size.Height = 20.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Family = 'Fira Code Retina'
@@ -885,7 +989,7 @@ object PageUpdate: TPageUpdate
       Margins.Bottom = 2.000000000000000000
       Position.X = 2.000000000000000000
       Position.Y = 831.000000000000000000
-      Size.Width = 918.000000000000000000
+      Size.Width = 858.000000000000000000
       Size.Height = 63.000000000000000000
       Size.PlatformDefault = False
       Stroke.Color = claSkyblue
@@ -912,7 +1016,7 @@ object PageUpdate: TPageUpdate
         AutoSize = True
         StyledSettings = []
         Position.Y = 22.000000000000000000
-        Size.Width = 918.000000000000000000
+        Size.Width = 858.000000000000000000
         Size.Height = 18.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Family = 'Fira Code Retina'

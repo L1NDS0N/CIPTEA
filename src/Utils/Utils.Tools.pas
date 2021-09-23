@@ -3,9 +3,10 @@ unit Utils.Tools;
 interface
 
 procedure AbrirLinkNavegador(aUrl: string);
-function FormatMaskByEditObject(Sender: TObject; const EditMask: string; const KeyChar: char): string;
+procedure FormatMaskByEditObject(Sender: TObject; const EditMask: string; const KeyChar: char);
 function EmailIsValid(aEmail: string): boolean;
 function CPFIsValid(aCPF: string): boolean;
+function NameFieldIsValid(aName: string): boolean;
 function RemoveCaracteresEspeciais(aTexto: string; aLimExt: boolean): string;
 
 implementation
@@ -49,13 +50,17 @@ begin
   Result := xTexto;
 end;
 
-function FormatMaskByEditObject(Sender: TObject; const EditMask: string; const KeyChar: char): string;
+procedure FormatMaskByEditObject(Sender: TObject; const EditMask: string; const KeyChar: char);
 begin
   with TEdit(Sender) do
     begin
-      Result := Text;
-      if (Copy(EditMask, SelStart + 1, 1) = Copy(Text, SelStart + 1, 1)) AND Not(TCharacter.IsControl(KeyChar)) then
+
+      MaxLength := Length(EditMask);
+      while (Copy(EditMask, SelStart + 1, 1) = Copy(Text, SelStart + 1, 1)) AND Not(TCharacter.IsControl(KeyChar)) do
         begin
+          if Length(EditMask) = SelStart then
+            break;
+
           SelStart := SelStart + 1;
           SelectWord;
         end;
@@ -64,7 +69,7 @@ begin
         begin
           Text.Remove(SelStart);
           Text := Text.Insert(SelStart, KeyChar);
-          Result := FormatMaskText(EditMask, Text);
+          Text := FormatMaskText(EditMask, Text);
           SelStart := SelStart + 1;
         end;
 
@@ -78,6 +83,13 @@ begin
   Result := TRegex.IsMatch(aEmail, EmailRegex);
 end;
 
+function NameFieldIsValid(aName: string): boolean;
+const
+  NameRegex = '^[a-zA-ZÀ-ú \s]+$';
+begin
+  Result := TRegex.IsMatch(aName, NameRegex);
+end;
+
 function CPFIsValid(aCPF: string): boolean;
 var
   dig10, dig11: string;
@@ -87,7 +99,7 @@ begin
   //length - retorna o tamanho da string (aCPF é um número formado por 11 dígitos)
   if ((aCPF = '00000000000') or (aCPF = '11111111111') or (aCPF = '22222222222') or (aCPF = '33333333333') or
       (aCPF = '44444444444') or (aCPF = '55555555555') or (aCPF = '66666666666') or (aCPF = '77777777777') or
-      (aCPF = '88888888888') or (aCPF = '99999999999') or (length(aCPF) <> 11)) then
+      (aCPF = '88888888888') or (aCPF = '99999999999') or (Length(aCPF) <> 11)) then
     begin
       Result := false;
       exit;

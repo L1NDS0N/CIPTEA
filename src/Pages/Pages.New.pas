@@ -99,7 +99,8 @@ uses
   Utils.Tools,
   Pages.Dashboard,
   Router4D,
-  ToastMessage;
+  ToastMessage,
+  Router4D.Props;
 
 {$R *.fmx}
 { TPageNew }
@@ -209,15 +210,17 @@ begin
       serviceNew.Salvar;
     finally
       try
-        TRouter4D.Link.&To('Dashboard');
+        if not(serviceNew.mtCadastroCarteiraPTEAid.IsNull) then
+          TRouter4D.Link.&To('Update', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+              .Key('IdCarteiraToUpdate'));
       except
         on E: Exception do
-          TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+          TToastMessage.show('Erro durante navegação para a página de edição - ' + E.Message, ttDanger);
       end;
     end;
   except
     on E: Exception do
-      TToastMessage.show('Erro durante gravação dos dados - ' + E.Message, ttDanger);
+      TToastMessage.show(E.Message, ttDanger);
   end;
 
 end;

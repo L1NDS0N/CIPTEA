@@ -195,7 +195,6 @@ begin
           serviceNew.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
           serviceNew.qryTemp.Post;
 
-          imgFotoRosto.Bitmap.LoadFromFile(dlgFotoRosto.FileName);
           try
             TRouter4D.Link.&To('Editor', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
                 .Key('IdCarteiraToUpdate'));
@@ -305,7 +304,7 @@ procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
 var
   AID: string;
 begin
-
+  Self.ValidarCampos(Sender);
   AID := serviceNew.mtCadastroCarteiraPTEAid.AsString;
   try
     try
@@ -419,13 +418,18 @@ procedure TPageUpdate.VerificacoesUX;
 var
   qryResult: TFDQuery;
 begin
-  qryResult := serviceNew.GetFileById(serviceNew.mtCadastroCarteiraPTEAid.Value);
-  if not(qryResult.IsEmpty) then
-    if qryResult.FieldByName('hasDoc').AsBoolean then
-      begin
-        LayoutZoom.Visible := true;
-        lblSelecioneLaudo.Text := 'Este registro contém um laudo salvo, clique no 👁 para visualizar no navegador';
-      end;
+  try
+    qryResult := serviceNew.GetFileById(serviceNew.mtCadastroCarteiraPTEAid.Value);
+    if not(qryResult.IsEmpty) then
+      if qryResult.FieldByName('hasDoc').AsBoolean then
+        begin
+          LayoutZoom.Visible := true;
+          lblSelecioneLaudo.Text := 'Este registro contém um laudo salvo, clique no 👁 para visualizar no navegador';
+        end;
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttWarning);
+  end;
 
   if imgFotoRosto.Bitmap.IsEmpty then
     lblSelecioneFOto.Visible := true

@@ -238,7 +238,6 @@ begin
   Result := lytDashboard;
   serviceNew := TServiceNew.Create(self);
   self.ListarCarteiras;
-
 end;
 
 procedure TPageDashboard.retBtnNewClick(Sender: TObject);

@@ -39,6 +39,22 @@ object PagePrincipal: TPagePrincipal
       Size.Height = 768.000000000000000000
       Size.PlatformDefault = False
       Stroke.Thickness = 0.000000000000000000
+      object lytProgress: TLayout
+        Align = Top
+        Size.Width = 1024.000000000000000000
+        Size.Height = 12.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object ProgressBar: TProgressBar
+          Align = Top
+          ClipParent = True
+          Orientation = Horizontal
+          Size.Width = 1024.000000000000000000
+          Size.Height = 7.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'ProgressBarStyle1'
+        end
+      end
     end
     object lytPrincipal: TLayout
       Align = HorzCenter

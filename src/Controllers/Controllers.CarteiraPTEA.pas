@@ -70,7 +70,7 @@ begin
       LData := Req.Body<TJsonObject>;
       if not(LService.GetByFieldValue('CpfTitular', LData.GetValue('cpftitular').ToString).IsEmpty) then
         Res.Send(TJsonObject.Create.AddPair('error',
-            'Não foi possível gravar estes dados devido a uma possível duplicata de cpf'))
+            'Não foi possível gravar estes dados devido a uma possível duplicata de cpf do titular'))
           .Status(THTTPStatus.BadRequest)
       else if LService.Append(LData) then
         Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject).Status(201);
@@ -88,13 +88,33 @@ var
   AID: Integer;
   LService: TServiceCarteiraPTEA;
   LData: TJsonObject;
+
+label
+  CanUpdate;
 begin
   LService := TServiceCarteiraPTEA.Create(nil);
   try
     LData := Req.Body<TJsonObject>;
     AID := Req.Params.Items['id'].ToInteger;
-    if LService.Update(LData, AID) then
-      Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject).Status(200);
+
+    if not(LService.GetByFieldValue('CpfTitular', LData.GetValue('cpftitular').ToString).IsEmpty) then
+      begin
+        if (LService.qryPesquisaCarteiraPTEAid.AsInteger <> AID) then
+          Res.Send(TJsonObject.Create.AddPair('error',
+              'Não foi possível gravar estes dados devido a uma possível duplicata de cpf do titular'))
+            .Status(THTTPStatus.BadRequest)
+        else
+          goto CanUpdate
+      end
+    else
+      goto CanUpdate;
+
+    CanUpdate:
+    begin
+      if LService.Update(LData, AID) then
+        Res.Send(LService.qryCadastroCarteiraPTEA.ToJSONObject).Status(200);
+    end;
+
   finally
     LService.Free;
   end;

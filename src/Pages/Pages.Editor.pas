@@ -62,7 +62,6 @@ type
     procedure Button1Click(Sender: TObject);
     procedure track_zoomChange(Sender: TObject);
     procedure ImageViewer1MouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
-    procedure FormCreate(Sender: TObject);
     private
       ServiceNew: TServiceNew;
       qryFiles: TFDQuery;
@@ -101,11 +100,6 @@ end;
 procedure TPageEditor.Button1Click(Sender: TObject);
 begin
   ImageViewer1.Bitmap.Rotate(-90);
-end;
-
-procedure TPageEditor.FormCreate(Sender: TObject);
-begin
-  ServiceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPageEditor.ImageViewer1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
@@ -161,6 +155,7 @@ end;
 function TPageEditor.Render: TFmxObject;
 begin
   Result := LayoutEditor;
+  ServiceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPageEditor.retBtnSalvarClick(Sender: TObject);
@@ -200,7 +195,9 @@ end;
 
 procedure TPageEditor.UnRender;
 begin
-  ImageViewer1.Bitmap := nil;
+  ServiceNew.Free;
+  rect_fundo_foto.Fill.Bitmap.Bitmap := (nil);
+  ImageViewer1.Bitmap := (nil);
 end;
 
 end.

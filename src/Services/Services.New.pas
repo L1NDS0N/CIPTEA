@@ -4,6 +4,7 @@ interface
 
 uses
   Configs.GLOBAL,
+
   System.SysUtils,
   System.Classes,
   FireDAC.Stan.Intf,
@@ -85,8 +86,7 @@ uses
   RESTRequest4D,
   FMX.Dialogs,
   Pages.Dashboard,
-  REST.Types,
-  ToastMessage;
+  REST.Types;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -110,24 +110,20 @@ var
 begin
   try
     LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix(AId).Delete;
-    if not(LResponse.StatusCode = 204) then
-      begin
-        TToastMessage.show('Não foi possível deletar os dados da carteirinha #' + AId + '. Erro #' +
-            LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'), ttWarning);
-        exit;
-      end
-    else
+    if LResponse.StatusCode = 204 then
       begin
         qryArquivosCarteiraPTEA.Close;
         qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId;
         qryArquivosCarteiraPTEA.Open;
         qryArquivosCarteiraPTEA.Delete;
-      end;
+      end
+    else
+      raise Exception.Create('Não foi possível deletar os dados da carteirinha #' + AId + '. Erro #' +
+          LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'));
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante deleção da carteirinha #' + AId + ' ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;
@@ -143,24 +139,28 @@ begin
         .DataSetAdapter(mtCadastroCarteiraPTEA).Get;
     finally
       if not(LResponse.StatusCode = 200) then
-        TToastMessage.show('Não foi possível obter os dados da carteirinha #' + AId + '. Erro #' +
-            LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'), ttWarning);
+        raise Exception.Create('Não foi possível obter os dados da carteirinha #' + AId + '. Erro #' +
+            LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'));
     end;
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante obtenção dos dados da carteirinha #' + AId + ' - ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;
 
 function TServiceNew.GetFileById(AId: integer): TFDQuery;
 begin
-  qryArquivosCarteiraPTEA.Close;
-  qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId.ToString;
-  qryArquivosCarteiraPTEA.Open;
-  Result := qryArquivosCarteiraPTEA;
+  try
+    qryArquivosCarteiraPTEA.Close;
+    qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId.ToString;
+    qryArquivosCarteiraPTEA.Open;
+    Result := qryArquivosCarteiraPTEA;
+  except
+    on E: Exception do
+      raise Exception.Create(E.Message);
+  end;
 end;
 
 procedure TServiceNew.GetFiles;
@@ -184,9 +184,11 @@ begin
           begin
             LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
               .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
+
             qryArquivosCarteiraPTEA.Append;
             qryArquivosCarteiraPTEAIDCarteira.Value := mtPesquisaCarteiraPTEAid.Value;
             qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
+
             if LResponseHasDoc.StatusCode = 200 then
               qryArquivosCarteiraPTEAhasDoc.Value := true
             else if LResponseHasDoc.StatusCode = 204 then
@@ -218,8 +220,9 @@ begin
                 qryArquivosCarteiraPTEA.Post;
               end
             else if not(LResponse.StatusCode = 304) then
-              TToastMessage.show('Não foi possível efetuar o download das imagens. Erro #' +
-                  LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'), ttWarning);
+              raise Exception.Create('Não foi possível efetuar o download das imagens - Erro #' +
+                  LResponse.StatusCode.ToString + ', ' + LResponse.JSONValue.GetValue<string>('error'));
+
           end;
 
         mtPesquisaCarteiraPTEA.Next;
@@ -227,8 +230,7 @@ begin
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante obtenção dos anexos. ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;
@@ -250,8 +252,7 @@ begin
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante obtenção da imagem #' + AId.ToString + ' - ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create('Erro durante obtenção da imagem #' + AId.ToString + ' - ' + E.Message);
       end;
   end;
 end;
@@ -271,14 +272,13 @@ begin
       mtPesquisaCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
 
       if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
-        TToastMessage.show('Não foi possível listar os dados. Erro #' + LResponse.StatusCode.ToString + ' - ' +
-            LResponse.JSONValue.GetValue<string>('error'), ttWarning);
+        raise Exception.Create('Não foi possível listar os dados - Erro #' + LResponse.StatusCode.ToString + ', ' +
+            LResponse.JSONValue.GetValue<string>('error'));
     end;
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante listagem dos dados. ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;
@@ -306,8 +306,8 @@ begin
           end;
     finally
       if not(LResponseFoto.StatusCode in [200, 201, 204]) then
-        TToastMessage.show('Não foi possível enviar a foto #' + AId + ' para o servidor. Erro #' +
-            LResponseFoto.StatusCode.ToString + ' - ' + LResponseFoto.JSONValue.GetValue<string>('error'), ttWarning);
+        raise Exception.Create('Erro durante gravação da foto ' + AId + ' no servidor - Erro #' +
+            LResponseFoto.StatusCode.ToString + ', ' + LResponseFoto.JSONValue.GetValue<string>('error'));
 
       if LResponseFoto.StatusCode > 0 then
         LStreamFoto.Free;
@@ -315,8 +315,7 @@ begin
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante o envio da foto #' + AId + ' - ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;
@@ -325,6 +324,7 @@ procedure TServiceNew.Salvar;
 var
   LRequest: IRequest;
   LResponse: IResponse;
+  idResponse: integer;
 begin
   try
     try
@@ -335,18 +335,23 @@ begin
       else
         LResponse := LRequest.Post;
     finally
-      if not(LResponse.StatusCode in [200, 201, 204]) then
-        TToastMessage.show('Não foi possível enviar os dados da carteirinha #' + mtCadastroCarteiraPTEAid.AsString +
-            ' para o servidor. Erro #' + LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>
-            ('error'), ttWarning);
-      mtCadastroCarteiraPTEA.EmptyDataSet;
+      if LResponse.StatusCode in [200, 201, 204] then
+        begin
+          if not(mtCadastroCarteiraPTEAid.AsInteger > 0) then
+            if LResponse.JSONValue.TryGetValue('id', idResponse) then
+              begin
+                mtCadastroCarteiraPTEA.Edit;
+                mtCadastroCarteiraPTEAid.Value := idResponse;
+              end;
+        end
+      else
+        raise Exception.Create('Erro durante gravação dos dados da carteirinha ' + mtCadastroCarteiraPTEAid.AsString +
+            ' - Erro #' + LResponse.StatusCode.ToString + ', ' + LResponse.JSONValue.GetValue<string>('error'));
     end;
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante gravação dos dados da carteirinha #' + mtCadastroCarteiraPTEAid.AsString +
-            ' - ' + E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;
@@ -365,9 +370,9 @@ begin
           .AddBody(LStreamDoc, false).Put;
 
         if not(LResponseDoc.StatusCode in [200, 201, 204]) then
-          TToastMessage.show('Não foi possível enviar o laudo #' + mtCadastroCarteiraPTEAid.AsString +
-              ' para o servidor. Erro #' + LResponseDoc.StatusCode.ToString + ' - ' +
-              LResponseDoc.JSONValue.GetValue<string>('error'), ttWarning);
+          raise Exception.Create('Erro durante gravação do laudo ' + mtCadastroCarteiraPTEAid.AsString +
+              ' no servidor - Erro #' + LResponseDoc.StatusCode.ToString + ', ' +
+              LResponseDoc.JSONValue.GetValue<string>('error'));
 
         if LResponseDoc.StatusCode > 0 then
           LStreamDoc.Free;
@@ -375,9 +380,7 @@ begin
   except
     on E: Exception do
       begin
-        TToastMessage.show('Erro durante envio do Laudo Médico #' + mtCadastroCarteiraPTEAid.AsString + ' - ' +
-            E.Message, ttDanger);
-        abort;
+        raise Exception.Create(E.Message);
       end;
   end;
 end;

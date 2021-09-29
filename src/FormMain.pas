@@ -21,7 +21,8 @@ uses
   System.ImageList,
   FMX.ImgList,
   FMX.Edit,
-  FMX.Ani, FMX.Effects;
+  FMX.Ani,
+  FMX.Effects;
 
 type
   TfrmMain = class(TForm)
@@ -47,10 +48,13 @@ type
     lytTitulo: TLayout;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
+    PasswordEditButton1: TPasswordEditButton;
     procedure InicializarMenuPrincipal;
+    procedure cbManterConectadoChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     private
-      { Private declarations }
+
     public
       { Public declarations }
   end;
@@ -60,11 +64,59 @@ var
 
 implementation
 
+uses
+  Services.Auth;
+
 {$R *.fmx}
 
 procedure TfrmMain.btnLoginClick(Sender: TObject);
+var
+  LService: TServiceAuth;
 begin
+  LService := TServiceAuth.Create(nil);
+  try
+    LService.EfetuarLogin(edtUser.Text, edtPass.Text);
+  finally
+    LService.Free;
+  end;
   InicializarMenuPrincipal;
+
+end;
+
+procedure TfrmMain.cbManterConectadoChange(Sender: TObject);
+var
+  LService: TServiceAuth;
+begin
+  LService := TServiceAuth.Create(nil);
+  try
+    LService.qryUsuario.Close;
+    LService.qryUsuario.Open;
+    if not(LService.qryUsuario.IsEmpty) then
+      begin
+        LService.qryUsuario.Edit;
+        LService.qryUsuarioStayConected.Value := cbManterConectado.IsChecked;
+        LService.qryUsuario.Post;
+      end;
+  finally
+    LService.Free;
+  end;
+
+end;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+var
+  LService: TServiceAuth;
+begin
+  LService := TServiceAuth.Create(nil);
+  try
+    LService.qryUsuario.Close;
+    LService.qryUsuario.Open;
+    if LService.qryUsuarioStayConected.AsBoolean then
+      InicializarMenuPrincipal;
+  finally
+    LService.Free;
+  end;
+
 end;
 
 procedure TfrmMain.InicializarMenuPrincipal;

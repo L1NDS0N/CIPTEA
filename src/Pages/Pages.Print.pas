@@ -57,6 +57,7 @@ type
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     private
+      PropsKeyValue: string;
       serviceNew: TServiceNew;
       procedure LimparCampos;
     public
@@ -86,7 +87,6 @@ begin
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
   end;
-
 end;
 
 procedure TPagePrint.FormCreate(Sender: TObject);
@@ -109,7 +109,9 @@ procedure TPagePrint.Props(aValue: TProps);
 begin
   try
     try
-      if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToPrint') then
+      PropsKeyValue := aValue.Key;
+      if (aValue.PropString <> '') and ((PropsKeyValue = 'IdCarteiraToPrintFromDashboard') OR
+          (PropsKeyValue = 'IdCarteiraToPrintFromUpdate')) then
         serviceNew.GetById(aValue.PropString);
 
       lblID.Text := '#' + aValue.PropString;

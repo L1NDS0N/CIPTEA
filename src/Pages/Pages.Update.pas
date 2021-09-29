@@ -85,6 +85,10 @@ type
     ClearEditButton8: TClearEditButton;
     cbTitular: TCheckBox;
     cbResponsavel: TCheckBox;
+    btnPrint: TRectangle;
+    ColorAnimation4: TColorAnimation;
+    ColorAnimation5: TColorAnimation;
+    imgPrint: TPath;
     procedure ValidarCampos(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
@@ -99,6 +103,7 @@ type
     procedure edtNumeroContatoKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure edtRgResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure btnPrintClick(Sender: TObject);
     private
       serviceNew: TServiceNew;
       Config: TConfigGlobal;
@@ -240,6 +245,19 @@ begin
     end;
 end;
 
+procedure TPageUpdate.btnPrintClick(Sender: TObject);
+begin
+  try
+    TRouter4D.Link.&To('Print', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+        .Key('IdCarteiraToPrintFromUpdate'));
+  except
+    on E: Exception do
+      begin
+        TToastMessage.show('Erro durante navegação para página de impressão - ' + E.Message, ttDanger);
+      end;
+  end;
+end;
+
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
 begin
   try
@@ -302,10 +320,10 @@ end;
 
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
 var
-  AID: string;
+  AId: string;
 begin
   Self.ValidarCampos(Sender);
-  AID := serviceNew.mtCadastroCarteiraPTEAid.AsString;
+  AId := serviceNew.mtCadastroCarteiraPTEAid.AsString;
   try
     try
       serviceNew.mtCadastroCarteiraPTEA.Edit;
@@ -324,7 +342,7 @@ begin
       serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
       serviceNew.Salvar;
     finally
-      TToastMessage.show('Alterações na carteirinha #' + AID + ' foram salvas com sucesso!', ttSuccess);
+      TToastMessage.show('Alterações na carteirinha #' + AId + ' foram salvas com sucesso!', ttSuccess);
       try
         TRouter4D.Link.&To('Dashboard');
       except

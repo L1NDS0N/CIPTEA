@@ -207,7 +207,7 @@ end;
 procedure TPageDashboard.OnPrintCarteira(const ASender: TFrame; const AId: string);
 begin
   try
-    TRouter4D.Link.&To('Print', TProps.Create.PropString(AId).Key('IdCarteiraToPrint'));
+    TRouter4D.Link.&To('Print', TProps.Create.PropString(AId).Key('IdCarteiraToPrintFromDashboard'));
   except
     on E: Exception do
       begin

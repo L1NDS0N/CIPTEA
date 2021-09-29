@@ -59,7 +59,7 @@
         <SanitizedProjectName>Pages</SanitizedProjectName>
         <DCC_BplOutput>.\bin</DCC_BplOutput>
         <DCC_DcpOutput>.\bin</DCC_DcpOutput>
-        <DCC_UnitSearchPath>$(DCC_UnitSearchPath);modules\.dcp;modules\.dcu;modules;modules\HStorage4Bind\src;modules\aws4d\src;modules\dataset-serialize\src;modules\hstorage4d\src;modules\localcache4d\samples\LocalCache4D;modules\localcache4d\src;modules\restrequest4delphi\src;modules\router4delphi\src;modules\translator4d\samples\GoogleTranslator;modules\translator4d\src;modules\zipcode4bind\src</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>modules\.dcp;modules\.dcu;modules;modules\HStorage4Bind\src;modules\aws4d\src;modules\dataset-serialize\src;modules\hstorage4d\src;modules\localcache4d\samples\LocalCache4D;modules\localcache4d\src;modules\restrequest4delphi\src;modules\router4delphi\src;modules\translator4d\samples\GoogleTranslator;modules\translator4d\src;modules\zipcode4bind\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_CBuilderOutput>None</DCC_CBuilderOutput>
@@ -114,11 +114,6 @@
         <DCCReference Include="bindengine.dcp"/>
         <DCCReference Include="bindcomp.dcp"/>
         <DCCReference Include="bindcompfmx.dcp"/>
-        <DCCReference Include="gtxDocumentEngines.dcp"/>
-        <DCCReference Include="gtxDocumentStudioCore.dcp"/>
-        <DCCReference Include="fmxgtxDocumentStudioControls.dcp"/>
-        <DCCReference Include="fmxgtxDocumentEngines.dcp"/>
-        <DCCReference Include="fmxgtxDocumentStudioCore.dcp"/>
         <DCCReference Include="fmxFireDAC.dcp"/>
         <DCCReference Include="Pages.Dashboard.pas">
             <Form>PageDashboard</Form>
@@ -147,11 +142,6 @@
             <Form>PageUpdate</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="..\Services\Services.Connection.pas">
-            <Form>ServiceConnection</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="..\Utils\Utils.Tools.pas"/>
         <DCCReference Include="..\Configs\Configs.GLOBAL.pas"/>
         <DCCReference Include="Pages.Editor.pas">
@@ -162,6 +152,11 @@
         <DCCReference Include="Pages.Print.pas">
             <Form>PagePrint</Form>
             <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Services\Services.Connection.pas">
+            <Form>DataModule1</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

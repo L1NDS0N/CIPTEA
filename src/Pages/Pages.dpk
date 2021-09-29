@@ -40,11 +40,6 @@ requires
   bindengine,
   bindcomp,
   bindcompfmx,
-  gtxDocumentEngines,
-  gtxDocumentStudioCore,
-  fmxgtxDocumentStudioControls,
-  fmxgtxDocumentEngines,
-  fmxgtxDocumentStudioCore,
   fmxFireDAC;
 
 contains
@@ -55,11 +50,11 @@ contains
   Frames.DashboardDetail in 'Providers\Frames.DashboardDetail.pas' {FrameDashboardDetail: TFrame},
   Providers.Types in 'Providers\Providers.Types.pas',
   Pages.Update in 'Pages.Update.pas' {PageUpdate},
-  Services.Connection in '..\Services\Services.Connection.pas' {ServiceConnection: TDataModule},
   Utils.Tools in '..\Utils\Utils.Tools.pas',
   Configs.GLOBAL in '..\Configs\Configs.GLOBAL.pas',
   Pages.Editor in 'Pages.Editor.pas' {PageEditor},
   ToastMessage in '..\Providers\ToastMessage.pas',
-  Pages.Print in 'Pages.Print.pas' {PagePrint};
+  Pages.Print in 'Pages.Print.pas' {PagePrint},
+  Services.Connection in '..\Services\Services.Connection.pas' {DataModule1: TDataModule};
 
 end.

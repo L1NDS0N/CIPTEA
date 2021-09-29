@@ -30,12 +30,18 @@ type
     VertScrollBox: TVertScrollBox;
     ProgressBar: TProgressBar;
     lytProgress: TLayout;
+    btnDeslogar: TRectangle;
+    ColorAnimation2: TColorAnimation;
+    lblBtnVoltar: TLabel;
+    ColorAnimation3: TColorAnimation;
     procedure FormCreate(Sender: TObject);
+    procedure btnDeslogarClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     private
+      SignToClose: Boolean;
       procedure Router;
     public
       procedure Animation(aLayout: TFMXObject);
-      procedure ProgressBarAnimation(aProgressBar: TFMXObject);
   end;
 
 var
@@ -51,28 +57,51 @@ uses
   Pages.Update,
   Pages.Editor,
   Pages.Print,
+  FMX.DialogService,
   FMX.Dialogs;
 
 {$R *.fmx}
 
+procedure TPagePrincipal.btnDeslogarClick(Sender: TObject);
+var
+  CanClose: Boolean;
+begin
+  TDialogService.MessageDialog('Tem certeza que deseja desconectar-se?', TMsgDlgType.mtConfirmation,
+    FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
+      procedure(const AResult: TModalResult)
+    begin
+      if AResult = mrYes then
+        Self.FormCloseQuery(Sender, CanClose);
+    end);
+
+end;
+
+procedure TPagePrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  //TODO - tentar remover a gambiarra paradoxal do SignToClose;
+  if Sender is TRectangle then
+    begin
+      SignToClose := True;
+      Self.Close;
+    end;
+
+  if Sender is TForm then
+    begin
+      if SignToClose then
+        begin
+          SignToClose := False;
+          Self.Close;
+        end
+      else
+        Halt(0);
+    end;
+end;
+
 procedure TPagePrincipal.FormCreate(Sender: TObject);
 begin
   Self.Router;
-  ProgressBar.Visible := false;
-end;
-
-procedure TPagePrincipal.ProgressBarAnimation(aProgressBar: TFMXObject);
-begin
-  with TProgressBar(aProgressBar) do
-    begin
-      Value := 0;
-      while not(Value = Max) do
-        begin
-          Value := Value + 1;
-
-        end;
-    end;
-
+  ProgressBar.Visible := False;
+  SignToClose := False;
 end;
 
 procedure TPagePrincipal.Router;
@@ -88,25 +117,25 @@ end;
 
 procedure TPagePrincipal.Animation(aLayout: TFMXObject);
 var
-  myThread: TThread;
+  ProgressBarThread: TThread;
 begin
-  myThread := TThread.CreateAnonymousThread(
-      procedure
+  ProgressBarThread := TThread.CreateAnonymousThread(
+    procedure
     begin
       with ProgressBar do
         begin
-          Visible := true;
+          Visible := True;
           while not(Value = Max) do
             begin
               Value := TLayout(aLayout).Opacity * 100;
             end;
           Value := 0;
-          Visible := false;
+          Visible := False;
         end;
     end);
   TLayout(aLayout).Opacity := 0;
   TLayout(aLayout).AnimateFloat('Opacity', 1, 0.7);
-  myThread.Start;
+  ProgressBarThread.Start;
 end;
 
 Initialization

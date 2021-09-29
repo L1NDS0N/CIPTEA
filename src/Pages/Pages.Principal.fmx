@@ -12,6 +12,7 @@ object PagePrincipal: TPagePrincipal
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnCloseQuery = FormCloseQuery
   DesignerMasterStyle = 0
   object lytBackground: TLayout
     Align = Client
@@ -53,6 +54,56 @@ object PagePrincipal: TPagePrincipal
           Size.Height = 7.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = 'ProgressBarStyle1'
+        end
+      end
+      object btnDeslogar: TRectangle
+        Align = Scale
+        Fill.Color = claNull
+        Margins.Left = 3.000000000000000000
+        Margins.Top = 3.000000000000000000
+        Margins.Right = 3.000000000000000000
+        Margins.Bottom = 3.000000000000000000
+        Position.X = 3.000000000000000000
+        Position.Y = 728.000000000000000000
+        Size.Width = 54.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claWhite
+        Stroke.Thickness = 0.100000001490116100
+        XRadius = 5.000000000000000000
+        YRadius = 5.000000000000000000
+        OnClick = btnDeslogarClick
+        object ColorAnimation2: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claNull
+          StopValue = xC8ED4245
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object lblBtnVoltar: TLabel
+          Align = HorzCenter
+          AutoSize = True
+          StyledSettings = []
+          Position.X = 5.000000000000000000
+          Size.Width = 43.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = claSnow
+          TextSettings.HorzAlign = Center
+          Text = '<--'
+          TabOrder = 0
+        end
+        object ColorAnimation3: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Stroke.Color'
+          StartValue = claNull
+          StopValue = x5A36393F
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
         end
       end
     end

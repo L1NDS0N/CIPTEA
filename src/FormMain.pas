@@ -21,18 +21,32 @@ uses
   System.ImageList,
   FMX.ImgList,
   FMX.Edit,
-  FMX.Ani;
+  FMX.Ani, FMX.Effects;
 
 type
   TfrmMain = class(TForm)
     lytBackground: TLayout;
     rctBackground: TRectangle;
     lytPrincipal: TLayout;
-    Layout1: TLayout;
+    lytModalLogin: TLayout;
     rctLoginField: TRectangle;
     btnLogin: TSpeedButton;
     edtUser: TEdit;
     edtPass: TEdit;
+    cbManterConectado: TCheckBox;
+    rctUser: TRectangle;
+    rctPass: TRectangle;
+    RectAnimation1: TRectAnimation;
+    rctLogin: TRectangle;
+    lytIconUser: TLayout;
+    IconUser: TPath;
+    lytIconPass: TLayout;
+    IconPass: TPath;
+    imgLogo: TImage;
+    lblTitulo: TLabel;
+    lytTitulo: TLayout;
+    ShadowEffect1: TShadowEffect;
+    ShadowEffect2: TShadowEffect;
     procedure InicializarMenuPrincipal;
     procedure btnLoginClick(Sender: TObject);
     private

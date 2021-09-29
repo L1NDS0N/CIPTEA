@@ -14,13 +14,13 @@ object PageDashboard: TPageDashboard
     Size.Height = 612.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    object Layout1: TLayout
+    object lytHeader: TLayout
       Align = Top
       Size.Width = 688.000000000000000000
       Size.Height = 121.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      object Layout2: TLayout
+      object lytTitle: TLayout
         Align = Top
         Size.Width = 688.000000000000000000
         Size.Height = 57.000000000000000000

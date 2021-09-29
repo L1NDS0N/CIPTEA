@@ -43,14 +43,14 @@ uses
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
     lytDashboard: TLayout;
-    Layout1: TLayout;
+    lytHeader: TLayout;
     Label1: TLabel;
     vsbCarteiras: TVertScrollBox;
     retBtnNew: TRectangle;
     lblNovo: TLabel;
     ColorAnimation1: TColorAnimation;
     ShadowEffect1: TShadowEffect;
-    Layout2: TLayout;
+    lytTitle: TLayout;
     lytSearchBox: TLayout;
     ComboEdit: TComboEdit;
     rectSearchBox: TRoundRect;

@@ -1,7 +1,4 @@
-﻿[Layout1]
-Coordinates=10,10,53,33
-
-[Label1]
+﻿[Label1]
 Coordinates=178,10,46,51
 
 [lytDashboard]
@@ -16,4 +13,7 @@ Coordinates=849,10,199,33
 
 [ServiceNew.mtCadastroCarteiraPTEA]
 Coordinates=12,363,198,249
+
+[lytHeader]
+Coordinates=10,10,53,33
 

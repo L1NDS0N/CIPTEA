@@ -34,6 +34,7 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
+    Layout1: TLayout;
     procedure FormCreate(Sender: TObject);
     procedure btnDeslogarClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);

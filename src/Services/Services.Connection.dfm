@@ -4,7 +4,7 @@ object ServiceConnection: TServiceConnection
   Width = 129
   object LocalConnection: TFDConnection
     Params.Strings = (
-      
+
         'Database=C:\Users\Lindson Fran'#231'a\Desktop\CIPTEA\src\db\CIPTEA.db' +
         '3'
       'OpenMode=ReadWrite'

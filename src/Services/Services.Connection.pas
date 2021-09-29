@@ -16,7 +16,9 @@ uses
   FireDAC.Phys,
   FireDAC.FMXUI.Wait,
   Data.DB,
-  FireDAC.Comp.Client, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
+  FireDAC.Comp.Client,
+  FireDAC.Phys.SQLite,
+  FireDAC.Phys.SQLiteDef,
   FireDAC.Stan.ExprFuncs;
 
 type

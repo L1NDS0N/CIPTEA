@@ -22,13 +22,15 @@ var
   AForm: TForm;
 begin
   APersistentClass := GetClass(ClasseForm);
+
   if APersistentClass = nil then
     ShowMessage('Formulario não localizado!')
   else
-  begin
-    AForm := TComponentClass(APersistentClass).Create(Application) as TForm;
-    AForm.ShowModal;
-  end;
+    begin
+      AForm := TComponentClass(APersistentClass).Create(Application) as TForm;
+      AForm.ShowModal;
+      AForm := nil;
+    end;
 end;
 
 procedure CriaPacote(Pacote: String);
@@ -42,10 +44,10 @@ begin
   sFile := ExtractFilePath(ParamStr(0)) + Pacote + '\bin\' + Pacote + '.bpl';
 
   if FileExists(sFile) then
-  begin
-    SetLength(APackage, Length(APackage) + 1);
-    APackage[Length(APackage) - 1] := LoadPackage(sFile);
-  end
+    begin
+      SetLength(APackage, Length(APackage) + 1);
+      APackage[Length(APackage) - 1] := LoadPackage(sFile);
+    end
   else
     ShowMessage('Package não encontrado ' + sFile);
 end;

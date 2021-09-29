@@ -18,7 +18,8 @@ uses
   Utils.ImageFormat in 'src\Utils\Utils.ImageFormat.pas',
   Services.User in 'src\Services\Services.User.pas' {ServiceUser: TDataModule},
   Controllers.Auth in 'src\Controllers\Controllers.Auth.pas',
-  Providers.Authorization in 'src\Providers\Providers.Authorization.pas';
+  Providers.Authorization in 'src\Providers\Providers.Authorization.pas',
+  Configs.Global in 'src\Config\Configs.Global.pas';
 
 begin
   ReportMemoryLeaksOnShutdown := True;

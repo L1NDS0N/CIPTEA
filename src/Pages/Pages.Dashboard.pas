@@ -90,6 +90,7 @@ implementation
 { TfrmDashboard }
 uses
   Router4D,
+  Providers.PrivateRoute,
   Frames.DashboardDetail,
   Pages.Update,
   Router4D.Props,
@@ -219,7 +220,8 @@ end;
 procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
 begin
   try
-    TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+//    TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+    OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
   except
     on E: Exception do
       begin

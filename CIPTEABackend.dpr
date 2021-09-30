@@ -19,7 +19,8 @@ uses
   Services.User in 'src\Services\Services.User.pas' {ServiceUser: TDataModule},
   Controllers.Auth in 'src\Controllers\Controllers.Auth.pas',
   Providers.Authorization in 'src\Providers\Providers.Authorization.pas',
-  Configs.Global in 'src\Config\Configs.Global.pas';
+  Configs.Global in 'src\Config\Configs.Global.pas',
+  Utils.Tools in 'src\Utils\Utils.Tools.pas';
 
 begin
   ReportMemoryLeaksOnShutdown := True;

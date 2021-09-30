@@ -4,6 +4,7 @@ interface
 
 uses
   Services.CarteiraPTEA,
+  Providers.Authorization,
   System.Classes,
   Horse,
   System.JSON,
@@ -79,7 +80,7 @@ begin
     end;
   except
     on E: Exception do
-      EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante a gravação do registro ' + E.Message);
+      raise EHorseException.Create(THTTPStatus.InternalServerError, 'Erro durante a gravação do registro ' + E.Message);
   end;
 end;
 
@@ -311,18 +312,18 @@ end;
 
 procedure Registry;
 begin
-  THorse.Get('/carteiras', DoList);
-  THorse.Get('/carteiras/:id', DoGet);
-  THorse.Post('/carteiras', DoPost);
-  THorse.Put('/carteiras/:id', DoUpdate);
-  THorse.Delete('/carteiras/:id', DoDelete);
+  THorse.Get('/carteiras', Authorization(), DoList);
+  THorse.Get('/carteiras/:id', Authorization(), DoGet);
+  THorse.Post('/carteiras', Authorization(), DoPost);
+  THorse.Put('/carteiras/:id', Authorization(), DoUpdate);
+  THorse.Delete('/carteiras/:id', Authorization(), DoDelete);
 
-  THorse.Get('/carteiras/:id/static/foto', DoGetStreamFoto);
-  THorse.Put('/carteiras/:id/static/foto', DoPutStreamFoto);
+  THorse.Get('/carteiras/:id/static/foto', Authorization(), DoGetStreamFoto);
+  THorse.Put('/carteiras/:id/static/foto', Authorization(), DoPutStreamFoto);
   THorse.Get('/carteiras/:id/etag/foto', DoGetEtagFoto);
 
   THorse.Get('/carteiras/:id/static/doc', DoGetStreamDoc);
-  THorse.Put('/carteiras/:id/static/doc', DoPutStreamDoc);
+  THorse.Put('/carteiras/:id/static/doc', Authorization(), DoPutStreamDoc);
   THorse.Get('/carteiras/:id/has/doc', DoGetHasDoc);
 end;
 

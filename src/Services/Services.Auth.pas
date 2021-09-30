@@ -3,7 +3,6 @@ unit Services.Auth;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
@@ -22,17 +21,17 @@ uses
 type
   TServiceAuth = class(TDataModule)
     qryUsuario: TFDQuery;
-    qryUsuarioId: TIntegerField;
+    qryUsuarioid: TIntegerField;
     qryUsuarioNome: TStringField;
     qryUsuarioToken: TStringField;
-    qryUsuarioRefreshToken: TStringField;
-    qryUsuarioTokenExpires: TSQLTimeStampField;
     qryUsuarioStayConected: TBooleanField;
+    qryUsuarioTokenCreatedAt: TIntegerField;
+    qryUsuarioTokenExpires: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     private
       config: TConfigGlobal;
     public
-      function EfetuarLogin(Usuario, Senha: string): boolean;
+      function EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
   end;
 
 var
@@ -42,9 +41,10 @@ implementation
 
 uses
   RestRequest4d,
+  DataSet.serialize,
   Services.LocalConnection,
   System.JSON,
-  FMX.Dialogs;
+  System.SysUtils;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -54,13 +54,29 @@ begin
   qryUsuario.Connection := TServiceLocalConnection.Create(Self).LocalConnection;
 end;
 
-function TServiceAuth.EfetuarLogin(Usuario, Senha: string): boolean;
+function TServiceAuth.EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
 var
   LResponse: IResponse;
 begin
   LResponse := TRequest.New.BaseURL(config.BaseURL).addbody(TJsonObject.Create.AddPair('nome', Usuario.Trim)
       .AddPair('senha', Senha)).resource('authenticate').post;
-  ShowMessage(LResponse.Content);
+  if LResponse.StatusCode in [200, 201, 204] then
+    begin
+      Result := true;
+      LResponse.JSONValue.AsType<TJsonObject>.AddPair('StayConected', TJSONBool.Create(StayConected));
+
+      qryUsuario.Close;
+      qryUsuario.Open;
+      if qryUsuario.IsEmpty then
+        qryUsuario.LoadFromJSON(LResponse.JSONValue.ToJSON)
+      else
+        qryUsuario.MergeFromJSONObject(LResponse.JSONValue.ToJSON);
+    end
+  else
+    begin
+      Result := false;
+      raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+    end;
 end;
 
 end.

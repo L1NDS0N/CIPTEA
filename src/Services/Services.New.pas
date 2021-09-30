@@ -59,6 +59,13 @@ type
     qryTempid: TFDAutoIncField;
     qryTempFotoRostoPath: TStringField;
     qryTempLaudoMedicoPath: TStringField;
+    qryUsuario: TFDQuery;
+    qryUsuarioid: TIntegerField;
+    qryUsuarioNome: TStringField;
+    qryUsuarioToken: TStringField;
+    qryUsuarioStayConected: TBooleanField;
+    qryUsuarioTokenCreatedAt: TIntegerField;
+    qryUsuarioTokenExpires: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -102,6 +109,7 @@ begin
   Connection := TServiceConnection.Create(Self);
   qryArquivosCarteiraPTEA.Connection := Connection.LocalConnection;
   qryTemp.Connection := Connection.LocalConnection;
+  qryUsuario.Connection := Connection.LocalConnection;
 end;
 
 procedure TServiceNew.Delete(const AId: string);
@@ -109,7 +117,11 @@ var
   LResponse: IResponse;
 begin
   try
-    LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix(AId).Delete;
+    qryUsuario.Close;
+    qryUsuario.Open;
+    LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
+      .ResourceSuffix(AId).Delete;
+
     if LResponse.StatusCode = 204 then
       begin
         qryArquivosCarteiraPTEA.Close;
@@ -134,11 +146,15 @@ var
 begin
   try
     try
+      qryUsuario.Close;
+      qryUsuario.Open;
       mtCadastroCarteiraPTEA.EmptyDataSet;
       LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix(AId)
-        .DataSetAdapter(mtCadastroCarteiraPTEA).Get;
+        .TokenBearer(qryUsuarioToken.Value).DataSetAdapter(mtCadastroCarteiraPTEA).Get;
     finally
-      if not(LResponse.StatusCode = 200) then
+      if LResponse.StatusCode = 401 then
+        raise Exception.Create('Atualmente você não possui autorização para efetuar esta operação.')
+      else if not(LResponse.StatusCode = 200) then
         raise Exception.Create('Não foi possível obter os dados da carteirinha #' + AId + '. Erro #' +
             LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'));
     end;
@@ -169,6 +185,8 @@ var
   LResponseHasDoc: IResponse;
 begin
   try
+    qryUsuario.Close;
+    qryUsuario.Open;
     mtPesquisaCarteiraPTEA.Open;
     mtPesquisaCarteiraPTEA.First;
     while not(mtPesquisaCarteiraPTEA.Eof) do
@@ -182,7 +200,7 @@ begin
 
         if qryArquivosCarteiraPTEA.IsEmpty then
           begin
-            LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+            LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
               .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
 
             qryArquivosCarteiraPTEA.Append;
@@ -214,6 +232,7 @@ begin
             if (LResponse.StatusCode in [200]) then
               begin
                 LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+                  .TokenBearer(qryUsuarioToken.Value)
                   .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
                 qryArquivosCarteiraPTEA.Edit;
                 qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
@@ -263,15 +282,20 @@ var
 begin
   try
     try
+      qryUsuario.Close;
+      qryUsuario.Open;
       //caso único, para obter o valor do Etag já armazenado
       mtPesquisaCarteiraPTEA.First;
       LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
-        .DataSetAdapter(mtPesquisaCarteiraPTEA).AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
+        .TokenBearer(qryUsuarioToken.Value).DataSetAdapter(mtPesquisaCarteiraPTEA)
+        .AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
     finally
       mtPesquisaCarteiraPTEA.First;
       mtPesquisaCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
 
-      if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
+      if LResponse.StatusCode = 401 then
+        raise Exception.Create('Atualmente você não possui autorização para listar os dados.')
+      else if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
         raise Exception.Create('Não foi possível listar os dados - Erro #' + LResponse.StatusCode.ToString + ', ' +
             LResponse.JSONValue.GetValue<string>('error'));
     end;
@@ -294,6 +318,9 @@ begin
       qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId;
       qryArquivosCarteiraPTEA.Open;
 
+      qryUsuario.Close;
+      qryUsuario.Open;
+
       if not(qryArquivosCarteiraPTEA.IsEmpty) then
         if not(qryArquivosCarteiraPTEAFotoStream.IsNull) then
           begin
@@ -301,11 +328,13 @@ begin
             qryArquivosCarteiraPTEAFotoStream.SaveToStream(LStreamFoto);
             LStreamFoto.Position := 0;
             LResponseFoto := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
-              .ResourceSuffix(AId + '/static/foto').ContentType('application/octet-stream')
-              .AddBody(LStreamFoto, false).Put;
+              .TokenBearer(qryUsuarioToken.Value).ResourceSuffix(AId + '/static/foto')
+              .ContentType('application/octet-stream').AddBody(LStreamFoto, false).Put;
           end;
     finally
-      if not(LResponseFoto.StatusCode in [200, 201, 204]) then
+      if LResponseFoto.StatusCode = 401 then
+        raise Exception.Create('Atualmente você não possui autorização para gravar imagens.')
+      else if not(LResponseFoto.StatusCode in [200, 201, 204]) then
         raise Exception.Create('Erro durante gravação da foto ' + AId + ' no servidor - Erro #' +
             LResponseFoto.StatusCode.ToString + ', ' + LResponseFoto.JSONValue.GetValue<string>('error'));
 
@@ -328,7 +357,10 @@ var
 begin
   try
     try
-      LRequest := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+      qryUsuario.Close;
+      qryUsuario.Open;
+
+      LRequest := TRequest.New.BaseURL(Config.BaseURL).TokenBearer(qryUsuarioToken.Value).Resource('carteiras')
         .AddBody(mtCadastroCarteiraPTEA.ToJSONObject);
       if (mtCadastroCarteiraPTEAid.AsInteger > 0) then
         LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put
@@ -344,6 +376,8 @@ begin
                 mtCadastroCarteiraPTEAid.Value := idResponse;
               end;
         end
+      else if LResponse.StatusCode = 401 then
+        raise Exception.Create('Atualmente você não possui autorização para gravar os dados.')
       else
         raise Exception.Create('Erro durante gravação dos dados da carteirinha ' + mtCadastroCarteiraPTEAid.AsString +
             ' - Erro #' + LResponse.StatusCode.ToString + ', ' + LResponse.JSONValue.GetValue<string>('error'));
@@ -362,14 +396,18 @@ var
   LResponseDoc: IResponse;
 begin
   try
+    qryUsuario.Close;
+    qryUsuario.Open;
     if not(mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
       begin
         LStreamDoc := TFileStream.Create(mtCadastroCarteiraPTEALaudoMedicoPath.Value, fmOpenRead);
-        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
           .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc').ContentType('application/octet-stream')
           .AddBody(LStreamDoc, false).Put;
 
-        if not(LResponseDoc.StatusCode in [200, 201, 204]) then
+        if LResponseDoc.StatusCode = 401 then
+          raise Exception.Create('Atualmente você não possui autorização para gravar laudos.')
+        else if not(LResponseDoc.StatusCode in [200, 201, 204]) then
           raise Exception.Create('Erro durante gravação do laudo ' + mtCadastroCarteiraPTEAid.AsString +
               ' no servidor - Erro #' + LResponseDoc.StatusCode.ToString + ', ' +
               LResponseDoc.JSONValue.GetValue<string>('error'));

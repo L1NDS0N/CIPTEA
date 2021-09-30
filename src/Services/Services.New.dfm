@@ -1,7 +1,7 @@
 object ServiceNew: TServiceNew
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 274
+  Height = 358
   Width = 154
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
@@ -209,6 +209,41 @@ object ServiceNew: TServiceNew
       FieldName = 'LaudoMedicoPath'
       Origin = 'LaudoMedicoPath'
       Size = 254
+    end
+  end
+  object qryUsuario: TFDQuery
+    Connection = ServiceLocalConnection.LocalConnection
+    SQL.Strings = (
+      'select * from usuario limit 1')
+    Left = 53
+    Top = 272
+    object qryUsuarioid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object qryUsuarioNome: TStringField
+      FieldName = 'Nome'
+      Origin = 'Nome'
+      Size = 32767
+    end
+    object qryUsuarioToken: TStringField
+      FieldName = 'Token'
+      Origin = 'Token'
+      Size = 32767
+    end
+    object qryUsuarioStayConected: TBooleanField
+      FieldName = 'StayConected'
+      Origin = 'StayConected'
+      Required = True
+    end
+    object qryUsuarioTokenCreatedAt: TIntegerField
+      FieldName = 'TokenCreatedAt'
+      Origin = 'TokenCreatedAt'
+    end
+    object qryUsuarioTokenExpires: TIntegerField
+      FieldName = 'TokenExpires'
+      Origin = 'TokenExpires'
     end
   end
 end

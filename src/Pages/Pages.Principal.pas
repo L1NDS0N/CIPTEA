@@ -53,6 +53,7 @@ implementation
 uses
   Router4D.Interfaces,
   Router4D,
+  Pages.Login,
   Pages.Dashboard,
   Pages.New,
   Pages.Update,
@@ -107,6 +108,7 @@ end;
 
 procedure TPagePrincipal.Router;
 begin
+  TRouter4D.Switch.Router('Login', TPageLogin);
   TRouter4D.Switch.Router('Dashboard', TPageDashboard);
   TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);

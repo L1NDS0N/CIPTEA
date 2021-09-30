@@ -50,7 +50,6 @@ type
     ShadowEffect2: TShadowEffect;
     PasswordEditButton1: TPasswordEditButton;
     procedure InicializarMenuPrincipal;
-    procedure cbManterConectadoChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     private
@@ -75,32 +74,11 @@ var
 begin
   LService := TServiceAuth.Create(nil);
   try
-    LService.EfetuarLogin(edtUser.Text, edtPass.Text);
+    if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
+      InicializarMenuPrincipal;
   finally
     LService.Free;
   end;
-  InicializarMenuPrincipal;
-
-end;
-
-procedure TfrmMain.cbManterConectadoChange(Sender: TObject);
-var
-  LService: TServiceAuth;
-begin
-  LService := TServiceAuth.Create(nil);
-  try
-    LService.qryUsuario.Close;
-    LService.qryUsuario.Open;
-    if not(LService.qryUsuario.IsEmpty) then
-      begin
-        LService.qryUsuario.Edit;
-        LService.qryUsuarioStayConected.Value := cbManterConectado.IsChecked;
-        LService.qryUsuario.Post;
-      end;
-  finally
-    LService.Free;
-  end;
-
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -116,7 +94,6 @@ begin
   finally
     LService.Free;
   end;
-
 end;
 
 procedure TfrmMain.InicializarMenuPrincipal;

@@ -55,6 +55,8 @@ contains
   Pages.Editor in 'Pages.Editor.pas' {PageEditor},
   ToastMessage in '..\Providers\ToastMessage.pas',
   Pages.Print in 'Pages.Print.pas' {PagePrint},
-  Services.Connection in '..\Services\Services.Connection.pas' {DataModule1: TDataModule};
+  Services.Connection in '..\Services\Services.Connection.pas' {DataModule1: TDataModule},
+  Providers.PrivateRoute in 'Providers\Providers.PrivateRoute.pas',
+  Pages.Login in 'Pages.Login.pas' {PageLogin};
 
 end.

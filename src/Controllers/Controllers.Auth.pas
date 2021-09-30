@@ -13,6 +13,8 @@ var
 implementation
 
 uses
+  Providers.Authorization,
+  Utils.tools,
   Jose.Core.JWT,
   Jose.Core.Builder,
   System.SysUtils,
@@ -79,26 +81,9 @@ begin
 
         Res.Send(LService.qryCadastroUsuario.ToJSONObject.AddPair('Token',
             GenerateToken(LService.qryCadastroUsuario.FieldByName('id').AsInteger)).AddPair('TokenCreatedAt',
-            DateTimeToStr(Now)).AddPair('TokenExpires', DateTimeToStr(IncMonth(Now)))).Status(THTTPStatus.Created);
+            MyTimestamp(Now)).AddPair('TokenExpires', MyTimestamp(IncMonth(Now)))).Status(THTTPStatus.Created);
       end;
 
-  finally
-    LService.Free;
-  end;
-end;
-
-function UserIsValid(Username, Password: string): boolean;
-var
-  LService: TServiceUser;
-begin
-  LService := TServiceUser.Create(nil);
-  try
-    if not(LService.GetByFieldValue('nome', Username).IsEmpty) then
-      begin
-        Result := TBCrypt.CompareHash(Password, LService.qryPesquisaUsuario.FieldByName('senha').AsString);
-      end
-    else
-      Result := false;
   finally
     LService.Free;
   end;
@@ -117,23 +102,43 @@ begin
 
     nome := LData.GetValue<string>('nome').Trim;
     senha := LData.GetValue<string>('senha');
+    //valida campos
+    if not(LService.GetByFieldValue('nome', nome).IsEmpty) then
+      begin
+        if TBCrypt.CompareHash(senha, LService.qryPesquisaUsuario.FieldByName('senha').AsString) then
+          begin
+            LService.qryPesquisaUsuario.FieldByName('senha').Visible := false;
+            LService.qryPesquisaUsuario.FieldByName('email').Visible := false;
+            LService.qryPesquisaUsuario.FieldByName('criadoem').Visible := false;
+            LService.qryPesquisaUsuario.FieldByName('alteradoem').Visible := false;
 
-    if UserIsValid(nome, senha) then
-      Res.Send(TJsonObject.Create.AddPair('nome', nome).AddPair('token',
-          GenerateToken(LService.qryPesquisaUsuario.FieldByName('id').AsInteger)).AddPair('TokenCreatedAt',
-          DateTimeToStr(Now)).AddPair('TokenExpires', DateTimeToStr(IncMonth(Now)))).Status(THTTPStatus.Created)
+            Res.Send(LService.qryPesquisaUsuario.ToJSONObject.AddPair('token',
+                GenerateToken(LService.qryPesquisaUsuario.FieldByName('id').AsInteger)).AddPair('TokenCreatedAt',
+                TJsonNumber.Create(MyTimestamp(Now))).AddPair('TokenExpires',
+                TJsonNumber.Create(MyTimestamp(IncMonth(Now))))).Status(THTTPStatus.OK);
+          end
+        else
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'O valor fornecido no campo de Senha está incorreto');
+      end
     else
-      raise EHorseException.Create(THTTPStatus.BadRequest, 'Usuário ou senha incorreto');
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'O valor fornecido no campo de Usuário está incorreto');
+
   finally
     LService.Free;
   end;
 
 end;
 
+procedure DoCheck(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+begin
+  Res.Status(THTTPStatus.NoContent);
+end;
+
 procedure Registry;
 begin
   THorse.Post('/register', DoCreate);
   THorse.Post('/authenticate', DoAuth);
+  THorse.Get('/healthcheck', Authorization(), DoCheck);
 end;
 
 end.

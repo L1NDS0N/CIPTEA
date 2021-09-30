@@ -15,7 +15,7 @@ object ServiceConnection: TServiceConnection
     Top = 16
   end
   object FDPhysMySQLDriverLink: TFDPhysMySQLDriverLink
-    VendorLib = 'C:\Users\Lindson Fran'#231'a\Desktop\CIPTEABackend\lib\libmySQL.dll'
+    VendorLib = '.\lib\libmySQL.dll'
     Left = 160
     Top = 16
   end

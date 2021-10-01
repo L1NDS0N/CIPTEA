@@ -25,8 +25,7 @@ uses
   Router4D.Props,
   FMX.ExtCtrls,
   FMX.Effects,
-  Configs.GLOBAL,
-  Router4D;
+  Configs.GLOBAL;
 
 type
   TPageUpdate = class(TForm, iRouter4DComponent)
@@ -113,7 +112,7 @@ type
       function Render: TFmxObject;
       procedure UnRender;
       [Subscribe]
-      procedure Props(aValue: TProps);
+      procedure PropsUpdate(aValue: TProps);
   end;
 
 var
@@ -122,6 +121,7 @@ var
 implementation
 
 uses
+  Providers.PrivateRoute,
   Utils.Tools,
   Pages.Principal,
   Pages.Dashboard,
@@ -154,7 +154,7 @@ begin
   edtNumeroContato.Text := EmptyStr;
 end;
 
-procedure TPageUpdate.Props(aValue: TProps);
+procedure TPageUpdate.PropsUpdate(aValue: TProps);
 var
   streamImage: TMemoryStream;
 begin
@@ -174,17 +174,19 @@ begin
       edtRgResponsavel.Text := serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString;
       edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
       imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetImageStreamById(aValue.PropString.ToInteger));
-    finally
-      aValue.Free;
-      VerificacoesUX;
+      serviceNew.GetFiles;
+
+    except
+      on E: Exception do
+        begin
+          TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString + ' - ' +
+              E.Message, ttDanger);
+          abort;
+        end;
     end;
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString + ' - ' +
-            E.Message, ttDanger);
-        abort;
-      end;
+  finally
+    FreeAndNil(aValue);
+    VerificacoesUX;
   end;
 end;
 
@@ -201,8 +203,8 @@ begin
           serviceNew.qryTemp.Post;
 
           try
-            TRouter4D.Link.&To('Editor', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
-                .Key('IdCarteiraToUpdate'));
+            OpenPrivateRoute('Editor', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+                .Key('IdCarteiraToFotoEdit'));
           except
             on E: Exception do
               TToastMessage.show('Erro durante navegação para a página de edição de imagem - ' + E.Message, ttDanger);
@@ -246,10 +248,13 @@ begin
 end;
 
 procedure TPageUpdate.btnPrintClick(Sender: TObject);
+var
+  PropsToPrint: TProps;
 begin
+  PropsToPrint := TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+    .Key('IdCarteiraToPrintFromUpdate');
   try
-    TRouter4D.Link.&To('Print', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
-        .Key('IdCarteiraToPrintFromUpdate'));
+    OpenPrivateRoute('Print', PropsToPrint);
   except
     on E: Exception do
       begin
@@ -261,7 +266,7 @@ end;
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
 begin
   try
-    TRouter4D.Link.&To('Dashboard');
+    OpenPrivateRoute('Dashboard');
   except
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
@@ -344,7 +349,7 @@ begin
     finally
       TToastMessage.show('Alterações na carteirinha #' + AId + ' foram salvas com sucesso!', ttSuccess);
       try
-        TRouter4D.Link.&To('Dashboard');
+        OpenPrivateRoute('Dashboard');
       except
         on E: Exception do
           TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);

@@ -64,7 +64,7 @@ type
       function Render: TFmxObject;
       procedure UnRender;
       [Subscribe]
-      procedure Props(aValue: TProps);
+      procedure PropsPrint(aValue: TProps);
   end;
 
 var
@@ -73,8 +73,8 @@ var
 implementation
 
 uses
-  ToastMessage,
-  Router4D;
+  Providers.PrivateRoute,
+  ToastMessage;
 
 {$R *.fmx}
 { TPagePrint }
@@ -82,7 +82,7 @@ uses
 procedure TPagePrint.btnVoltarClick(Sender: TObject);
 begin
   try
-    TRouter4D.Link.&To('Dashboard');
+    OpenPrivateRoute('Dashboard');
   except
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
@@ -105,7 +105,7 @@ begin
   lblID.Text := EmptyStr;
 end;
 
-procedure TPagePrint.Props(aValue: TProps);
+procedure TPagePrint.PropsPrint(aValue: TProps);
 begin
   try
     try
@@ -124,16 +124,15 @@ begin
       lblCPF.Text := serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString;
 
       imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetImageStreamById(aValue.PropString.ToInteger));
-    finally
-      aValue.Free;
+
+    except
+      on E: Exception do
+        begin
+          TToastMessage.show('Erro durante transferência dos dados da carteirinha ' + E.Message, ttDanger);
+        end;
     end;
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString + ' - ' +
-            E.Message, ttDanger);
-        abort;
-      end;
+  finally
+    FreeAndNil(aValue);
   end;
 end;
 
@@ -168,20 +167,20 @@ begin
               EndDoc;
               TToastMessage.show('Carteirinha enviada para impressão.', ttSuccess);
               try
-                TRouter4D.Link.&To('Dashboard');
+                OpenPrivateRoute('Dashboard');
               except
                 on E: Exception do
                   TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
               end;
             end;
         end;
-    finally
-      image1.Free;
-      image2.Free;
+    except
+      on E: Exception do
+        TToastMessage.show('Erro durante geração do arquivo para impressão - ' + E.Message, ttDanger);
     end;
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante geração do arquivo para impressão - ' + E.Message, ttDanger);
+  finally
+    image1.Free;
+    image2.Free;
   end;
 end;
 

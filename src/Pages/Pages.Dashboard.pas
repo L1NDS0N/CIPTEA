@@ -89,7 +89,6 @@ implementation
 
 { TfrmDashboard }
 uses
-  Router4D,
   Providers.PrivateRoute,
   Frames.DashboardDetail,
   Pages.Update,
@@ -206,9 +205,12 @@ begin
 end;
 
 procedure TPageDashboard.OnPrintCarteira(const ASender: TFrame; const AId: string);
+var
+  PropToPrint: TProps;
 begin
+  PropToPrint := TProps.Create.PropString(AId).Key('IdCarteiraToPrintFromDashboard');
   try
-    TRouter4D.Link.&To('Print', TProps.Create.PropString(AId).Key('IdCarteiraToPrintFromDashboard'));
+    OpenPrivateRoute('Print', PropToPrint);
   except
     on E: Exception do
       begin
@@ -220,7 +222,6 @@ end;
 procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
 begin
   try
-//    TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
     OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
   except
     on E: Exception do
@@ -245,7 +246,7 @@ end;
 procedure TPageDashboard.retBtnNewClick(Sender: TObject);
 begin
   try
-    TRouter4D.Link.&To('New');
+    OpenPrivateRoute('New');
   except
     on E: Exception do
       TToastMessage.show('Erro durante navegação para página de nova carteira - ' + E.Message, ttDanger);

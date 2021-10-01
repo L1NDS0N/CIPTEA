@@ -24,7 +24,6 @@ uses
   Services.New,
   Router4D.Props,
   FireDAC.Comp.Client,
-  Router4D,
   System.UITypes,
   FMX.Edit,
   FMX.EditBox,
@@ -81,6 +80,7 @@ var
 implementation
 
 uses
+  Providers.PrivateRoute,
   ToastMessage;
 
 {$R *.fmx}
@@ -88,7 +88,7 @@ uses
 procedure TPageEditor.btnVoltarClick(Sender: TObject);
 begin
   try
-    TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+    OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
   except
     on E: Exception do
       begin
@@ -134,21 +134,27 @@ end;
 procedure TPageEditor.Props(aValue: TProps);
 begin
   try
-    AId := aValue.PropString;
-    lblID.Text := '#' + AId;
-    if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToUpdate') then
-      qryFiles := ServiceNew.GetFileById(aValue.PropString.ToInteger());
-
-    ServiceNew.qryTemp.Close;
-    ServiceNew.qryTemp.Open;
-    ServiceNew.qryTemp.First;
-    rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
-    ImageViewer1.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante transferência de dados para a página de edição - ' + E.Message, ttDanger);
-      end;
+    try
+      if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToFotoEdit') then
+        begin
+          AId := aValue.PropString;
+          lblID.Text := '#' + AId;
+          //verificar se contém arquivos na nuvem.
+          //ServiceNew.GetFiles;
+        end;
+      ServiceNew.qryTemp.Close;
+      ServiceNew.qryTemp.Open;
+      ServiceNew.qryTemp.First;
+      rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
+      ImageViewer1.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
+    except
+      on E: Exception do
+        begin
+          TToastMessage.show('Erro durante transferência de dados para a página de edição - ' + E.Message, ttDanger);
+        end;
+    end;
+  finally
+    FreeAndNil(aValue);
   end;
 end;
 
@@ -167,24 +173,43 @@ begin
       vFotoStream := TMemoryStream.Create;
       ImageViewer1.MakeScreenshot.SaveToStream(vFotoStream);
 
-      ServiceNew.qryArquivosCarteiraPTEA.Edit;
-      ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
-      ServiceNew.qryArquivosCarteiraPTEA.Post;
+      //abrir a query arquivos carteira
+      qryFiles := ServiceNew.GetFileById(AId.ToInteger);
+      //fazer insert
+      if qryFiles.IsEmpty then
+        showmessage('está vazio')
+      else
+        showmessage('não está vazio');
+
+      if ServiceNew.qryArquivosCarteiraPTEA.IsEmpty then
+        begin
+          ServiceNew.qryArquivosCarteiraPTEA.Insert;
+          ServiceNew.qryArquivosCarteiraPTEAIDCarteira.Value := AId.ToInteger;
+          ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
+          ServiceNew.qryArquivosCarteiraPTEA.Post;
+        end
+      else
+        begin
+          ServiceNew.qryArquivosCarteiraPTEA.Edit;
+          ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
+          ServiceNew.qryArquivosCarteiraPTEA.Post;
+        end;
 
       ServiceNew.PostStreamFoto(AId);
       try
-        TRouter4D.Link.&To('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+        OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
       except
         on E: Exception do
           TToastMessage.show('Erro durante navegação para página de edição -' + E.Message, ttDanger);
       end;
       TToastMessage.show('A imagem foi salva com sucesso', ttSuccess);
-    finally
-      vFotoStream.Free;
+
+    except
+      on E: Exception do
+        TToastMessage.show('Erro durante gravação da foto - ' + E.Message, ttDanger);
     end;
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante gravação da foto - ' + E.Message, ttDanger);
+  finally
+    vFotoStream.Free;
   end;
 end;
 

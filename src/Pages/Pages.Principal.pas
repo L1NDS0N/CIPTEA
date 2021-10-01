@@ -60,22 +60,32 @@ uses
   Pages.Editor,
   Pages.Print,
   FMX.DialogService,
-  FMX.Dialogs;
+  FMX.Dialogs,
+  Services.New;
 
 {$R *.fmx}
 
 procedure TPagePrincipal.btnDeslogarClick(Sender: TObject);
 var
   CanClose: Boolean;
+  LService: TServiceNew;
 begin
-  TDialogService.MessageDialog('Tem certeza que deseja desconectar-se?', TMsgDlgType.mtConfirmation,
-    FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
-      procedure(const AResult: TModalResult)
-    begin
-      if AResult = mrYes then
-        Self.FormCloseQuery(Sender, CanClose);
-    end);
-
+  LService := TServiceNew.Create(nil);
+  try
+    TDialogService.MessageDialog('Tem certeza que deseja desconectar-se?', TMsgDlgType.mtConfirmation,
+      FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
+        procedure(const AResult: TModalResult)
+      begin
+        if AResult = mrYes then
+          begin
+            Self.FormCloseQuery(Sender, CanClose);
+            LService.qryUsuario.Open;
+            LService.qryUsuario.Delete;
+          end;
+      end);
+  finally
+    LService.Free;
+  end;
 end;
 
 procedure TPagePrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

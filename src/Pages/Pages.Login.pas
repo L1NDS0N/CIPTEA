@@ -49,6 +49,7 @@ type
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
     PasswordEditButton1: TPasswordEditButton;
+    procedure btnLoginClick(Sender: TObject);
     private
 
     public
@@ -61,12 +62,29 @@ var
 
 implementation
 
+uses
+  Services.New,
+  Router4D;
+
 {$R *.fmx}
 { TPageLogin }
 
+procedure TPageLogin.btnLoginClick(Sender: TObject);
+var
+  LService: TServiceNew;
+begin
+  LService := TServiceNew.Create(nil);
+  try
+    if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
+      TRouter4d.Link.&To('Dashboard');
+  finally
+    LService.Free;
+  end;
+end;
+
 function TPageLogin.Render: TFmxObject;
 begin
-  Result := lytModalLogin;
+  Result := lytBackground;
 end;
 
 procedure TPageLogin.UnRender;

@@ -96,9 +96,9 @@ var
 implementation
 
 uses
+  Providers.PrivateRoute,
   Utils.Tools,
   Pages.Dashboard,
-  Router4D,
   ToastMessage,
   Router4D.Props;
 
@@ -108,7 +108,7 @@ uses
 procedure TPageNew.btnVoltarClick(Sender: TObject);
 begin
   try
-    TRouter4D.Link.&To('Dashboard');
+    OpenPrivateRoute('Dashboard');
   except
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
@@ -211,7 +211,7 @@ begin
     finally
       try
         if not(serviceNew.mtCadastroCarteiraPTEAid.IsNull) then
-          TRouter4D.Link.&To('Update', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+          OpenPrivateRoute('Update', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
               .Key('IdCarteiraToUpdate'));
       except
         on E: Exception do

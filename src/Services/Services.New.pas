@@ -80,6 +80,7 @@ type
       procedure GetFiles;
       function GetImageStreamById(AId: integer): TStream;
       function GetFileById(AId: integer): TFDQuery;
+      function EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
   end;
 
 var
@@ -93,7 +94,7 @@ uses
   RESTRequest4D,
   FMX.Dialogs,
   Pages.Dashboard,
-  REST.Types;
+  REST.Types, System.JSON;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -138,6 +139,32 @@ begin
         raise Exception.Create(E.Message);
       end;
   end;
+end;
+
+function TServiceNew.EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
+var
+  LResponse: IResponse;
+begin
+  LResponse := TRequest.New.BaseURL(Config.BaseURL).addbody(TJsonObject.Create.AddPair('nome', Usuario.Trim)
+      .AddPair('senha', Senha)).Resource('authenticate').post;
+  if LResponse.StatusCode in [200, 201, 204] then
+    begin
+      Result := true;
+      LResponse.JSONValue.AsType<TJsonObject>.AddPair('StayConected', TJSONBool.Create(StayConected));
+
+      qryUsuario.Close;
+      qryUsuario.Open;
+      if qryUsuario.IsEmpty then
+        qryUsuario.LoadFromJSON(LResponse.JSONValue.ToJSON)
+      else
+        qryUsuario.MergeFromJSONObject(LResponse.JSONValue.ToJSON);
+    end
+  else
+    begin
+      Result := false;
+      raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
+    end;
+
 end;
 
 procedure TServiceNew.GetById(const AId: string);
@@ -211,7 +238,7 @@ begin
               qryArquivosCarteiraPTEAhasDoc.Value := true
             else if LResponseHasDoc.StatusCode = 204 then
               qryArquivosCarteiraPTEAhasDoc.Value := false;
-            qryArquivosCarteiraPTEA.Post;
+            qryArquivosCarteiraPTEA.post;
           end
         else
           begin
@@ -227,7 +254,7 @@ begin
               qryArquivosCarteiraPTEAhasDoc.Value := true
             else if LResponseHasDoc.StatusCode = 204 then
               qryArquivosCarteiraPTEAhasDoc.Value := false;
-            qryArquivosCarteiraPTEA.Post;
+            qryArquivosCarteiraPTEA.post;
 
             if (LResponse.StatusCode in [200]) then
               begin
@@ -236,7 +263,7 @@ begin
                   .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
                 qryArquivosCarteiraPTEA.Edit;
                 qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
-                qryArquivosCarteiraPTEA.Post;
+                qryArquivosCarteiraPTEA.post;
               end
             else if not(LResponse.StatusCode = 304) then
               raise Exception.Create('Não foi possível efetuar o download das imagens - Erro #' +
@@ -329,7 +356,7 @@ begin
             LStreamFoto.Position := 0;
             LResponseFoto := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
               .TokenBearer(qryUsuarioToken.Value).ResourceSuffix(AId + '/static/foto')
-              .ContentType('application/octet-stream').AddBody(LStreamFoto, false).Put;
+              .ContentType('application/octet-stream').addbody(LStreamFoto, false).Put;
           end;
     finally
       if LResponseFoto.StatusCode = 401 then
@@ -361,11 +388,11 @@ begin
       qryUsuario.Open;
 
       LRequest := TRequest.New.BaseURL(Config.BaseURL).TokenBearer(qryUsuarioToken.Value).Resource('carteiras')
-        .AddBody(mtCadastroCarteiraPTEA.ToJSONObject);
+        .addbody(mtCadastroCarteiraPTEA.ToJSONObject);
       if (mtCadastroCarteiraPTEAid.AsInteger > 0) then
         LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put
       else
-        LResponse := LRequest.Post;
+        LResponse := LRequest.post;
     finally
       if LResponse.StatusCode in [200, 201, 204] then
         begin
@@ -403,7 +430,7 @@ begin
         LStreamDoc := TFileStream.Create(mtCadastroCarteiraPTEALaudoMedicoPath.Value, fmOpenRead);
         LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
           .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc').ContentType('application/octet-stream')
-          .AddBody(LStreamDoc, false).Put;
+          .addbody(LStreamDoc, false).Put;
 
         if LResponseDoc.StatusCode = 401 then
           raise Exception.Create('Atualmente você não possui autorização para gravar laudos.')

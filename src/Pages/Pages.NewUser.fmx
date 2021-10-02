@@ -1,0 +1,323 @@
+object PageNewUser: TPageNewUser
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 726
+  ClientWidth = 928
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object lytNewUser: TLayout
+    Align = Client
+    Size.Width = 928.000000000000000000
+    Size.Height = 726.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object lytInterno: TLayout
+      Align = Client
+      Padding.Left = 120.000000000000000000
+      Padding.Top = 60.000000000000000000
+      Padding.Right = 120.000000000000000000
+      Padding.Bottom = 60.000000000000000000
+      Size.Width = 928.000000000000000000
+      Size.Height = 593.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object VertScrollBox: TVertScrollBox
+        Align = Client
+        Padding.Top = 60.000000000000000000
+        Size.Width = 688.000000000000000000
+        Size.Height = 473.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        ShowScrollBars = False
+        Viewport.Width = 688.000000000000000000
+        Viewport.Height = 473.000000000000000000
+        object edtSenha: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 2
+          Password = True
+          MaxLength = 40
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 190.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 27.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = #8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226
+          StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton2: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object PasswordEditButton1: TPasswordEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Position.X = 28.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+          end
+        end
+        object edtConfirmarSenha: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 3
+          Password = True
+          MaxLength = 40
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 244.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 27.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = #8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226#8226
+          StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton1: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object PasswordEditButton2: TPasswordEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Position.X = 28.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+          end
+        end
+        object edtNomeUsuario: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 0
+          MaxLength = 30
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 82.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 27.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = 'Nome de usu'#225'rio '#233' utilizado para fazer login. Deve ser '#250'nico.'
+          StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton8: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+        end
+        object edtEmail: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 1
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 136.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 27.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = 'email@exemplo.com'
+          StyledSettings = [Size, Style, FontColor]
+          CharCase = ecUpperCase
+          OnExit = edtEmailExit
+          object ClearEditButton3: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+        end
+        object lblSenha: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 168.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Senha'
+          TabOrder = 4
+        end
+        object lblConfirmarSenha: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 222.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Confirmar Senha'
+          TabOrder = 5
+        end
+        object lblNomeUsuario: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 60.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Nome de usu'#225'rio'
+          TabOrder = 6
+        end
+        object lblEmail: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 114.000000000000000000
+          Size.Width = 688.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Email'
+          TabOrder = 7
+        end
+      end
+    end
+    object lytHeader: TLayout
+      Align = MostTop
+      Size.Width = 928.000000000000000000
+      Size.Height = 63.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      object Label1: TLabel
+        Align = VertCenter
+        AutoSize = True
+        StyledSettings = [Style, FontColor]
+        Position.X = 96.000000000000000000
+        Position.Y = 21.000000000000000000
+        Size.Width = 832.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = 'Fira Code Retina'
+        TextSettings.Font.Size = 16.000000000000000000
+        TextSettings.HorzAlign = Center
+        Text = 'Novo usu'#225'rio'
+        TabOrder = 0
+      end
+      object btnVoltar: TRectangle
+        Align = Left
+        Fill.Color = claNull
+        Margins.Left = 3.000000000000000000
+        Margins.Top = 3.000000000000000000
+        Margins.Right = 3.000000000000000000
+        Margins.Bottom = 3.000000000000000000
+        Position.X = 3.000000000000000000
+        Position.Y = 3.000000000000000000
+        Size.Width = 90.000000000000000000
+        Size.Height = 57.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claNull
+        XRadius = 5.000000000000000000
+        YRadius = 5.000000000000000000
+        OnClick = btnVoltarClick
+        object ColorAnimation2: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claNull
+          StopValue = x1E36393F
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object lblBtnVoltar: TLabel
+          Align = VertCenter
+          AutoSize = True
+          StyledSettings = []
+          Position.Y = 17.000000000000000000
+          Size.Width = 90.000000000000000000
+          Size.Height = 23.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = xFF202225
+          TextSettings.HorzAlign = Center
+          Text = '<--'
+          TabOrder = 0
+        end
+        object ColorAnimation3: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Stroke.Color'
+          StartValue = claNull
+          StopValue = x5A36393F
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+      end
+    end
+    object FloatAnimation: TFloatAnimation
+      Duration = 0.200000002980232200
+      PropertyName = 'Position.X'
+      StartValue = 0.000000000000000000
+      StartFromCurrent = True
+      StopValue = -1.000000000000000000
+    end
+    object retBtnSalvar: TRectangle
+      Align = Bottom
+      Fill.Color = xC84682B4
+      Margins.Left = 2.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 2.000000000000000000
+      Margins.Bottom = 2.000000000000000000
+      Position.X = 2.000000000000000000
+      Position.Y = 661.000000000000000000
+      Size.Width = 924.000000000000000000
+      Size.Height = 63.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claSkyblue
+      XRadius = 5.000000000000000000
+      YRadius = 5.000000000000000000
+      OnClick = retBtnSalvarClick
+      object ColorAnimation1: TColorAnimation
+        Duration = 0.200000002980232200
+        PropertyName = 'Fill.Color'
+        StartValue = xC84682B4
+        StopValue = claSteelblue
+        Trigger = 'IsMouseOver=true'
+        TriggerInverse = 'IsMouseOver=false'
+      end
+      object lblSalvar: TLabel
+        Align = VertCenter
+        AutoSize = True
+        StyledSettings = []
+        Position.Y = 22.000000000000000000
+        Size.Width = 924.000000000000000000
+        Size.Height = 18.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = 'Fira Code Retina'
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'Salvar'
+        TabOrder = 0
+      end
+      object ShadowEffect1: TShadowEffect
+        Distance = 2.000000000000000000
+        Direction = 90.000000000000000000
+        Softness = 0.200000002980232200
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+  end
+end

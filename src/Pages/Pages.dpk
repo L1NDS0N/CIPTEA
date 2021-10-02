@@ -9,21 +9,21 @@ package Pages;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS ON}
+{$LOCALSYMBOLS OFF}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION OFF}
+{$OPTIMIZATION ON}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO ON}
+{$REFERENCEINFO OFF}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES ON}
+{$STACKFRAMES OFF}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE DEBUG}
+{$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
@@ -57,6 +57,8 @@ contains
   Pages.Print in 'Pages.Print.pas' {PagePrint},
   Services.Connection in '..\Services\Services.Connection.pas' {DataModule1: TDataModule},
   Providers.PrivateRoute in 'Providers\Providers.PrivateRoute.pas',
-  Pages.Login in 'Pages.Login.pas' {PageLogin};
+  Pages.Login in 'Pages.Login.pas' {PageLogin},
+  Pages.NewUser in 'Pages.NewUser.pas' {PageNewUser},
+  Services.User in '..\Services\Services.User.pas' {ServiceUser: TDataModule};
 
 end.

@@ -192,7 +192,6 @@ begin
   Self.ValidarCampos(Sender);
   try
     try
-
       if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
         serviceNew.mtCadastroCarteiraPTEA.Edit
       else

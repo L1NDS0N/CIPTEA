@@ -51,6 +51,8 @@ var
 implementation
 
 uses
+  FMX.DialogService,
+  FMX.Dialogs,
   Router4D.Interfaces,
   Router4D,
   Pages.Login,
@@ -59,18 +61,17 @@ uses
   Pages.Update,
   Pages.Editor,
   Pages.Print,
-  FMX.DialogService,
-  FMX.Dialogs,
-  Services.New;
+  Pages.NewUser,
+  Services.User;
 
 {$R *.fmx}
 
 procedure TPagePrincipal.btnDeslogarClick(Sender: TObject);
 var
   CanClose: Boolean;
-  LService: TServiceNew;
+  LService: TServiceUser;
 begin
-  LService := TServiceNew.Create(nil);
+  LService := TServiceUser.Create(nil);
   try
     TDialogService.MessageDialog('Tem certeza que deseja desconectar-se?', TMsgDlgType.mtConfirmation,
       FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
@@ -79,8 +80,8 @@ begin
         if AResult = mrYes then
           begin
             Self.FormCloseQuery(Sender, CanClose);
-            LService.qryUsuario.Open;
-            LService.qryUsuario.Delete;
+            LService.qryUsuarioLocal.Open;
+            LService.qryUsuarioLocal.Delete;
           end;
       end);
   finally
@@ -119,6 +120,7 @@ end;
 procedure TPagePrincipal.Router;
 begin
   TRouter4D.Switch.Router('Login', TPageLogin);
+  TRouter4D.Switch.Router('NewUser', TPageNewUser);
   TRouter4D.Switch.Router('Dashboard', TPageDashboard);
   TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);

@@ -4,7 +4,6 @@ interface
 
 uses
   Configs.GLOBAL,
-
   System.SysUtils,
   System.Classes,
   FireDAC.Stan.Intf,
@@ -59,13 +58,13 @@ type
     qryTempid: TFDAutoIncField;
     qryTempFotoRostoPath: TStringField;
     qryTempLaudoMedicoPath: TStringField;
-    qryUsuario: TFDQuery;
-    qryUsuarioid: TIntegerField;
-    qryUsuarioNome: TStringField;
-    qryUsuarioToken: TStringField;
-    qryUsuarioStayConected: TBooleanField;
-    qryUsuarioTokenCreatedAt: TIntegerField;
-    qryUsuarioTokenExpires: TIntegerField;
+    qryUsuarioLocal: TFDQuery;
+    qryUsuarioLocalid: TIntegerField;
+    qryUsuarioLocalNome: TStringField;
+    qryUsuarioLocalToken: TStringField;
+    qryUsuarioLocalStayConected: TBooleanField;
+    qryUsuarioLocalTokenCreatedAt: TIntegerField;
+    qryUsuarioLocalTokenExpires: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -80,7 +79,6 @@ type
       procedure GetFiles;
       function GetImageStreamById(AId: integer): TStream;
       function GetFileById(AId: integer): TFDQuery;
-      function EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
   end;
 
 var
@@ -91,10 +89,7 @@ implementation
 uses
   Services.Connection,
   DataSet.Serialize,
-  RESTRequest4D,
-  FMX.Dialogs,
-  Pages.Dashboard,
-  REST.Types, System.JSON;
+  RESTRequest4D;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -110,7 +105,7 @@ begin
   Connection := TServiceConnection.Create(Self);
   qryArquivosCarteiraPTEA.Connection := Connection.LocalConnection;
   qryTemp.Connection := Connection.LocalConnection;
-  qryUsuario.Connection := Connection.LocalConnection;
+  qryUsuarioLocal.Connection := Connection.LocalConnection;
 end;
 
 procedure TServiceNew.Delete(const AId: string);
@@ -118,9 +113,9 @@ var
   LResponse: IResponse;
 begin
   try
-    qryUsuario.Close;
-    qryUsuario.Open;
-    LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
+    qryUsuarioLocal.Close;
+    qryUsuarioLocal.Open;
+    LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioLocalToken.Value)
       .ResourceSuffix(AId).Delete;
 
     if LResponse.StatusCode = 204 then
@@ -141,43 +136,17 @@ begin
   end;
 end;
 
-function TServiceNew.EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
-var
-  LResponse: IResponse;
-begin
-  LResponse := TRequest.New.BaseURL(Config.BaseURL).addbody(TJsonObject.Create.AddPair('nome', Usuario.Trim)
-      .AddPair('senha', Senha)).Resource('authenticate').post;
-  if LResponse.StatusCode in [200, 201, 204] then
-    begin
-      Result := true;
-      LResponse.JSONValue.AsType<TJsonObject>.AddPair('StayConected', TJSONBool.Create(StayConected));
-
-      qryUsuario.Close;
-      qryUsuario.Open;
-      if qryUsuario.IsEmpty then
-        qryUsuario.LoadFromJSON(LResponse.JSONValue.ToJSON)
-      else
-        qryUsuario.MergeFromJSONObject(LResponse.JSONValue.ToJSON);
-    end
-  else
-    begin
-      Result := false;
-      raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
-    end;
-
-end;
-
 procedure TServiceNew.GetById(const AId: string);
 var
   LResponse: IResponse;
 begin
   try
     try
-      qryUsuario.Close;
-      qryUsuario.Open;
+      qryUsuarioLocal.Close;
+      qryUsuarioLocal.Open;
       mtCadastroCarteiraPTEA.EmptyDataSet;
       LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix(AId)
-        .TokenBearer(qryUsuarioToken.Value).DataSetAdapter(mtCadastroCarteiraPTEA).Get;
+        .TokenBearer(qryUsuarioLocalToken.Value).DataSetAdapter(mtCadastroCarteiraPTEA).Get;
     finally
       if LResponse.StatusCode = 401 then
         raise Exception.Create('Atualmente você não possui autorização para efetuar esta operação.')
@@ -212,8 +181,8 @@ var
   LResponseHasDoc: IResponse;
 begin
   try
-    qryUsuario.Close;
-    qryUsuario.Open;
+    qryUsuarioLocal.Close;
+    qryUsuarioLocal.Open;
     mtPesquisaCarteiraPTEA.Open;
     mtPesquisaCarteiraPTEA.First;
     while not(mtPesquisaCarteiraPTEA.Eof) do
@@ -227,7 +196,7 @@ begin
 
         if qryArquivosCarteiraPTEA.IsEmpty then
           begin
-            LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
+            LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioLocalToken.Value)
               .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
 
             qryArquivosCarteiraPTEA.Append;
@@ -259,7 +228,7 @@ begin
             if (LResponse.StatusCode in [200]) then
               begin
                 LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
-                  .TokenBearer(qryUsuarioToken.Value)
+                  .TokenBearer(qryUsuarioLocalToken.Value)
                   .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
                 qryArquivosCarteiraPTEA.Edit;
                 qryArquivosCarteiraPTEAFotoStream.LoadFromStream(LResponse.ContentStream);
@@ -309,12 +278,12 @@ var
 begin
   try
     try
-      qryUsuario.Close;
-      qryUsuario.Open;
+      qryUsuarioLocal.Close;
+      qryUsuarioLocal.Open;
       //caso único, para obter o valor do Etag já armazenado
       mtPesquisaCarteiraPTEA.First;
       LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
-        .TokenBearer(qryUsuarioToken.Value).DataSetAdapter(mtPesquisaCarteiraPTEA)
+        .TokenBearer(qryUsuarioLocalToken.Value).DataSetAdapter(mtPesquisaCarteiraPTEA)
         .AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
     finally
       mtPesquisaCarteiraPTEA.First;
@@ -345,8 +314,8 @@ begin
       qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId;
       qryArquivosCarteiraPTEA.Open;
 
-      qryUsuario.Close;
-      qryUsuario.Open;
+      qryUsuarioLocal.Close;
+      qryUsuarioLocal.Open;
 
       if not(qryArquivosCarteiraPTEA.IsEmpty) then
         if not(qryArquivosCarteiraPTEAFotoStream.IsNull) then
@@ -355,7 +324,7 @@ begin
             qryArquivosCarteiraPTEAFotoStream.SaveToStream(LStreamFoto);
             LStreamFoto.Position := 0;
             LResponseFoto := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
-              .TokenBearer(qryUsuarioToken.Value).ResourceSuffix(AId + '/static/foto')
+              .TokenBearer(qryUsuarioLocalToken.Value).ResourceSuffix(AId + '/static/foto')
               .ContentType('application/octet-stream').addbody(LStreamFoto, false).Put;
           end;
     finally
@@ -384,10 +353,10 @@ var
 begin
   try
     try
-      qryUsuario.Close;
-      qryUsuario.Open;
+      qryUsuarioLocal.Close;
+      qryUsuarioLocal.Open;
 
-      LRequest := TRequest.New.BaseURL(Config.BaseURL).TokenBearer(qryUsuarioToken.Value).Resource('carteiras')
+      LRequest := TRequest.New.BaseURL(Config.BaseURL).TokenBearer(qryUsuarioLocalToken.Value).Resource('carteiras')
         .addbody(mtCadastroCarteiraPTEA.ToJSONObject);
       if (mtCadastroCarteiraPTEAid.AsInteger > 0) then
         LResponse := LRequest.ResourceSuffix(mtCadastroCarteiraPTEAid.AsString).Put
@@ -423,12 +392,12 @@ var
   LResponseDoc: IResponse;
 begin
   try
-    qryUsuario.Close;
-    qryUsuario.Open;
+    qryUsuarioLocal.Close;
+    qryUsuarioLocal.Open;
     if not(mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
       begin
         LStreamDoc := TFileStream.Create(mtCadastroCarteiraPTEALaudoMedicoPath.Value, fmOpenRead);
-        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioToken.Value)
+        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioLocalToken.Value)
           .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc').ContentType('application/octet-stream')
           .addbody(LStreamDoc, false).Put;
 

@@ -63,7 +63,7 @@ var
 implementation
 
 uses
-  Services.New,
+  Services.User,
   Router4D;
 
 {$R *.fmx}
@@ -71,9 +71,9 @@ uses
 
 procedure TPageLogin.btnLoginClick(Sender: TObject);
 var
-  LService: TServiceNew;
+  LService: TServiceUser;
 begin
-  LService := TServiceNew.Create(nil);
+  LService := TServiceUser.Create(nil);
   try
     if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
       TRouter4d.Link.&To('Dashboard');

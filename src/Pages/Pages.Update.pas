@@ -88,6 +88,7 @@ type
     ColorAnimation4: TColorAnimation;
     ColorAnimation5: TColorAnimation;
     imgPrint: TPath;
+    FloatAnimation4: TFloatAnimation;
     procedure ValidarCampos(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);

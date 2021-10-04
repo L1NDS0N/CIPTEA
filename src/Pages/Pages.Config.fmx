@@ -1,0 +1,474 @@
+object PageConfig: TPageConfig
+  Left = 0
+  Top = 0
+  Caption = 'Configura'#231#245'es'
+  ClientHeight = 658
+  ClientWidth = 1016
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object lytPageConfig: TLayout
+    Align = Client
+    Size.Width = 1016.000000000000000000
+    Size.Height = 658.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object rect_fundo: TRectangle
+      Align = Client
+      Fill.Color = x1E36393F
+      Size.Width = 1016.000000000000000000
+      Size.Height = 658.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+      object lytModal: TLayout
+        Align = VertCenter
+        Position.Y = 210.000000000000000000
+        Size.Width = 1016.000000000000000000
+        Size.Height = 300.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object HorzScrollBox: THorzScrollBox
+          Align = Client
+          Size.Width = 1016.000000000000000000
+          Size.Height = 300.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          ShowScrollBars = False
+          Viewport.Width = 1016.000000000000000000
+          Viewport.Height = 300.000000000000000000
+          object rect_modal: TRectangle
+            Align = Client
+            Size.Width = 1016.000000000000000000
+            Size.Height = 300.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Kind = None
+            object rect_novousuario: TRectangle
+              Align = Left
+              Cursor = crHandPoint
+              Fill.Color = claNull
+              Padding.Left = 3.000000000000000000
+              Padding.Top = 3.000000000000000000
+              Padding.Right = 3.000000000000000000
+              Padding.Bottom = 3.000000000000000000
+              Size.Width = 186.666748046875000000
+              Size.Height = 300.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              OnClick = rect_novousuarioClick
+              object Line1: TLine
+                Align = Right
+                LineType = Right
+                Position.X = 174.666748046875000000
+                Position.Y = 3.000000000000000000
+                Size.Width = 9.000000000000000000
+                Size.Height = 294.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Color = claGray
+              end
+              object IconUser: TPath
+                Align = Horizontal
+                Data.Path = {
+                  2900000000000000000090400000A84102000000000090400000A84102000000
+                  000040400000A841020000000000404000009C41020000000000404000009041
+                  0200000000009040000058410200000000004041000058410200000000009C41
+                  00005841020000000000A84100009041020000000000A84100009C4102000000
+                  0000A8410000A8410200000000009C410000A8410200000000009C410000A841
+                  01000000000090400000A84103000000000090400000A8410000000000004041
+                  0000404102000000931853410000404102000000DC686541166A384102000000
+                  79E9724179E92A41020000000B358041BC681D41020000000000844174180B41
+                  02000000000084410000F040020000000000844118CFC940020000000B358041
+                  882EA5400200000079E97241382D8A4002000000DC686541D1575E4002000000
+                  9318534100004040020000000000404100004040020000006DE72C4100004040
+                  0200000044971A41D1575E40020000009C160D41382D8A4002000000E92BFF40
+                  882EA540020000000000F04018CFC940020000000000F0400000F04002000000
+                  0000F04074180B4102000000E92BFF40BC681D41020000009C160D4179E92A41
+                  0200000044971A41166A3841020000006DE72C41000040410200000000004041
+                  00004041030000000000404100004041}
+                EnableDragHighlight = False
+                Fill.Color = claDarkgray
+                HitTest = False
+                Position.X = 3.000000000000000000
+                Position.Y = 80.000000000000000000
+                Size.Width = 171.666748046875000000
+                Size.Height = 73.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Color = claNull
+                WrapMode = Fit
+                object ShadowEffect1: TShadowEffect
+                  Distance = 3.000000000000000000
+                  Direction = 45.000000000000000000
+                  Softness = 0.200000002980232200
+                  Opacity = 0.600000023841857900
+                  ShadowColor = claBlack
+                end
+              end
+              object lblNovoUsuario: TLabel
+                Align = Horizontal
+                StyledSettings = [Family, Style]
+                Position.X = 3.000000000000000000
+                Position.Y = 168.000000000000000000
+                Size.Width = 171.666748046875000000
+                Size.Height = 97.000000000000000000
+                Size.PlatformDefault = False
+                TextSettings.Font.Size = 16.000000000000000000
+                TextSettings.FontColor = claDimgray
+                TextSettings.HorzAlign = Center
+                Text = 'Novo usu'#225'rio'
+                TabOrder = 2
+              end
+              object ColorAnimation1: TColorAnimation
+                Duration = 0.200000002980232200
+                PropertyName = 'Fill.Color'
+                StartValue = claNull
+                StopValue = x78286496
+                Trigger = 'IsMouseOver=true'
+                TriggerInverse = 'IsMouseOver=false'
+              end
+              object FloatAnimation3: TFloatAnimation
+                AnimationType = InOut
+                Duration = 0.200000002980232200
+                PropertyName = 'Scale.X'
+                StartValue = 1.000000000000000000
+                StopValue = 1.049999952316284000
+                Trigger = 'IsMouseOver=true'
+                TriggerInverse = 'IsMouseOver=false'
+              end
+            end
+            object rect_atualizarusuario: TRectangle
+              Align = Left
+              Cursor = crHandPoint
+              Fill.Color = claNull
+              Padding.Left = 3.000000000000000000
+              Padding.Top = 3.000000000000000000
+              Padding.Right = 3.000000000000000000
+              Padding.Bottom = 3.000000000000000000
+              Position.X = 186.666748046875000000
+              Size.Width = 187.000000000000000000
+              Size.Height = 300.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              OnClick = rect_atualizarusuarioClick
+              object Line2: TLine
+                Align = Right
+                LineType = Right
+                Position.X = 175.000000000000000000
+                Position.Y = 3.000000000000000000
+                Size.Width = 9.000000000000000000
+                Size.Height = 294.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Color = claGray
+              end
+              object IconAtualizarUsuario: TPath
+                Align = Horizontal
+                Data.Path = {
+                  9C00000002000000000090400000A84102000000000040400000A84102000000
+                  0000404000009C41020000000000404000009041020000000000904000005841
+                  0200000000004041000058410200000000009C4100005841020000000000A841
+                  00009041020000000000A84100009C41020000000000A8410000A84102000000
+                  00009C410000A8410200000000009C410000A84101000000000090400000A841
+                  0300000000000000000000000000000000004041000040410200000093185341
+                  0000404102000000DC686541166A38410200000079E9724179E92A4102000000
+                  0B358041BC681D41020000000000844174180B4102000000000084410000F040
+                  020000000000844118CFC940020000000B358041882EA5400200000079E97241
+                  382D8A4002000000DC686541D1575E4002000000931853410000404002000000
+                  0000404100004040020000006DE72C41000040400200000044971A41D1575E40
+                  020000009C160D41382D8A4002000000E92BFF40882EA540020000000000F040
+                  18CFC940020000000000F0400000F040020000000000F04074180B4102000000
+                  E92BFF40BC681D41020000009C160D4179E92A410200000044971A41166A3841
+                  020000006DE72C41000040410200000000004041000040410300000000004041
+                  000040410000000052B82A41EC5150410200000033332741F628504102000000
+                  14AE234100005041020000000000204100005041020000005C8FF24000005041
+                  02000000713DAA4052B85A4102000000C2F55840B81E6D4102000000D7A32040
+                  A470754102000000000000405C8F82410200000000000040CDCC8A4101000000
+                  0000004000009841020000000000004066669C4102000000CDCC1C400000A041
+                  02000000000040400000A04101000000F62834410000A041020000001F852741
+                  C3F59641020000000000204185EB8B4102000000000020410000804102000000
+                  0000204148E16E41020000000000244148E15E410200000052B82A41EC515041
+                  0300000052B82A41EC515041000000000000A64100008041020000000000A641
+                  E17A7C41020000008FC2A541AE477941020000001F85A54185EB754101000000
+                  713DAC41703D6A410200000015AEAD4114AE6741020000000000AE411E856341
+                  020000003E0AAD41F528604101000000EC51A8410AD74F4102000000295CA741
+                  E17A4C4102000000295CA5413D0A4B41020000009A99A341EB514C4101000000
+                  B91E9B417A145241020000005D8F98418EC24D410200000015AE954166664A41
+                  02000000E27A9241FFFF47410100000053B890415B8F364102000000ED519041
+                  47E132410200000053B88E41F528304102000000CECC8C41F528304101000000
+                  2A5C8341F528304102000000A5708141F52830410200000017AE7F4147E13241
+                  020000004AE17E415B8F3641010000002B5C7B41FFFF474102000000C5F57441
+                  65664A410200000035336F418EC24D41020000007D146A417A14524101000000
+                  BA1E5941EB514C4102000000A67055413D0A4B41020000009B995141D7A34C41
+                  0200000016AE4F410AD74F4101000000723D4641F628604102000000ED514441
+                  1F85634102000000C4F5444115AE6741020000000CD74741713D6A4101000000
+                  B047554186EB754102000000CFCC5441AF47794102000000ED515441E27A7C41
+                  02000000ED5154410000804102000000ED5154418FC2814102000000CECC5441
+                  295C834102000000B04755413D0A8541010000000CD7474147E18A4102000000
+                  C4F54441F5288C4102000000ED514441703D8E4102000000723D464184EB8F41
+                  0100000016AE4F417A149841020000009B9951418EC29941020000009B995541
+                  E07A9A4102000000BA1E594109D79941010000007C146A41C1F5964102000000
+                  34336F41B71E994102000000C4F57441CBCC9A41020000002A5C7B41FEFF9B41
+                  0100000049E17E4150B8A4410200000016AE7F415A8FA64102000000A4708141
+                  83EBA741020000002A5C834183EBA74101000000CECC8C4183EBA74102000000
+                  53B88E4183EBA74102000000ED5190415A8FA6410200000053B8904150B8A441
+                  01000000E27A9241FEFF9B410200000015AE9541CBCC9A41020000005D8F9841
+                  B61E994102000000B91E9B41C1F59641010000009A99A34109D7994102000000
+                  A470A541E07A9A4102000000295CA74113AE994102000000EC51A8417A149841
+                  010000003E0AAD4184EB8F41020000000100AE41703D8E410200000015AEAD41
+                  F5288C4102000000713DAC4147E18A41010000001F85A5413D0A854102000000
+                  8FC2A541295C8341020000000000A6418FC28141020000000000A64100008041
+                  030000000000A641000080410000000000008841000090410200000066667E41
+                  000090410200000000007041CDCC884102000000000070410000804102000000
+                  0000704166666E410200000066667E4100006041020000000000884100006041
+                  02000000CDCC904100006041020000000000984166666E410200000000009841
+                  000080410200000000009841CDCC884102000000CDCC90410000904102000000
+                  0000884100009041030000000000884100009041}
+                EnableDragHighlight = False
+                Fill.Color = claDarkgray
+                HitTest = False
+                Position.X = 3.000000000000000000
+                Position.Y = 80.000000000000000000
+                Size.Width = 172.000000000000000000
+                Size.Height = 73.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Color = claNull
+                WrapMode = Fit
+                object ShadowEffect3: TShadowEffect
+                  Distance = 3.000000000000000000
+                  Direction = 45.000000000000000000
+                  Softness = 0.200000002980232200
+                  Opacity = 0.600000023841857900
+                  ShadowColor = claBlack
+                end
+              end
+              object lblAtualizarUsuario: TLabel
+                Align = Horizontal
+                StyledSettings = [Family, Style]
+                Position.X = 3.000000000000000000
+                Position.Y = 168.000000000000000000
+                Size.Width = 172.000000000000000000
+                Size.Height = 105.000000000000000000
+                Size.PlatformDefault = False
+                TextSettings.Font.Size = 16.000000000000000000
+                TextSettings.FontColor = claDimgray
+                TextSettings.HorzAlign = Center
+                Text = 'Atualizar informa'#231#245'es de usu'#225'rio'
+                TabOrder = 2
+              end
+              object ColorAnimation2: TColorAnimation
+                Duration = 0.200000002980232200
+                PropertyName = 'Fill.Color'
+                StartValue = claNull
+                StopValue = x78286496
+                Trigger = 'IsMouseOver=true'
+                TriggerInverse = 'IsMouseOver=false'
+              end
+              object FloatAnimation1: TFloatAnimation
+                AnimationType = InOut
+                Duration = 0.200000002980232200
+                PropertyName = 'Scale.X'
+                StartValue = 1.000000000000000000
+                StopValue = 1.049999952316284000
+                Trigger = 'IsMouseOver=true'
+                TriggerInverse = 'IsMouseOver=false'
+              end
+            end
+            object rect_configlocal: TRectangle
+              Align = Left
+              Cursor = crHandPoint
+              Fill.Color = claNull
+              Padding.Left = 3.000000000000000000
+              Padding.Top = 3.000000000000000000
+              Padding.Right = 3.000000000000000000
+              Padding.Bottom = 3.000000000000000000
+              Position.X = 373.666748046875000000
+              Size.Width = 187.000000000000000000
+              Size.Height = 300.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object Line3: TLine
+                Align = Right
+                LineType = Right
+                Position.X = 175.000000000000000000
+                Position.Y = 3.000000000000000000
+                Size.Width = 9.000000000000000000
+                Size.Height = 294.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Color = claGray
+              end
+              object Path1: TPath
+                Align = Horizontal
+                Data.Path = {
+                  640000000000000052B8F64052B8D6400100000052B8F64052B8D64002000000
+                  713DEA40713DCA40020000007B14D640713DCA40020000009A99C94052B8D640
+                  0100000048E1DA3FCDCC344102000000C3F5A83F3E0A3B4102000000C3F5A83F
+                  B81E45410200000048E1DA3F295C4B41010000009A99C94066668A4102000000
+                  7B14D6401E858D4102000000713DEA401E858D410200000052B8F64066668A41
+                  0100000052B8F64066668A41020000009A990141AE478741020000009A990141
+                  703D82410200000052B8F640703D7E4101000000B81E75400000404101000000
+                  52B8F64085EB014102000000A4700141295CF74002000000A470014148E1E240
+                  0200000052B8F64052B8D6400300000052B8F64052B8D64000000000EC518241
+                  52B8D64001000000EC51824152B8D6400200000067667E413333E34002000000
+                  67667E41295CF74002000000EC51824185EB014101000000295CA14100004041
+                  01000000EC5182417B147E410200000067667E41F62882410200000067667E41
+                  3333874102000000EC518241EC518A4101000000EC518241EC518A4102000000
+                  A4708541A4708D4102000000E27A8A41A4708D41020000009A998D41EC518A41
+                  01000000EC51B24134334B4102000000A470B541C3F5444102000000A470B541
+                  48E13A4102000000EC51B241D8A33441010000009A998D416866D64002000000
+                  5C8F8A41713DCA4002000000A4708541713DCA4002000000EC51824152B8D640
+                  03000000EC51824152B8D6400000000000000041000050410100000000000041
+                  0000504102000000CDCC0841000050410200000000001041CDCC484102000000
+                  0000104100004041010000000000104100004041020000000000104133333741
+                  02000000CDCC0841000030410200000000000041000030410100000000000041
+                  00003041020000006666EE4000003041020000000000E0403333374102000000
+                  0000E04000004041010000000000E04000004041020000000000E040CDCC4841
+                  020000006666EE40000050410200000000000041000050410300000000000041
+                  0000504100000000000040410000504101000000000040410000504102000000
+                  CDCC4841000050410200000000005041CDCC4841020000000000504100004041
+                  01000000000050410000404102000000000050413333374102000000CDCC4841
+                  0000304102000000000040410000304101000000000040410000304102000000
+                  3333374100003041020000000000304133333741020000000000304100004041
+                  0100000000003041000040410200000000003041CDCC48410200000033333741
+                  0000504102000000000040410000504103000000000040410000504100000000
+                  0000804100003041010000000000804100003041020000003333774100003041
+                  0200000000007041333337410200000000007041000040410100000000007041
+                  000040410200000000007041CDCC484102000000333377410000504102000000
+                  0000804100005041010000000000804100005041020000006666844100005041
+                  0200000000008841CDCC48410200000000008841000040410100000000008841
+                  0000404102000000000088413333374102000000666684410000304102000000
+                  0000804100003041030000000000804100003041}
+                EnableDragHighlight = False
+                Fill.Color = claDarkgray
+                HitTest = False
+                Position.X = 3.000000000000000000
+                Position.Y = 80.000000000000000000
+                Size.Width = 172.000000000000000000
+                Size.Height = 73.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Color = claNull
+                WrapMode = Fit
+                object ShadowEffect2: TShadowEffect
+                  Distance = 3.000000000000000000
+                  Direction = 45.000000000000000000
+                  Softness = 0.200000002980232200
+                  Opacity = 0.600000023841857900
+                  ShadowColor = claBlack
+                end
+              end
+              object Label2: TLabel
+                Align = Horizontal
+                StyledSettings = [Family, Style]
+                Position.X = 3.000000000000000000
+                Position.Y = 168.000000000000000000
+                Size.Width = 172.000000000000000000
+                Size.Height = 105.000000000000000000
+                Size.PlatformDefault = False
+                TextSettings.Font.Size = 16.000000000000000000
+                TextSettings.FontColor = claDimgray
+                TextSettings.HorzAlign = Center
+                Text = 'Configura'#231#245'es de conex'#227'o'
+                TabOrder = 2
+              end
+              object ColorAnimation5: TColorAnimation
+                Duration = 0.200000002980232200
+                PropertyName = 'Fill.Color'
+                StartValue = claNull
+                StopValue = x78286496
+                Trigger = 'IsMouseOver=true'
+                TriggerInverse = 'IsMouseOver=false'
+              end
+              object FloatAnimation2: TFloatAnimation
+                AnimationType = InOut
+                Duration = 0.200000002980232200
+                PropertyName = 'Scale.X'
+                StartValue = 1.000000000000000000
+                StopValue = 1.049999952316284000
+                Trigger = 'IsMouseOver=true'
+                TriggerInverse = 'IsMouseOver=false'
+              end
+            end
+          end
+        end
+      end
+      object lytHeader: TLayout
+        Align = MostTop
+        Size.Width = 1016.000000000000000000
+        Size.Height = 63.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object Label1: TLabel
+          Align = VertCenter
+          AutoSize = True
+          StyledSettings = [Style, FontColor]
+          Position.X = 96.000000000000000000
+          Position.Y = 21.000000000000000000
+          Size.Width = 920.000000000000000000
+          Size.Height = 20.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = 'Painel de configura'#231#245'es'
+          TabOrder = 0
+        end
+        object btnVoltar: TRectangle
+          Align = Left
+          Fill.Color = claNull
+          Margins.Left = 3.000000000000000000
+          Margins.Top = 3.000000000000000000
+          Margins.Right = 3.000000000000000000
+          Margins.Bottom = 3.000000000000000000
+          Position.X = 3.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 90.000000000000000000
+          Size.Height = 57.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claNull
+          XRadius = 5.000000000000000000
+          YRadius = 5.000000000000000000
+          OnClick = btnVoltarClick
+          object ColorAnimation3: TColorAnimation
+            Duration = 0.200000002980232200
+            PropertyName = 'Fill.Color'
+            StartValue = claNull
+            StopValue = x1E36393F
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+          object lblBtnVoltar: TLabel
+            Align = VertCenter
+            AutoSize = True
+            StyledSettings = []
+            Position.Y = 17.000000000000000000
+            Size.Width = 90.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Family = 'Fira Code Retina'
+            TextSettings.Font.Size = 18.000000000000000000
+            TextSettings.Font.StyleExt = {00070000000000000004000000}
+            TextSettings.FontColor = xFF202225
+            TextSettings.HorzAlign = Center
+            Text = '<--'
+            TabOrder = 0
+          end
+          object ColorAnimation4: TColorAnimation
+            Duration = 0.200000002980232200
+            PropertyName = 'Stroke.Color'
+            StartValue = claNull
+            StopValue = x5A36393F
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+          object FloatAnimation4: TFloatAnimation
+            AnimationType = InOut
+            Duration = 0.200000002980232200
+            Interpolation = Bounce
+            PropertyName = 'Scale.X'
+            StartValue = 1.000000000000000000
+            StopValue = 1.049999952316284000
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+        end
+      end
+    end
+  end
+end

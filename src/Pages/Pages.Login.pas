@@ -64,7 +64,8 @@ implementation
 
 uses
   Services.User,
-  Router4D;
+  Router4D,
+  ToastMessage;
 
 {$R *.fmx}
 { TPageLogin }
@@ -75,8 +76,13 @@ var
 begin
   LService := TServiceUser.Create(nil);
   try
-    if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
-      TRouter4d.Link.&To('Dashboard');
+    try
+      if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
+        TRouter4d.Link.&To('Dashboard');
+    except
+      on E: Exception do
+        TToastmessage.show(E.Message, ttWarning);
+    end;
   finally
     LService.Free;
   end;

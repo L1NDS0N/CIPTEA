@@ -53,7 +53,7 @@ type
     ColorAnimation1: TColorAnimation;
     ShadowEffect1: TShadowEffect;
     lblImprimir: TLabel;
-    procedure FormCreate(Sender: TObject);
+    FloatAnimation4: TFloatAnimation;
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     private
@@ -87,11 +87,6 @@ begin
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
   end;
-end;
-
-procedure TPagePrint.FormCreate(Sender: TObject);
-begin
-  serviceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPagePrint.LimparCampos;
@@ -139,6 +134,7 @@ end;
 function TPagePrint.Render: TFmxObject;
 begin
   Result := lytPrincipal;
+  serviceNew := TServiceNew.Create(Self);
 end;
 
 procedure TPagePrint.retBtnSalvarClick(Sender: TObject);
@@ -188,6 +184,7 @@ procedure TPagePrint.UnRender;
 begin
   Self.LimparCampos;
   imgFotoRosto.Bitmap := nil;
+  serviceNew.Free;
 end;
 
 end.

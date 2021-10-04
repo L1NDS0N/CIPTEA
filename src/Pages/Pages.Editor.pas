@@ -53,6 +53,7 @@ type
     rect_fundo_foto: TRectangle;
     rect_fundo: TRectangle;
     ShadowEffect2: TShadowEffect;
+    FloatAnimation4: TFloatAnimation;
     procedure retBtnSalvarClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure ImageViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
@@ -175,11 +176,6 @@ begin
 
       //abrir a query arquivos carteira
       qryFiles := ServiceNew.GetFileById(AId.ToInteger);
-      //fazer insert
-      if qryFiles.IsEmpty then
-        showmessage('está vazio')
-      else
-        showmessage('não está vazio');
 
       if ServiceNew.qryArquivosCarteiraPTEA.IsEmpty then
         begin

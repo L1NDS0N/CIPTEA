@@ -34,10 +34,17 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
-    Layout1: TLayout;
+    lytFooter: TLayout;
+    btnConfig: TRoundRect;
+    icon_settings: TPath;
+    ColorAnimation1: TColorAnimation;
+    FloatAnimation1: TFloatAnimation;
+    lytHeader: TLayout;
+    FloatAnimation4: TFloatAnimation;
     procedure FormCreate(Sender: TObject);
     procedure btnDeslogarClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure btnConfigClick(Sender: TObject);
     private
       SignToClose: Boolean;
       procedure Router;
@@ -62,9 +69,15 @@ uses
   Pages.Editor,
   Pages.Print,
   Pages.NewUser,
-  Services.User;
+  Services.User,
+  Pages.Config;
 
 {$R *.fmx}
+
+procedure TPagePrincipal.btnConfigClick(Sender: TObject);
+begin
+  TRouter4D.Link.&To('Config');
+end;
 
 procedure TPagePrincipal.btnDeslogarClick(Sender: TObject);
 var
@@ -120,8 +133,9 @@ end;
 procedure TPagePrincipal.Router;
 begin
   TRouter4D.Switch.Router('Login', TPageLogin);
-  TRouter4D.Switch.Router('NewUser', TPageNewUser);
+  TRouter4D.Switch.Router('Config', TPageConfig);
   TRouter4D.Switch.Router('Dashboard', TPageDashboard);
+  TRouter4D.Switch.Router('NewUser', TPageNewUser);
   TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);
   TRouter4D.Switch.Router('Editor', TPageEditor);

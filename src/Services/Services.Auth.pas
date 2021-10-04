@@ -27,6 +27,7 @@ type
     qryUsuarioStayConected: TBooleanField;
     qryUsuarioTokenCreatedAt: TIntegerField;
     qryUsuarioTokenExpires: TIntegerField;
+    qryUsuarioEmail: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private
       config: TConfigGlobal;

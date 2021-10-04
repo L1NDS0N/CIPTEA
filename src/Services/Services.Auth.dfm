@@ -37,5 +37,10 @@ object ServiceAuth: TServiceAuth
       FieldName = 'TokenExpires'
       Origin = 'TokenExpires'
     end
+    object qryUsuarioEmail: TStringField
+      FieldName = 'Email'
+      Origin = 'Email'
+      Size = 32767
+    end
   end
 end

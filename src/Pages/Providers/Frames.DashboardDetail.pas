@@ -50,9 +50,9 @@ type
     ColorAnimation3: TColorAnimation;
     ShadowEffect4: TShadowEffect;
     procedure crlEditClick(Sender: TObject);
-    procedure retContentClick(Sender: TObject);
     procedure crlDeleteClick(Sender: TObject);
     procedure crlPrintClick(Sender: TObject);
+    procedure retTopClick(Sender: TObject);
     private
       FId: string;
       FOnDelete: TEventCallBack;
@@ -93,7 +93,7 @@ begin
   {$ENDIF}
 end;
 
-procedure TFrameDashboardDetail.retContentClick(Sender: TObject);
+procedure TFrameDashboardDetail.retTopClick(Sender: TObject);
 begin
   {$IFDEF MSWINDOWS}
   if Assigned(FOnUpdate) then

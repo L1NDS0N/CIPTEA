@@ -37,6 +37,11 @@ object ServiceUser: TServiceUser
       FieldName = 'TokenExpires'
       Origin = 'TokenExpires'
     end
+    object qryUsuarioLocalEmail: TStringField
+      FieldName = 'Email'
+      Origin = 'Email'
+      Size = 32767
+    end
   end
   object mtUsuario: TFDMemTable
     FetchOptions.AssignedValues = [evMode]

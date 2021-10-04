@@ -33,11 +33,12 @@ type
     mtUsuarionome: TStringField;
     mtUsuarioemail: TStringField;
     mtUsuariosenha: TStringField;
+    qryUsuarioLocalEmail: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private
       Config: TConfigGlobal;
     public
-      function SalvarNovoUsuário: boolean;
+      function SalvarNovoUsuario: boolean;
       function EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
   end;
 
@@ -60,7 +61,7 @@ begin
   qryUsuarioLocal.Connection := Connection.LocalConnection;
 end;
 
-function TServiceUser.SalvarNovoUsuário: boolean;
+function TServiceUser.SalvarNovoUsuario: boolean;
 var
   LRequest: IRequest;
   LResponse: IResponse;

@@ -59,6 +59,7 @@ contains
   Providers.PrivateRoute in 'Providers\Providers.PrivateRoute.pas',
   Pages.Login in 'Pages.Login.pas' {PageLogin},
   Pages.NewUser in 'Pages.NewUser.pas' {PageNewUser},
-  Services.User in '..\Services\Services.User.pas' {ServiceUser: TDataModule};
+  Services.User in '..\Services\Services.User.pas' {ServiceUser: TDataModule},
+  Pages.Config in 'Pages.Config.pas' {PageConfig};
 
 end.

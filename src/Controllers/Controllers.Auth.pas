@@ -129,6 +129,46 @@ begin
 
 end;
 
+procedure DoChange(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LService: TServiceUser;
+  LData: TJsonObject;
+  Aid: integer;
+  nome: string;
+
+label
+  CanUpdate;
+begin
+  LService := TServiceUser.Create(nil);
+  try
+    LData := Req.Body<TJsonObject>;
+    Aid := Req.Params.Items['id'].ToInteger;
+
+    if not(LData.TryGetValue('nome', nome)) then
+      EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
+
+    if not(LService.GetByFieldValue('nome', nome).IsEmpty) then
+      begin
+        if (LService.qryPesquisaUsuario.FieldByName('id').AsInteger <> Aid) then
+          EHorseException.Create(THTTPStatus.BadRequest,
+            'Não foi possível gravar estes dados devido a uma possível duplicata do nome de usuário')
+        else
+          goto CanUpdate;
+      end
+    else
+      goto CanUpdate;
+
+    CanUpdate:
+    begin
+      if LService.Update(LData, Aid) then
+        Res.Send(LService.qryCadastroUsuario.ToJSONObject).Status(200);
+    end;
+
+  finally
+    LService.Free;
+  end;
+end;
+
 procedure DoCheck(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 begin
   Res.Status(THTTPStatus.NoContent);
@@ -137,6 +177,7 @@ end;
 procedure Registry;
 begin
   THorse.Post('/register', DoCreate);
+  THorse.Put('/register/:id', Authorization(), DoChange);
   THorse.Post('/authenticate', DoAuth);
   THorse.Get('/healthcheck', Authorization(), DoCheck);
 end;

@@ -30,6 +30,7 @@ type
     public
       function Append(const AJson: TJSONObject): Boolean;
       function GetByFieldValue(AField: string; AValue: string): TFDQuery;
+      function Update(const AJson: TJSONObject; AId: integer): Boolean;
   end;
 
 implementation
@@ -65,6 +66,16 @@ begin
   qryPesquisaUsuario.SQL.Add('select * from usuario where ' + AField + ' = ' + QuotedStr(AValue));
   qryPesquisaUsuario.Open;
   Result := qryPesquisaUsuario;
+end;
+
+function TServiceUser.Update(const AJson: TJSONObject; AId: integer): Boolean;
+begin
+  qryCadastroUsuario.Close;
+  qryCadastroUsuario.SQL.Add('where id = :id');
+  qryCadastroUsuario.ParamByName('ID').Value := AId;
+  qryCadastroUsuario.Open();
+  qryCadastroUsuario.MergeFromJSONObject(AJson, False);
+  Result := qryCadastroUsuario.ApplyUpdates(0) = 0;
 end;
 
 end.

@@ -40,29 +40,13 @@ object PagePrincipal: TPagePrincipal
       Size.Height = 768.000000000000000000
       Size.PlatformDefault = False
       Stroke.Thickness = 0.000000000000000000
-      object lytProgress: TLayout
-        Align = Top
-        Size.Width = 1024.000000000000000000
-        Size.Height = 12.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 0
-        object ProgressBar: TProgressBar
-          Align = Top
-          ClipParent = True
-          Orientation = Horizontal
-          Size.Width = 1024.000000000000000000
-          Size.Height = 7.000000000000000000
-          Size.PlatformDefault = False
-          StyleLookup = 'ProgressBarStyle1'
-        end
-      end
-      object Layout1: TLayout
+      object lytFooter: TLayout
         Align = Bottom
         Position.Y = 704.000000000000000000
         Size.Width = 1024.000000000000000000
         Size.Height = 64.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 1
+        TabOrder = 0
         object btnDeslogar: TRectangle
           Align = Left
           Fill.Color = claNull
@@ -111,6 +95,118 @@ object PagePrincipal: TPagePrincipal
             StopValue = claNull
             Trigger = 'IsMouseOver=true'
             TriggerInverse = 'IsMouseOver=false'
+          end
+          object FloatAnimation4: TFloatAnimation
+            AnimationType = InOut
+            Duration = 0.600000023841857900
+            Interpolation = Elastic
+            PropertyName = 'Scale.X'
+            StartValue = 1.000000000000000000
+            StopValue = 1.100000023841858000
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+        end
+      end
+      object lytHeader: TLayout
+        Align = Top
+        Size.Width = 1024.000000000000000000
+        Size.Height = 72.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object btnConfig: TRoundRect
+          Align = Right
+          Cursor = crHandPoint
+          Fill.Color = claNull
+          Margins.Right = 20.000000000000000000
+          Position.X = 944.000000000000000000
+          Position.Y = 12.000000000000000000
+          Size.Width = 60.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          OnClick = btnConfigClick
+          object icon_settings: TPath
+            Align = Center
+            Cursor = crHandPoint
+            Data.Path = {
+              5E0000000000000000009C41000040410200000000009C41EC513C4102000000
+              85EB9B41CDCC3841020000008FC29B41B81E354101000000D7A3AA415C8F1E41
+              020000000AD7AD418FC219410200000052B8AE41CDCC10410200000052B8AC41
+              8FC20941010000008FC29D41F528AC40020000008FC29B417A149E4002000000
+              A3709741EB519840020000008FC2934151B89E40010000005C8F824109D7BB40
+              0200000033337F411E85B34002000000C2F57841F428AC400200000066667241
+              7A14A640010000008FC26D41EA51384002000000CDCC6C41EC51184002000000
+              85EB6541000000400200000085EB5D410000004001000000703D224100000040
+              020000007B141A41000000400200000033331341EC51184002000000713D1241
+              EC513840010000009A990D417B14A640020000003E0A0741F628AC4002000000
+              CDCC00411F85B3400200000090C2F5400AD7BB4001000000C3F5B04052B89E40
+              02000000713DA240EC51984002000000C3F590407B149E4002000000C3F58840
+              F628AC4001000000713D1A4085EB094102000000713D0A40C2F5104102000000
+              AE4711408FC219410200000048E12A4052B81E4101000000C3F59040AE473541
+              02000000EC519040CDCC38410200000000009040EC513C410200000000009040
+              00004041020000000000904014AE434102000000EC5190403333474102000000
+              C3F5904048E14A410100000048E12A40A470614102000000AE471140713D6641
+              02000000713D0A4033336F4102000000713D1A40713D764101000000C3F58840
+              C3F5944102000000C3F59040E27A984102000000713DA24086EB994102000000
+              C3F5B040EC5198410100000090C2F5403E0A914102000000CDCC0041B91E9341
+              020000003E0A0741C3F59441020000009A990D41E27A964101000000713D1241
+              C3F5A8410200000033331341C3F5AC41020000007B141A410000B04102000000
+              7B1422410000B0410100000090C25D410000B0410200000090C265410000B041
+              02000000D8A36C41C3F5AC41020000009A996D41C3F5A84101000000713D7241
+              E27A964102000000CDCC7841C3F59441020000003E0A7F41B91E934102000000
+              E17A82413E0A91410100000014AE9341EC51984102000000285C974186EB9941
+              0200000014AE9B41E27A98410200000014AE9D41C3F5944101000000D7A3AC41
+              723D764102000000D7A3AE4135336F41020000008FC2AD416866664102000000
+              5C8FAA41A57061410100000014AE9B4149E14A410200000085EB9B4133334741
+              0200000000009C4114AE43410200000000009C41000040410300000000009C41
+              0000404100000000D7A3404100007841020000008FC221410000784102000000
+              D7A3084148E15E4102000000D7A308410000404102000000D7A30841B81E2141
+              020000008FC221410000084102000000D7A3404100000841020000001F855F41
+              0000084102000000D7A37841B81E214102000000D7A378410000404102000000
+              D7A3784148E15E41020000001F855F410000784102000000D7A3404100007841
+              03000000D7A3404100007841}
+            EnableDragHighlight = False
+            Fill.Color = xC8FFFAFA
+            HitTest = False
+            Size.Width = 42.000000000000000000
+            Size.Height = 42.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Kind = None
+            WrapMode = Fit
+          end
+          object ColorAnimation1: TColorAnimation
+            Duration = 0.200000002980232200
+            PropertyName = 'Fill.Color'
+            StartValue = claNull
+            StopValue = x64808080
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+          object FloatAnimation1: TFloatAnimation
+            AnimationType = InOut
+            Duration = 0.699999988079071000
+            PropertyName = 'RotationAngle'
+            StartValue = -360.000000000000000000
+            StopValue = 0.000000000000000000
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+        end
+        object lytProgress: TLayout
+          Align = Top
+          Size.Width = 1024.000000000000000000
+          Size.Height = 12.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          object ProgressBar: TProgressBar
+            Align = Top
+            ClipParent = True
+            Orientation = Horizontal
+            Size.Width = 1024.000000000000000000
+            Size.Height = 7.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'ProgressBarStyle1'
           end
         end
       end

@@ -143,8 +143,10 @@ object PageDashboard: TPageDashboard
                 F4FD3441B81EB54002000000F4FD0A41B81EB540020000006991E5400681E540
                 01000000426009417368094102000000378915415C8FFA4002000000FA7E2A41
                 BE9FFA40020000008D97364142600941030000008D97364142600941}
+              EnableDragHighlight = False
               Fill.Color = claWhite
               Locked = True
+              HitTest = False
               Position.X = 11.999998092651370000
               Position.Y = 10.999999046325680000
               Size.Width = 27.999998092651370000

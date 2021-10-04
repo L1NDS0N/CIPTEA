@@ -434,6 +434,17 @@ object PageNew: TPageNew
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
+        object FloatAnimation4: TFloatAnimation
+          AnimationType = InOut
+          Duration = 0.200000002980232200
+          Interpolation = Bounce
+          Inverse = True
+          PropertyName = 'Scale.X'
+          StartValue = 1.000000000000000000
+          StopValue = 1.049999952316284000
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
       end
     end
     object FloatAnimation: TFloatAnimation

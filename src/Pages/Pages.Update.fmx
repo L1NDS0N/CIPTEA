@@ -755,6 +755,8 @@ object PageUpdate: TPageUpdate
                     44AE426082}
                 end>
               Align = Center
+              EnableDragHighlight = False
+              HitTest = False
               Opacity = 0.200000002980232200
               Size.Width = 128.000000000000000000
               Size.Height = 128.000000000000000000
@@ -765,11 +767,11 @@ object PageUpdate: TPageUpdate
               MultiResBitmap = <
                 item
                 end>
+              HitTest = False
               Size.Width = 200.000000000000000000
               Size.Height = 266.000000000000000000
               Size.PlatformDefault = False
               WrapMode = Stretch
-              OnClick = rctFotoRostoClick
               object lblSelecioneFOto: TLabel
                 Align = Center
                 AutoSize = True
@@ -881,6 +883,8 @@ object PageUpdate: TPageUpdate
                     623FB35C0000000049454E44AE426082}
                 end>
               Align = Center
+              EnableDragHighlight = False
+              HitTest = False
               Opacity = 0.100000001490116100
               Size.Width = 128.000000000000000000
               Size.Height = 128.000000000000000000
@@ -968,6 +972,16 @@ object PageUpdate: TPageUpdate
           PropertyName = 'Stroke.Color'
           StartValue = claNull
           StopValue = x5A36393F
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object FloatAnimation4: TFloatAnimation
+          AnimationType = InOut
+          Duration = 0.200000002980232200
+          Interpolation = Bounce
+          PropertyName = 'Scale.X'
+          StartValue = 1.000000000000000000
+          StopValue = 1.049999952316284000
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end

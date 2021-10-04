@@ -70,6 +70,7 @@ type
     ClearEditButton8: TClearEditButton;
     cbTitular: TCheckBox;
     cbResponsavel: TCheckBox;
+    FloatAnimation4: TFloatAnimation;
     procedure ValidarCampos(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);

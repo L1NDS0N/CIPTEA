@@ -9,18 +9,21 @@ object FrameDashboardDetail: TFrameDashboardDetail
     Size.Height = 207.000000000000000000
     Size.PlatformDefault = False
     Stroke.Kind = None
+    OnClick = retTopClick
     object retContent: TRectangle
       Align = VertCenter
+      EnableDragHighlight = False
       Fill.Kind = None
+      HitTest = False
       Position.X = 155.250030517578100000
       Position.Y = 48.000000000000000000
       Size.Width = 536.750000000000000000
       Size.Height = 151.000000000000000000
       Size.PlatformDefault = False
       Stroke.Kind = None
-      OnClick = retContentClick
       object lytButtonsRight: TLayout
         Align = Right
+        EnableDragHighlight = False
         Position.X = 367.750000000000000000
         Size.Width = 169.000000000000000000
         Size.Height = 151.000000000000000000
@@ -28,6 +31,7 @@ object FrameDashboardDetail: TFrameDashboardDetail
         TabOrder = 0
         object lytButtons: TLayout
           Align = VertCenter
+          EnableDragHighlight = False
           Position.Y = 48.000000000000000000
           Size.Width = 169.000000000000000000
           Size.Height = 55.000000000000000000
@@ -187,12 +191,14 @@ object FrameDashboardDetail: TFrameDashboardDetail
       object lytLabels: TLayout
         Align = Client
         Cursor = crHandPoint
+        EnableDragHighlight = False
         Size.Width = 367.750000000000000000
         Size.Height = 151.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         object lytLabelsCenter: TLayout
           Align = VertCenter
+          EnableDragHighlight = False
           Position.Y = 50.000000000000000000
           Size.Width = 367.750000000000000000
           Size.Height = 50.000000000000000000
@@ -200,6 +206,7 @@ object FrameDashboardDetail: TFrameDashboardDetail
           TabOrder = 0
           object lblCPFTitular: TLabel
             Align = Top
+            EnableDragHighlight = False
             StyledSettings = []
             Margins.Left = 10.000000000000000000
             Margins.Right = 10.000000000000000000
@@ -216,6 +223,7 @@ object FrameDashboardDetail: TFrameDashboardDetail
           end
           object lblNomeTitular: TLabel
             Align = Top
+            EnableDragHighlight = False
             StyledSettings = []
             Margins.Left = 10.000000000000000000
             Margins.Right = 10.000000000000000000
@@ -248,7 +256,9 @@ object FrameDashboardDetail: TFrameDashboardDetail
     end
     object retRight: TRectangle
       Align = MostTop
+      EnableDragHighlight = False
       Fill.Kind = None
+      HitTest = False
       Size.Width = 692.000000000000000000
       Size.Height = 41.000000000000000000
       Size.PlatformDefault = False
@@ -268,6 +278,8 @@ object FrameDashboardDetail: TFrameDashboardDetail
     end
     object rctImagem: TRectangle
       Align = FitLeft
+      EnableDragHighlight = False
+      HitTest = False
       Margins.Left = 5.000000000000000000
       Margins.Top = 2.000000000000000000
       Margins.Bottom = 5.000000000000000000
@@ -656,6 +668,8 @@ object FrameDashboardDetail: TFrameDashboardDetail
               44AE426082}
           end>
         Align = Contents
+        EnableDragHighlight = False
+        HitTest = False
         Size.Width = 150.250030517578100000
         Size.Height = 200.000000000000000000
         Size.PlatformDefault = False

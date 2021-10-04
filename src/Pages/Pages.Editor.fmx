@@ -166,6 +166,16 @@ object PageEditor: TPageEditor
               Trigger = 'IsMouseOver=true'
               TriggerInverse = 'IsMouseOver=false'
             end
+            object FloatAnimation4: TFloatAnimation
+              AnimationType = InOut
+              Duration = 0.200000002980232200
+              Interpolation = Bounce
+              PropertyName = 'Scale.X'
+              StartValue = 1.000000000000000000
+              StopValue = 1.049999952316284000
+              Trigger = 'IsMouseOver=true'
+              TriggerInverse = 'IsMouseOver=false'
+            end
           end
         end
         object rect_foto: TRectangle
@@ -191,8 +201,8 @@ object PageEditor: TPageEditor
             OnMouseWheel = ImageViewer1MouseWheel
             BackgroundFill.Kind = None
             ShowScrollBars = False
-            Viewport.Width = 350.000000000000000000
-            Viewport.Height = 468.000000000000000000
+            Viewport.Width = 354.000000000000000000
+            Viewport.Height = 472.000000000000000000
             object ShadowEffect2: TShadowEffect
               Distance = 2.000000000000000000
               Direction = 90.000000000000000000

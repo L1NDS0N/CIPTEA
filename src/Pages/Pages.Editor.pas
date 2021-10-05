@@ -21,7 +21,7 @@ uses
   FMX.Controls.Presentation,
   FMX.StdCtrls,
   FMX.Ani,
-  Services.New,
+  Services.Card,
   Router4D.Props,
   FireDAC.Comp.Client,
   System.UITypes,
@@ -63,7 +63,7 @@ type
     procedure track_zoomChange(Sender: TObject);
     procedure ImageViewer1MouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     private
-      ServiceNew: TServiceNew;
+      LServiceCard: TServiceCard;
       qryFiles: TFDQuery;
       AId: string;
       MouseIsDown: Boolean;
@@ -143,11 +143,11 @@ begin
           //verificar se contém arquivos na nuvem.
           //ServiceNew.GetFiles;
         end;
-      ServiceNew.qryTemp.Close;
-      ServiceNew.qryTemp.Open;
-      ServiceNew.qryTemp.First;
-      rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
-      ImageViewer1.Bitmap.LoadFromFile(ServiceNew.qryTempFotoRostoPath.Value);
+      LServiceCard.qryTemp.Close;
+      LServiceCard.qryTemp.Open;
+      LServiceCard.qryTemp.First;
+      rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(LServiceCard.qryTempFotoRostoPath.Value);
+      ImageViewer1.Bitmap.LoadFromFile(LServiceCard.qryTempFotoRostoPath.Value);
     except
       on E: Exception do
         begin
@@ -162,7 +162,7 @@ end;
 function TPageEditor.Render: TFmxObject;
 begin
   Result := LayoutEditor;
-  ServiceNew := TServiceNew.Create(Self);
+  LServiceCard := TServiceCard.Create(Self);
 end;
 
 procedure TPageEditor.retBtnSalvarClick(Sender: TObject);
@@ -175,23 +175,23 @@ begin
       ImageViewer1.MakeScreenshot.SaveToStream(vFotoStream);
 
       //abrir a query arquivos carteira
-      qryFiles := ServiceNew.GetFileById(AId.ToInteger);
+      qryFiles := LServiceCard.GetFileById(AId.ToInteger);
 
-      if ServiceNew.qryArquivosCarteiraPTEA.IsEmpty then
+      if LServiceCard.qryArquivosCarteiraPTEA.IsEmpty then
         begin
-          ServiceNew.qryArquivosCarteiraPTEA.Insert;
-          ServiceNew.qryArquivosCarteiraPTEAIDCarteira.Value := AId.ToInteger;
-          ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
-          ServiceNew.qryArquivosCarteiraPTEA.Post;
+          LServiceCard.qryArquivosCarteiraPTEA.Insert;
+          LServiceCard.qryArquivosCarteiraPTEAIDCarteira.Value := AId.ToInteger;
+          LServiceCard.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
+          LServiceCard.qryArquivosCarteiraPTEA.Post;
         end
       else
         begin
-          ServiceNew.qryArquivosCarteiraPTEA.Edit;
-          ServiceNew.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
-          ServiceNew.qryArquivosCarteiraPTEA.Post;
+          LServiceCard.qryArquivosCarteiraPTEA.Edit;
+          LServiceCard.qryArquivosCarteiraPTEAFotoStream.LoadFromStream(vFotoStream);
+          LServiceCard.qryArquivosCarteiraPTEA.Post;
         end;
 
-      ServiceNew.PostStreamFoto(AId);
+      LServiceCard.PostStreamFoto(AId);
       try
         OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
       except
@@ -216,7 +216,7 @@ end;
 
 procedure TPageEditor.UnRender;
 begin
-  ServiceNew.Free;
+  LServiceCard.Free;
   rect_fundo_foto.Fill.Bitmap.Bitmap := (nil);
   ImageViewer1.Bitmap := (nil);
 end;

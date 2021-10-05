@@ -3,7 +3,7 @@ unit Pages.Dashboard;
 interface
 
 uses
-  Services.New,
+  Services.Card,
   Router4D.Interfaces,
   System.SysUtils,
   System.Types,
@@ -68,7 +68,7 @@ type
     procedure ComboEditChangeTracking(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     private
-      serviceNew: TServiceNew;
+      LServiceCard: TServiceCard;
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
       procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
       procedure OnPrintCarteira(const ASender: TFrame; const AId: string);
@@ -110,7 +110,7 @@ end;
 procedure TPageDashboard.ComboEditTyping(Sender: TObject);
 begin
   FloatAnimation1.Start;
-  with serviceNew do
+  with LServiceCard do
     begin
       mtPesquisaCarteiraPTEA.Filtered := false;
       mtPesquisaCarteiraPTEA.FilterOptions := [foCaseInsensitive];
@@ -136,25 +136,25 @@ begin
       for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
         vsbCarteiras.Content.Controls[I].DisposeOf;
 
-      serviceNew.Listar;
-      serviceNew.GetFiles;
+      LServiceCard.Listar;
+      LServiceCard.GetFiles;
       ComboEdit.Clear;
 
-      serviceNew.mtPesquisaCarteiraPTEA.First;
-      while not serviceNew.mtPesquisaCarteiraPTEA.Eof do
+      LServiceCard.mtPesquisaCarteiraPTEA.First;
+      while not LServiceCard.mtPesquisaCarteiraPTEA.Eof do
         begin
           LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
           LFrame.Parent := vsbCarteiras;
           LFrame.Align := TAlignLayout.Top;
           LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
-          LFrame.Id := serviceNew.mtPesquisaCarteiraPTEAid.AsString;
-          LFrame.Name := LFrame.ClassName + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
-          LFrame.lblNomeTitular.Text := serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString;
-          LFrame.lblCPFTitular.Text := serviceNew.mtPesquisaCarteiraPTEACpfTitular.AsString;
-          LFrame.lblID.Text := '#' + serviceNew.mtPesquisaCarteiraPTEAid.AsString;
+          LFrame.Id := LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
+          LFrame.Name := LFrame.ClassName + LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
+          LFrame.lblNomeTitular.Text := LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString;
+          LFrame.lblCPFTitular.Text := LServiceCard.mtPesquisaCarteiraPTEACpfTitular.AsString;
+          LFrame.lblID.Text := '#' + LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
 
-          LStream := serviceNew.GetImageStreamById(serviceNew.mtPesquisaCarteiraPTEAid.Value);
+          LStream := LServiceCard.GetImageStreamById(LServiceCard.mtPesquisaCarteiraPTEAid.Value);
           if LStream.Size > 0 then
             LFrame.Imagem.Bitmap.LoadFromStream(LStream);
 
@@ -162,8 +162,8 @@ begin
           LFrame.OnUpdate := self.OnUpdateCarteira;
           LFrame.OnPrint := self.OnPrintCarteira;
 
-          ComboEdit.Items.Add(serviceNew.mtPesquisaCarteiraPTEANomeTitular.AsString);
-          serviceNew.mtPesquisaCarteiraPTEA.Next;
+          ComboEdit.Items.Add(LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString);
+          LServiceCard.mtPesquisaCarteiraPTEA.Next;
         end;
     finally
       vsbCarteiras.EndUpdate;
@@ -177,11 +177,11 @@ end;
 
 procedure TPageDashboard.OnDeleteCarteira(const ASender: TFrame; const AId: string);
 var
-  serviceNew: TServiceNew;
+  serviceNew: TServiceCard;
 begin
   try
     try
-      serviceNew := TServiceNew.Create(nil);
+      serviceNew := TServiceCard.Create(nil);
       TDialogService.MessageDialog('Tem certeza que deseja deletar?', TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo,
         TMsgDlgBtn.mbNo, 0,
           procedure(const AResult: TModalResult)
@@ -239,7 +239,7 @@ end;
 function TPageDashboard.Render: TFMXObject;
 begin
   Result := lytDashboard;
-  serviceNew := TServiceNew.Create(self);
+  LServiceCard := TServiceCard.Create(self);
   self.ListarCarteiras;
 end;
 
@@ -260,7 +260,7 @@ end;
 
 procedure TPageDashboard.UnRender;
 begin
-  serviceNew.Free;
+  LServiceCard.Free;
 end;
 
 end.

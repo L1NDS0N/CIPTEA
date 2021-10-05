@@ -21,7 +21,7 @@ uses
   Router4D.Props,
   FMX.StdCtrls,
   Router4D.Interfaces,
-  Services.New,
+  Services.Card,
   FMX.Ani,
   FMX.Printer,
   FMX.Effects;
@@ -58,7 +58,7 @@ type
     procedure retBtnSalvarClick(Sender: TObject);
     private
       PropsKeyValue: string;
-      serviceNew: TServiceNew;
+      LServiceCard: TServiceCard;
       procedure LimparCampos;
     public
       function Render: TFmxObject;
@@ -107,18 +107,18 @@ begin
       PropsKeyValue := aValue.Key;
       if (aValue.PropString <> '') and ((PropsKeyValue = 'IdCarteiraToPrintFromDashboard') OR
           (PropsKeyValue = 'IdCarteiraToPrintFromUpdate')) then
-        serviceNew.GetById(aValue.PropString);
+        LServiceCard.GetById(aValue.PropString);
 
       lblID.Text := '#' + aValue.PropString;
 
-      lblNome.Text := serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString;
-      lblResponsavel.Text := serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString;
+      lblNome.Text := LServiceCard.mtCadastroCarteiraPTEANomeTitular.AsString;
+      lblResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString;
       lblDataEmissao.Text := DateToStr(now);
-      lblDataNascimento.Text := serviceNew.mtCadastroCarteiraPTEADataNascimento.AsString;
-      lblRG.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
-      lblCPF.Text := serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString;
+      lblDataNascimento.Text := LServiceCard.mtCadastroCarteiraPTEADataNascimento.AsString;
+      lblRG.Text := LServiceCard.mtCadastroCarteiraPTEARgTitular.AsString;
+      lblCPF.Text := LServiceCard.mtCadastroCarteiraPTEACpfTitular.AsString;
 
-      imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetImageStreamById(aValue.PropString.ToInteger));
+      imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString.ToInteger));
 
     except
       on E: Exception do
@@ -134,7 +134,7 @@ end;
 function TPagePrint.Render: TFmxObject;
 begin
   Result := lytPrincipal;
-  serviceNew := TServiceNew.Create(Self);
+  LServiceCard := TServiceCard.Create(Self);
 end;
 
 procedure TPagePrint.retBtnSalvarClick(Sender: TObject);
@@ -184,7 +184,7 @@ procedure TPagePrint.UnRender;
 begin
   Self.LimparCampos;
   imgFotoRosto.Bitmap := nil;
-  serviceNew.Free;
+  LServiceCard.Free;
 end;
 
 end.

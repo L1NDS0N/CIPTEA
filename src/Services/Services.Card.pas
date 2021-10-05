@@ -1,4 +1,4 @@
-unit Services.New;
+unit Services.Card;
 
 interface
 
@@ -20,7 +20,7 @@ uses
   FireDAC.Comp.Client;
 
 type
-  TServiceNew = class(TDataModule)
+  TServiceCard = class(TDataModule)
     mtPesquisaCarteiraPTEA: TFDMemTable;
     mtPesquisaCarteiraPTEANomeResponsavel: TStringField;
     mtPesquisaCarteiraPTEACpfResponsavel: TStringField;
@@ -82,7 +82,7 @@ type
   end;
 
 var
-  ServiceNew: TServiceNew;
+  ServiceCard: TServiceCard;
 
 implementation
 
@@ -95,7 +95,7 @@ uses
 {$R *.dfm}
 { TDataModule1 }
 
-procedure TServiceNew.DataModuleCreate(Sender: TObject);
+procedure TServiceCard.DataModuleCreate(Sender: TObject);
 var
   Connection: TServiceConnection;
 begin
@@ -108,7 +108,7 @@ begin
   qryUsuarioLocal.Connection := Connection.LocalConnection;
 end;
 
-procedure TServiceNew.Delete(const AId: string);
+procedure TServiceCard.Delete(const AId: string);
 var
   LResponse: IResponse;
 begin
@@ -136,7 +136,7 @@ begin
   end;
 end;
 
-procedure TServiceNew.GetById(const AId: string);
+procedure TServiceCard.GetById(const AId: string);
 var
   LResponse: IResponse;
 begin
@@ -162,7 +162,7 @@ begin
   end;
 end;
 
-function TServiceNew.GetFileById(AId: integer): TFDQuery;
+function TServiceCard.GetFileById(AId: integer): TFDQuery;
 begin
   try
     qryArquivosCarteiraPTEA.Close;
@@ -175,7 +175,7 @@ begin
   end;
 end;
 
-procedure TServiceNew.GetFiles;
+procedure TServiceCard.GetFiles;
 var
   LResponse: IResponse;
   LResponseHasDoc: IResponse;
@@ -196,7 +196,8 @@ begin
 
         if qryArquivosCarteiraPTEA.IsEmpty then
           begin
-            LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioLocalToken.Value)
+            LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+              .TokenBearer(qryUsuarioLocalToken.Value)
               .ResourceSuffix(mtPesquisaCarteiraPTEAid.AsString + '/static/foto').Get;
 
             qryArquivosCarteiraPTEA.Append;
@@ -250,7 +251,7 @@ begin
   end;
 end;
 
-function TServiceNew.GetImageStreamById(AId: integer): TStream;
+function TServiceCard.GetImageStreamById(AId: integer): TStream;
 begin
   try
     Result := TMemoryStream.Create;
@@ -272,7 +273,7 @@ begin
   end;
 end;
 
-procedure TServiceNew.Listar;
+procedure TServiceCard.Listar;
 var
   LResponse: IResponse;
 begin
@@ -303,7 +304,7 @@ begin
   end;
 end;
 
-procedure TServiceNew.PostStreamFoto(AId: string);
+procedure TServiceCard.PostStreamFoto(AId: string);
 var
   LStreamFoto: TStream;
   LResponseFoto: IResponse;
@@ -345,7 +346,7 @@ begin
   end;
 end;
 
-procedure TServiceNew.Salvar;
+procedure TServiceCard.Salvar;
 var
   LRequest: IRequest;
   LResponse: IResponse;
@@ -386,7 +387,7 @@ begin
   end;
 end;
 
-procedure TServiceNew.PostStreamDoc;
+procedure TServiceCard.PostStreamDoc;
 var
   LStreamDoc: TFileStream;
   LResponseDoc: IResponse;
@@ -397,9 +398,9 @@ begin
     if not(mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
       begin
         LStreamDoc := TFileStream.Create(mtCadastroCarteiraPTEALaudoMedicoPath.Value, fmOpenRead);
-        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').TokenBearer(qryUsuarioLocalToken.Value)
-          .ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc').ContentType('application/octet-stream')
-          .addbody(LStreamDoc, false).Put;
+        LResponseDoc := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras')
+          .TokenBearer(qryUsuarioLocalToken.Value).ResourceSuffix(mtCadastroCarteiraPTEAid.AsString + '/static/doc')
+          .ContentType('application/octet-stream').addbody(LStreamDoc, false).Put;
 
         if LResponseDoc.StatusCode = 401 then
           raise Exception.Create('Atualmente você não possui autorização para gravar laudos.')

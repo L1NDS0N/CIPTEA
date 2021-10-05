@@ -3,7 +3,7 @@ unit Pages.New;
 interface
 
 uses
-  Services.New,
+  Services.Card,
   MaskUtils,
   Router4D.Interfaces,
   System.SysUtils,
@@ -83,7 +83,7 @@ type
     procedure cbResponsavelChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     private
-      serviceNew: TServiceNew;
+      LServiceCard: TServiceCard;
       procedure LimparCampos;
 
     public
@@ -185,7 +185,7 @@ end;
 function TPageNew.Render: TFmxObject;
 begin
   Result := lytNew;
-  serviceNew := TServiceNew.Create(Self);
+  LServiceCard := TServiceCard.Create(Self);
 end;
 
 procedure TPageNew.retBtnSalvarClick(Sender: TObject);
@@ -193,25 +193,25 @@ begin
   Self.ValidarCampos(Sender);
   try
     try
-      if (serviceNew.mtCadastroCarteiraPTEAid.AsInteger > 0) then
-        serviceNew.mtCadastroCarteiraPTEA.Edit
+      if (LServiceCard.mtCadastroCarteiraPTEAid.AsInteger > 0) then
+        LServiceCard.mtCadastroCarteiraPTEA.Edit
       else
-        serviceNew.mtCadastroCarteiraPTEA.Append;
+        LServiceCard.mtCadastroCarteiraPTEA.Append;
 
-      serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEADataNascimento.Value := edtDataNascimento.Date;
-      serviceNew.mtCadastroCarteiraPTEACpfResponsavel.Value := edtCpfResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEANumeroContato.Value := edtNumeroContato.Text;
-      serviceNew.mtCadastroCarteiraPTEARgResponsavel.Value := edtRgResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEAEmailContato.Value := edtEmailContato.Text;
-      serviceNew.mtCadastroCarteiraPTEANomeTitular.Value := edtNomeTitular.Text;
-      serviceNew.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
-      serviceNew.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
-      serviceNew.Salvar;
+      LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+      LServiceCard.mtCadastroCarteiraPTEADataNascimento.Value := edtDataNascimento.Date;
+      LServiceCard.mtCadastroCarteiraPTEACpfResponsavel.Value := edtCpfResponsavel.Text;
+      LServiceCard.mtCadastroCarteiraPTEANumeroContato.Value := edtNumeroContato.Text;
+      LServiceCard.mtCadastroCarteiraPTEARgResponsavel.Value := edtRgResponsavel.Text;
+      LServiceCard.mtCadastroCarteiraPTEAEmailContato.Value := edtEmailContato.Text;
+      LServiceCard.mtCadastroCarteiraPTEANomeTitular.Value := edtNomeTitular.Text;
+      LServiceCard.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
+      LServiceCard.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
+      LServiceCard.Salvar;
     finally
       try
-        if not(serviceNew.mtCadastroCarteiraPTEAid.IsNull) then
-          OpenPrivateRoute('Update', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+        if not(LServiceCard.mtCadastroCarteiraPTEAid.IsNull) then
+          OpenPrivateRoute('Update', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
               .Key('IdCarteiraToUpdate'));
       except
         on E: Exception do
@@ -228,7 +228,7 @@ end;
 procedure TPageNew.UnRender;
 begin
   Self.LimparCampos;
-  serviceNew.Free;
+  LServiceCard.Free;
 end;
 
 procedure TPageNew.ValidarCampos(Sender: TObject);

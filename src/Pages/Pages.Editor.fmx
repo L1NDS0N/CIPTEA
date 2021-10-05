@@ -201,8 +201,8 @@ object PageEditor: TPageEditor
             OnMouseWheel = ImageViewer1MouseWheel
             BackgroundFill.Kind = None
             ShowScrollBars = False
-            Viewport.Width = 354.000000000000000000
-            Viewport.Height = 472.000000000000000000
+            Viewport.Width = 350.000000000000000000
+            Viewport.Height = 468.000000000000000000
             object ShadowEffect2: TShadowEffect
               Distance = 2.000000000000000000
               Direction = 90.000000000000000000

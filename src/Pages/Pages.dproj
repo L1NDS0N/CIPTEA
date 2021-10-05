@@ -5,7 +5,7 @@
         <ProjectVersion>18.8</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
@@ -123,15 +123,6 @@
             <Form>PagePrincipal</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="Pages.New.pas">
-            <Form>PageNew</Form>
-            <FormType>fmx</FormType>
-        </DCCReference>
-        <DCCReference Include="..\Services\Services.New.pas">
-            <Form>ServiceNew</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="Providers\Frames.DashboardDetail.pas">
             <Form>FrameDashboardDetail</Form>
             <FormType>fmx</FormType>
@@ -175,6 +166,15 @@
         <DCCReference Include="Pages.Config.pas">
             <Form>PageConfig</Form>
             <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="Pages.New.pas">
+            <Form>PageNew</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Services\Services.Card.pas">
+            <Form>ServiceCard</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

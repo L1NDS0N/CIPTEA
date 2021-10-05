@@ -21,7 +21,7 @@ uses
   FMX.Controls.Presentation,
   FMX.Edit,
   FMX.Layouts,
-  Services.New,
+  Services.Card,
   Router4D.Props,
   FMX.ExtCtrls,
   FMX.Effects,
@@ -105,7 +105,7 @@ type
     procedure edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure btnPrintClick(Sender: TObject);
     private
-      serviceNew: TServiceNew;
+      LServiceCard: TServiceCard;
       Config: TConfigGlobal;
       procedure VerificacoesUX;
       procedure LimparCampos;
@@ -142,6 +142,27 @@ begin
   edtNomeTitular.OnExit := Self.ValidarCampos;
 end;
 
+function TPageUpdate.Render: TFmxObject;
+begin
+  Result := lytUpdate;
+  LServiceCard := TServiceCard.Create(Self);
+end;
+
+procedure TPageUpdate.UnRender;
+begin
+  dlgLaudoMedico.FileName := EmptyStr;
+
+  if not(imgFotoRosto.Bitmap.IsEmpty) then
+    imgFotoRosto.Bitmap := nil;
+
+  LayoutZoom.Visible := false;
+
+  lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
+
+  LServiceCard.Free;
+  Self.LimparCampos;
+end;
+
 procedure TPageUpdate.LimparCampos;
 begin
   edtEmailContato.Text := EmptyStr;
@@ -162,20 +183,20 @@ begin
   try
     try
       if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToUpdate') then
-        serviceNew.GetById(aValue.PropString);
+        LServiceCard.GetById(aValue.PropString);
 
       lblID.Text := '#' + aValue.PropString;
-      edtNomeResponsavel.Text := serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString;
-      edtCpfResponsavel.Text := serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString;
-      edtCpfTitular.Text := serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString;
-      edtDataNascimento.Date := serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime;
-      edtEmailContato.Text := serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString;
-      edtNomeTitular.Text := serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString;
-      edtNumeroContato.Text := serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString;
-      edtRgResponsavel.Text := serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString;
-      edtRgTitular.Text := serviceNew.mtCadastroCarteiraPTEARgTitular.AsString;
-      imgFotoRosto.Bitmap.LoadFromStream(serviceNew.GetImageStreamById(aValue.PropString.ToInteger));
-      serviceNew.GetFiles;
+      edtNomeResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString;
+      edtCpfResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEACpfResponsavel.AsString;
+      edtCpfTitular.Text := LServiceCard.mtCadastroCarteiraPTEACpfTitular.AsString;
+      edtDataNascimento.Date := LServiceCard.mtCadastroCarteiraPTEADataNascimento.AsDateTime;
+      edtEmailContato.Text := LServiceCard.mtCadastroCarteiraPTEAEmailContato.AsString;
+      edtNomeTitular.Text := LServiceCard.mtCadastroCarteiraPTEANomeTitular.AsString;
+      edtNumeroContato.Text := LServiceCard.mtCadastroCarteiraPTEANumeroContato.AsString;
+      edtRgResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEARgResponsavel.AsString;
+      edtRgTitular.Text := LServiceCard.mtCadastroCarteiraPTEARgTitular.AsString;
+      imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString.ToInteger));
+      LServiceCard.GetFiles;
 
     except
       on E: Exception do
@@ -197,14 +218,14 @@ begin
     if dlgFotoRosto.Execute then
       if dlgFotoRosto.FileName <> EmptyStr then
         begin
-          serviceNew.qryTemp.Open;
-          serviceNew.qryTemp.First;
-          serviceNew.qryTemp.Edit;
-          serviceNew.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
-          serviceNew.qryTemp.Post;
+          LServiceCard.qryTemp.Open;
+          LServiceCard.qryTemp.First;
+          LServiceCard.qryTemp.Edit;
+          LServiceCard.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
+          LServiceCard.qryTemp.Post;
 
           try
-            OpenPrivateRoute('Editor', TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+            OpenPrivateRoute('Editor', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
                 .Key('IdCarteiraToFotoEdit'));
           except
             on E: Exception do
@@ -222,9 +243,9 @@ begin
   if dlgLaudoMedico.Execute then
     if dlgLaudoMedico.FileName <> EmptyStr then
       begin
-        serviceNew.mtCadastroCarteiraPTEA.Edit;
-        serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.Value := dlgLaudoMedico.FileName;
-        serviceNew.mtCadastroCarteiraPTEA.Post;
+        LServiceCard.mtCadastroCarteiraPTEA.Edit;
+        LServiceCard.mtCadastroCarteiraPTEALaudoMedicoPath.Value := dlgLaudoMedico.FileName;
+        LServiceCard.mtCadastroCarteiraPTEA.Post;
 
         lblSelecioneLaudo.Text := 'Arquivo "' + Copy(dlgLaudoMedico.FileName,
           LastDelimiter('\', dlgLaudoMedico.FileName) + 1, Length(dlgLaudoMedico.FileName)) + '" selecionado';
@@ -244,7 +265,8 @@ begin
     AbrirLinkNavegador(dlgLaudoMedico.FileName)
   else
     begin
-      AbrirLinkNavegador(Config.BaseURL + '/carteiras/' + serviceNew.mtCadastroCarteiraPTEAid.AsString + '/static/doc');
+      AbrirLinkNavegador(Config.BaseURL + '/carteiras/' + LServiceCard.mtCadastroCarteiraPTEAid.AsString +
+          '/static/doc');
     end;
 end;
 
@@ -252,7 +274,7 @@ procedure TPageUpdate.btnPrintClick(Sender: TObject);
 var
   PropsToPrint: TProps;
 begin
-  PropsToPrint := TProps.Create.PropString(serviceNew.mtCadastroCarteiraPTEAid.AsString)
+  PropsToPrint := TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
     .Key('IdCarteiraToPrintFromUpdate');
   try
     OpenPrivateRoute('Print', PropsToPrint);
@@ -318,35 +340,29 @@ begin
     FormatMaskByEditObject(Sender, '999.999.999', KeyChar);
 end;
 
-function TPageUpdate.Render: TFmxObject;
-begin
-  Result := lytUpdate;
-  serviceNew := TServiceNew.Create(Self);
-end;
-
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
 var
   AId: string;
 begin
   Self.ValidarCampos(Sender);
-  AId := serviceNew.mtCadastroCarteiraPTEAid.AsString;
+  AId := LServiceCard.mtCadastroCarteiraPTEAid.AsString;
   try
     try
-      serviceNew.mtCadastroCarteiraPTEA.Edit;
+      LServiceCard.mtCadastroCarteiraPTEA.Edit;
 
-      if not(serviceNew.mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
-        serviceNew.PostStreamDoc;
+      if not(LServiceCard.mtCadastroCarteiraPTEALaudoMedicoPath.IsNull) then
+        LServiceCard.PostStreamDoc;
 
-      serviceNew.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
-      serviceNew.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
-      serviceNew.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
-      serviceNew.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
-      serviceNew.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
-      serviceNew.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
-      serviceNew.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
-      serviceNew.Salvar;
+      LServiceCard.mtCadastroCarteiraPTEADataNascimento.AsDateTime := edtDataNascimento.Date;
+      LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString := edtNomeResponsavel.Text;
+      LServiceCard.mtCadastroCarteiraPTEACpfResponsavel.AsString := edtCpfResponsavel.Text;
+      LServiceCard.mtCadastroCarteiraPTEANumeroContato.AsString := edtNumeroContato.Text;
+      LServiceCard.mtCadastroCarteiraPTEARgResponsavel.AsString := edtRgResponsavel.Text;
+      LServiceCard.mtCadastroCarteiraPTEAEmailContato.AsString := edtEmailContato.Text;
+      LServiceCard.mtCadastroCarteiraPTEANomeTitular.AsString := edtNomeTitular.Text;
+      LServiceCard.mtCadastroCarteiraPTEACpfTitular.AsString := edtCpfTitular.Text;
+      LServiceCard.mtCadastroCarteiraPTEARgTitular.AsString := edtRgTitular.Text;
+      LServiceCard.Salvar;
     finally
       TToastMessage.show('Alterações na carteirinha #' + AId + ' foram salvas com sucesso!', ttSuccess);
       try
@@ -360,21 +376,6 @@ begin
     on E: Exception do
       TToastMessage.show('Erro durante regravação dos campos da página de edição - ' + E.Message, ttDanger);
   end;
-end;
-
-procedure TPageUpdate.UnRender;
-begin
-  dlgLaudoMedico.FileName := EmptyStr;
-
-  if not(imgFotoRosto.Bitmap.IsEmpty) then
-    imgFotoRosto.Bitmap := nil;
-
-  LayoutZoom.Visible := false;
-
-  lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
-
-  serviceNew.Free;
-  Self.LimparCampos;
 end;
 
 procedure TPageUpdate.ValidarCampos(Sender: TObject);
@@ -443,7 +444,7 @@ var
   qryResult: TFDQuery;
 begin
   try
-    qryResult := serviceNew.GetFileById(serviceNew.mtCadastroCarteiraPTEAid.Value);
+    qryResult := LServiceCard.GetFileById(LServiceCard.mtCadastroCarteiraPTEAid.Value);
     if not(qryResult.IsEmpty) then
       if qryResult.FieldByName('hasDoc').AsBoolean then
         begin

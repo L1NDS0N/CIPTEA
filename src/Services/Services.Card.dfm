@@ -1,4 +1,4 @@
-object ServiceNew: TServiceNew
+object ServiceCard: TServiceCard
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 358

@@ -108,7 +108,6 @@ begin
         if TBCrypt.CompareHash(senha, LService.qryPesquisaUsuario.FieldByName('senha').AsString) then
           begin
             LService.qryPesquisaUsuario.FieldByName('senha').Visible := false;
-            LService.qryPesquisaUsuario.FieldByName('email').Visible := false;
             LService.qryPesquisaUsuario.FieldByName('criadoem').Visible := false;
             LService.qryPesquisaUsuario.FieldByName('alteradoem').Visible := false;
 
@@ -129,13 +128,13 @@ begin
 
 end;
 
-procedure DoChange(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure DoUpdate(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LService: TServiceUser;
   LData: TJsonObject;
   Aid: integer;
   nome: string;
-
+  LHash: string;
 label
   CanUpdate;
 begin
@@ -143,6 +142,10 @@ begin
   try
     LData := Req.Body<TJsonObject>;
     Aid := Req.Params.Items['id'].ToInteger;
+
+    LHash := TBCrypt.GenerateHash(LData.GetValue<string>('senha'));
+    LData.RemovePair('senha');
+    LData.AddPair('senha', LHash);
 
     if not(LData.TryGetValue('nome', nome)) then
       EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
@@ -177,7 +180,7 @@ end;
 procedure Registry;
 begin
   THorse.Post('/register', DoCreate);
-  THorse.Put('/register/:id', Authorization(), DoChange);
+  THorse.Put('/register/:id', Authorization(), DoUpdate);
   THorse.Post('/authenticate', DoAuth);
   THorse.Get('/healthcheck', Authorization(), DoCheck);
 end;

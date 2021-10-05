@@ -48,7 +48,6 @@ type
     ColorAnimation2: TColorAnimation;
     lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
-    FloatAnimation: TFloatAnimation;
     retBtnSalvar: TRectangle;
     ColorAnimation1: TColorAnimation;
     lblSalvar: TLabel;
@@ -64,19 +63,18 @@ type
     lytNovasSenhas: TLayout;
     lytSenhaAtual: TLayout;
     procedure btnVoltarClick(Sender: TObject);
-    procedure edtEmailExit(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure cbAlterarSenhaChange(Sender: TObject);
     private
-      ServiceUser: TServiceUser;
+      LServiceUser: TServiceUser;
       procedure ValidarCampos;
       procedure LimparCampos;
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
     public
       function Render: TFmxObject;
       procedure UnRender;
       [Subscribe]
-      procedure Props(aValue: TProps);
+      procedure PropsNewUser(aValue: TProps);
   end;
 
 var
@@ -91,29 +89,29 @@ uses
 
 {$R *.fmx}
 
+function TPageNewUser.Render: TFmxObject;
+begin
+  Result := lytNewUser;
+  lytSenhaAtual.Visible := false;
+  LServiceUser := TServiceUser.Create(Self);
+end;
+
+procedure TPageNewUser.UnRender;
+begin
+  Self.LimparCampos;
+  LServiceUser.Free;
+end;
+
 procedure TPageNewUser.btnVoltarClick(Sender: TObject);
 begin
-  try
-    OpenPrivateRoute('Config');
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
-  end;
+  NavegarPara('Config');
 end;
 
 procedure TPageNewUser.cbAlterarSenhaChange(Sender: TObject);
 begin
   lytNovasSenhas.Visible := cbAlterarSenha.IsChecked;
-end;
-
-procedure TPageNewUser.edtEmailExit(Sender: TObject);
-begin
-  ValidarCampos;
-end;
-
-procedure TPageNewUser.FormCreate(Sender: TObject);
-begin
-  lytSenhaAtual.Visible := false;
+  lblNovaSenha.Text := 'Nova Senha';
+  lblConfirmarNovaSenha.Text := 'Confirmar nova senha';
 end;
 
 procedure TPageNewUser.LimparCampos;
@@ -131,53 +129,87 @@ begin
   lblConfirmarNovaSenha.Text := 'Confirmar Senha';
 end;
 
-procedure TPageNewUser.Props(aValue: TProps);
+procedure TPageNewUser.NavegarPara(const ALocation: string; const AProps: TProps);
 begin
-  if (aValue.PropString <> EmptyStr) AND (aValue.Key = 'IdUserToUpdate') then
-    begin
-      lblNovaSenha.Text := 'Nova Senha';
-      lblConfirmarNovaSenha.Text := 'Confirmar nova senha';
-      lytSenhaAtual.Visible := true;
-      lytNovasSenhas.Visible := false;
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
+end;
 
-      ServiceUser.qryUsuarioLocal.Open;
-      lblTitle.Text := 'Editar usuário #' + ServiceUser.qryUsuarioLocalid.AsString;
-      edtNomeUsuario.Text := ServiceUser.qryUsuarioLocalNome.Value;
-      edtEmail.Text := ServiceUser.qryUsuarioLocalEmail.Value;
+procedure TPageNewUser.PropsNewUser(aValue: TProps);
+begin
+  try
+    try
+      if (aValue.PropString <> EmptyStr) AND (aValue.Key = 'IdUserToUpdate') then
+        begin
+          lytSenhaAtual.Visible := true;
+          lytNovasSenhas.Visible := false;
+
+          LServiceUser.qryUsuarioLocal.Open;
+          LServiceUser.mtUsuario.Open;
+          LServiceUser.mtUsuario.Edit;
+          LServiceUser.mtUsuarioid.Value := LServiceUser.qryUsuarioLocalid.Value;
+          lblTitle.Text := 'Editar usuário #' + LServiceUser.qryUsuarioLocalid.AsString;
+          edtNomeUsuario.Text := LServiceUser.qryUsuarioLocalNome.Value;
+          edtEmail.Text := LServiceUser.qryUsuarioLocalEmail.Value;
+        end;
+    except
+      on E: Exception do
+        TToastMessage.show('Erro durante a transferência de dados para a página de edição de usuário ' + E.Message,
+          ttDanger);
     end;
+  finally
+    aValue.Free;
+  end;
 
-end;
-
-function TPageNewUser.Render: TFmxObject;
-begin
-  Result := lytNewUser;
-  ServiceUser := TServiceUser.Create(nil);
-end;
-
-procedure TPageNewUser.UnRender;
-begin
-  ServiceUser.Free;
-  Self.LimparCampos;
 end;
 
 procedure TPageNewUser.retBtnSalvarClick(Sender: TObject);
 begin
-  Self.ValidarCampos;
+  try
+    Self.ValidarCampos;
+    LServiceUser.mtUsuario.Open;
 
-  if cbAlterarSenha.IsChecked then
-    begin
-      if not(ServiceUser.EfetuarLogin(ServiceUser.qryUsuarioLocalNome.Value, edtSenhaAtual.Text, true)) then
-        abort;
-      ServiceUser.mtUsuarioid.Value := ServiceUser.qryUsuarioLocalid.Value;
-    end;
+    if LServiceUser.mtUsuarioid.AsInteger > 0 then
+      begin
+        LServiceUser.mtUsuario.Edit;
+        LServiceUser.mtUsuarionome.Value := edtNomeUsuario.Text;
+        LServiceUser.mtUsuarioemail.Value := edtEmail.Text;
+        if cbAlterarSenha.IsChecked then
+          LServiceUser.mtUsuariosenha.Value := edtNovaSenha.Text
+        else
+          LServiceUser.mtUsuariosenha.Value := edtSenhaAtual.Text;
 
-  ServiceUser.mtUsuarionome.Value := edtNomeUsuario.Text;
-  ServiceUser.mtUsuarioemail.Value := edtEmail.Text;
-  ServiceUser.mtUsuariosenha.Value := edtNovaSenha.Text;
-
-  if ServiceUser.SalvarNovoUsuario then
-    TToastMessage.show('Novo usuário salvo com sucesso!', ttSuccess);
-
+        if LServiceUser.EfetuarLogin(LServiceUser.qryUsuarioLocalNome.Value, edtSenhaAtual.Text, true) then
+          begin
+            if LServiceUser.SalvarNovoUsuario then
+              begin
+                TToastMessage.show('Usuário salvo com sucesso!', ttSuccess);
+                NavegarPara('Config');
+              end;
+          end
+        else
+          abort;
+      end
+    else
+      begin
+        LServiceUser.mtUsuario.Append;
+        LServiceUser.mtUsuarionome.Value := edtNomeUsuario.Text;
+        LServiceUser.mtUsuarioemail.Value := edtEmail.Text;
+        LServiceUser.mtUsuariosenha.Value := edtNovaSenha.Text;
+        if LServiceUser.SalvarNovoUsuario then
+          begin
+            TToastMessage.show('Usuário salvo com sucesso!', ttSuccess);
+            NavegarPara('Config');
+          end;
+      end;
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttWarning);
+  end;
 end;
 
 procedure TPageNewUser.ValidarCampos;
@@ -185,17 +217,12 @@ begin
   with edtEmail do
     begin
       if NOT(Text.IsEmpty) AND not(EmailIsValid(Text)) then
-        begin
-          TToastMessage.show('O valor (' + Text + ') inserido no campo de e-mail é inválido ', ttWarning);
-          abort;
-        end;
+        raise Exception.Create('O valor (' + Text + ') inserido no campo de e-mail é inválido ');
     end;
 
-  if edtNovaSenha.Text <> edtConfirmarNovaSenha.Text then
-    begin
-      TToastMessage.show('As senhas inseridas não correspondem', ttWarning);
-      abort;
-    end;
+  if not(edtNovaSenha.Text.IsEmpty) AND not(edtConfirmarNovaSenha.Text.IsEmpty) AND
+    (edtNovaSenha.Text <> edtConfirmarNovaSenha.Text) then
+    raise Exception.Create('As senhas inseridas não correspondem');
 end;
 
 end.

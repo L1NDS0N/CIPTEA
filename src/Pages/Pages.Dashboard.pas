@@ -38,7 +38,8 @@ uses
   FMX.Ani,
   FMX.Effects,
   FMX.Edit,
-  FMX.ComboEdit;
+  FMX.ComboEdit,
+  Router4D.Props;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
@@ -72,6 +73,7 @@ type
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
       procedure OnUpdateCarteira(const ASender: TFrame; const AId: string);
       procedure OnPrintCarteira(const ASender: TFrame; const AId: string);
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
 
     public
       procedure ListarCarteiras;
@@ -92,9 +94,20 @@ uses
   Providers.PrivateRoute,
   Frames.DashboardDetail,
   Pages.Update,
-  Router4D.Props,
   ToastMessage,
   Data.DB;
+
+function TPageDashboard.Render: TFMXObject;
+begin
+  Result := lytDashboard;
+  LServiceCard := TServiceCard.Create(self);
+  self.ListarCarteiras;
+end;
+
+procedure TPageDashboard.UnRender;
+begin
+  LServiceCard.Free;
+end;
 
 procedure TPageDashboard.ComboEditChangeTracking(Sender: TObject);
 begin
@@ -165,23 +178,34 @@ begin
           ComboEdit.Items.Add(LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString);
           LServiceCard.mtPesquisaCarteiraPTEA.Next;
         end;
-    finally
-      vsbCarteiras.EndUpdate;
+    except
+      on E: Exception do
+        TToastMessage.show(E.Message, ttDanger);
     end;
-  except
-    on E: Exception do
-      TToastMessage.show(E.Message, ttDanger);
+  finally
+    vsbCarteiras.EndUpdate;
+    LStream.Free;
   end;
 
 end;
 
+procedure TPageDashboard.NavegarPara(const ALocation: string; const AProps: TProps);
+begin
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
+end;
+
 procedure TPageDashboard.OnDeleteCarteira(const ASender: TFrame; const AId: string);
 var
-  serviceNew: TServiceCard;
+  LService: TServiceCard;
 begin
   try
     try
-      serviceNew := TServiceCard.Create(nil);
+      LService := TServiceCard.Create(nil);
       TDialogService.MessageDialog('Tem certeza que deseja deletar?', TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo,
         TMsgDlgBtn.mbNo, 0,
           procedure(const AResult: TModalResult)
@@ -190,13 +214,13 @@ begin
             TToastMessage.show('Deleção da carteirinha #' + AId + ' cancelada.')
           else
             begin
-              serviceNew.Delete(AId);
+              LService.Delete(AId);
               ASender.DisposeOf;
               TToastMessage.show('Carteirinha #' + AId + ' deletada com sucesso!', ttSuccess);
             end;
         end);
     finally
-      serviceNew.Free;
+      LService.Free;
     end;
   except
     on E: Exception do
@@ -205,30 +229,13 @@ begin
 end;
 
 procedure TPageDashboard.OnPrintCarteira(const ASender: TFrame; const AId: string);
-var
-  PropToPrint: TProps;
 begin
-  PropToPrint := TProps.Create.PropString(AId).Key('IdCarteiraToPrintFromDashboard');
-  try
-    OpenPrivateRoute('Print', PropToPrint);
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante navegação para página de impressão - ' + E.Message, ttDanger);
-      end;
-  end;
+  NavegarPara('Print', TProps.Create.PropString(AId).Key('IdCarteiraToPrintFromDashboard'));
 end;
 
 procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
 begin
-  try
-    OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante navegação para página de edição - ' + E.Message, ttDanger);
-      end;
-  end;
+  NavegarPara('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
 end;
 
 procedure TPageDashboard.rectLupaClick(Sender: TObject);
@@ -236,31 +243,14 @@ begin
   ComboEdit.OnTyping(nil);
 end;
 
-function TPageDashboard.Render: TFMXObject;
-begin
-  Result := lytDashboard;
-  LServiceCard := TServiceCard.Create(self);
-  self.ListarCarteiras;
-end;
-
 procedure TPageDashboard.retBtnNewClick(Sender: TObject);
 begin
-  try
-    OpenPrivateRoute('New');
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante navegação para página de nova carteira - ' + E.Message, ttDanger);
-  end;
+  NavegarPara('New');
 end;
 
 procedure TPageDashboard.SpeedButton1Click(Sender: TObject);
 begin
   ComboEdit.Text := EmptyStr;
-end;
-
-procedure TPageDashboard.UnRender;
-begin
-  LServiceCard.Free;
 end;
 
 end.

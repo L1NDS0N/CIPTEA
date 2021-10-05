@@ -90,7 +90,6 @@ type
     imgPrint: TPath;
     FloatAnimation4: TFloatAnimation;
     procedure ValidarCampos(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
@@ -104,11 +103,13 @@ type
     procedure edtRgResponsavelKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     private
       LServiceCard: TServiceCard;
       Config: TConfigGlobal;
       procedure VerificacoesUX;
       procedure LimparCampos;
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -124,8 +125,6 @@ implementation
 uses
   Providers.PrivateRoute,
   Utils.Tools,
-  Pages.Principal,
-  Pages.Dashboard,
   FireDAC.Comp.Client,
   ToastMessage,
   System.MaskUtils,
@@ -133,34 +132,17 @@ uses
 {$R *.fmx}
 { TPageUpdate }
 
-procedure TPageUpdate.FormCreate(Sender: TObject);
-begin
-  edtEmailContato.OnExit := Self.ValidarCampos;
-  edtCpfResponsavel.OnExit := Self.ValidarCampos;
-  edtCpfTitular.OnExit := Self.ValidarCampos;
-  edtNomeResponsavel.OnExit := Self.ValidarCampos;
-  edtNomeTitular.OnExit := Self.ValidarCampos;
-end;
-
 function TPageUpdate.Render: TFmxObject;
 begin
   Result := lytUpdate;
+
   LServiceCard := TServiceCard.Create(Self);
 end;
 
 procedure TPageUpdate.UnRender;
 begin
-  dlgLaudoMedico.FileName := EmptyStr;
-
-  if not(imgFotoRosto.Bitmap.IsEmpty) then
-    imgFotoRosto.Bitmap := nil;
-
-  LayoutZoom.Visible := false;
-
-  lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
-
-  LServiceCard.Free;
   Self.LimparCampos;
+  LServiceCard.Free;
 end;
 
 procedure TPageUpdate.LimparCampos;
@@ -174,11 +156,14 @@ begin
   edtRgTitular.Text := EmptyStr;
   edtDataNascimento.Date := Now;
   edtNumeroContato.Text := EmptyStr;
+  LayoutZoom.Visible := false;
+  dlgLaudoMedico.FileName := EmptyStr;
+  if not(imgFotoRosto.Bitmap.IsEmpty) then
+    imgFotoRosto.Bitmap := nil;
+  lblSelecioneLaudo.Text := 'Selecione o laudo médico em PDF';
 end;
 
 procedure TPageUpdate.PropsUpdate(aValue: TProps);
-var
-  streamImage: TMemoryStream;
 begin
   try
     try
@@ -201,14 +186,23 @@ begin
     except
       on E: Exception do
         begin
-          TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString + ' - ' +
-              E.Message, ttDanger);
-          abort;
+          TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString +
+              ' na página de edição - ' + E.Message, ttDanger);
         end;
     end;
   finally
-    FreeAndNil(aValue);
     VerificacoesUX;
+    aValue.Free;
+  end;
+end;
+
+procedure TPageUpdate.NavegarPara(const ALocation: string; const AProps: TProps);
+begin
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
   end;
 end;
 
@@ -224,13 +218,8 @@ begin
           LServiceCard.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
           LServiceCard.qryTemp.Post;
 
-          try
-            OpenPrivateRoute('Editor', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
-                .Key('IdCarteiraToFotoEdit'));
-          except
-            on E: Exception do
-              TToastMessage.show('Erro durante navegação para a página de edição de imagem - ' + E.Message, ttDanger);
-          end;
+          NavegarPara('Editor', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
+              .Key('IdCarteiraToFotoEdit'));
         end;
   finally
     VerificacoesUX;
@@ -271,30 +260,14 @@ begin
 end;
 
 procedure TPageUpdate.btnPrintClick(Sender: TObject);
-var
-  PropsToPrint: TProps;
 begin
-  PropsToPrint := TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
-    .Key('IdCarteiraToPrintFromUpdate');
-  try
-    OpenPrivateRoute('Print', PropsToPrint);
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante navegação para página de impressão - ' + E.Message, ttDanger);
-      end;
-  end;
+  NavegarPara('Print', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
+      .Key('IdCarteiraToPrintFromUpdate'));
 end;
 
 procedure TPageUpdate.btnVoltarClick(Sender: TObject);
 begin
-  try
-    OpenPrivateRoute('Dashboard');
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
-  end;
-
+  NavegarPara('Dashboard');
 end;
 
 procedure TPageUpdate.cbResponsavelChange(Sender: TObject);
@@ -340,6 +313,15 @@ begin
     FormatMaskByEditObject(Sender, '999.999.999', KeyChar);
 end;
 
+procedure TPageUpdate.FormCreate(Sender: TObject);
+begin
+  edtEmailContato.OnExit := Self.ValidarCampos;
+  edtCpfResponsavel.OnExit := Self.ValidarCampos;
+  edtCpfTitular.OnExit := Self.ValidarCampos;
+  edtNomeResponsavel.OnExit := Self.ValidarCampos;
+  edtNomeTitular.OnExit := Self.ValidarCampos;
+end;
+
 procedure TPageUpdate.retBtnSalvarClick(Sender: TObject);
 var
   AId: string;
@@ -365,12 +347,7 @@ begin
       LServiceCard.Salvar;
     finally
       TToastMessage.show('Alterações na carteirinha #' + AId + ' foram salvas com sucesso!', ttSuccess);
-      try
-        OpenPrivateRoute('Dashboard');
-      except
-        on E: Exception do
-          TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
-      end;
+      NavegarPara('Dashboard');
     end;
   except
     on E: Exception do

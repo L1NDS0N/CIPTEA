@@ -74,7 +74,8 @@ implementation
 uses
   Router4D.Props,
   Providers.PrivateRoute,
-  ToastMessage;
+  ToastMessage,
+  Router4D;
 
 {$R *.fmx}
 { TPageConfig }
@@ -82,7 +83,7 @@ uses
 procedure TPageConfig.btnVoltarClick(Sender: TObject);
 begin
   try
-    OpenPrivateRoute('Dashboard');
+    TRouter4D.Link.&To('Dashboard');
   except
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
@@ -95,7 +96,7 @@ begin
     OpenPrivateRoute('NewUser', TProps.create.PropString('edit').Key('IdUserToUpdate'));
   except
     on E: Exception do
-      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
+      TToastMessage.show('Erro durante navegação para a página de edição de usuário - ' + E.Message, ttDanger);
   end;
 end;
 

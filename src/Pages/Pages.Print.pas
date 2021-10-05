@@ -58,8 +58,10 @@ type
     procedure retBtnSalvarClick(Sender: TObject);
     private
       PropsKeyValue: string;
+      PropsValue: string;
       LServiceCard: TServiceCard;
       procedure LimparCampos;
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -79,14 +81,25 @@ uses
 {$R *.fmx}
 { TPagePrint }
 
+function TPagePrint.Render: TFmxObject;
+begin
+  Result := lytPrincipal;
+  LServiceCard := TServiceCard.Create(Self);
+end;
+
+procedure TPagePrint.UnRender;
+begin
+  Self.LimparCampos;
+  LServiceCard.Free;
+end;
+
 procedure TPagePrint.btnVoltarClick(Sender: TObject);
 begin
-  try
-    OpenPrivateRoute('Dashboard');
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
-  end;
+  if PropsKeyValue = 'IdCarteiraToPrintFromDashboard' then
+    NavegarPara('Dashboard');
+
+  if PropsKeyValue = 'IdCarteiraToPrintFromUpdate' then
+    NavegarPara('Update', TProps.Create.Key('IdCarteiraToUpdate').PropString(PropsValue));
 end;
 
 procedure TPagePrint.LimparCampos;
@@ -98,6 +111,17 @@ begin
   lblRG.Text := EmptyStr;
   lblCPF.Text := EmptyStr;
   lblID.Text := EmptyStr;
+  imgFotoRosto.Bitmap := nil;
+end;
+
+procedure TPagePrint.NavegarPara(const ALocation: string; const AProps: TProps);
+begin
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
 end;
 
 procedure TPagePrint.PropsPrint(aValue: TProps);
@@ -105,11 +129,12 @@ begin
   try
     try
       PropsKeyValue := aValue.Key;
+      PropsValue := aValue.PropString;
       if (aValue.PropString <> '') and ((PropsKeyValue = 'IdCarteiraToPrintFromDashboard') OR
           (PropsKeyValue = 'IdCarteiraToPrintFromUpdate')) then
         LServiceCard.GetById(aValue.PropString);
 
-      lblID.Text := '#' + aValue.PropString;
+      lblID.Text := '#' + PropsValue;
 
       lblNome.Text := LServiceCard.mtCadastroCarteiraPTEANomeTitular.AsString;
       lblResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString;
@@ -127,14 +152,8 @@ begin
         end;
     end;
   finally
-    FreeAndNil(aValue);
+    aValue.Free;
   end;
-end;
-
-function TPagePrint.Render: TFmxObject;
-begin
-  Result := lytPrincipal;
-  LServiceCard := TServiceCard.Create(Self);
 end;
 
 procedure TPagePrint.retBtnSalvarClick(Sender: TObject);
@@ -162,12 +181,7 @@ begin
                 end;
               EndDoc;
               TToastMessage.show('Carteirinha enviada para impressão.', ttSuccess);
-              try
-                OpenPrivateRoute('Dashboard');
-              except
-                on E: Exception do
-                  TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
-              end;
+              NavegarPara('Dashboard');
             end;
         end;
     except
@@ -178,13 +192,6 @@ begin
     image1.Free;
     image2.Free;
   end;
-end;
-
-procedure TPagePrint.UnRender;
-begin
-  Self.LimparCampos;
-  imgFotoRosto.Bitmap := nil;
-  LServiceCard.Free;
 end;
 
 end.

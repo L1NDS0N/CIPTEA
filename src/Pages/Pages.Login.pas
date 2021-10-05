@@ -22,7 +22,8 @@ uses
   FMX.Edit,
   FMX.Ani,
   FMX.Effects,
-  Router4D.Interfaces;
+  Router4D.Interfaces,
+  Router4D.Props;
 
 type
   TPageLogin = class(TForm, iRouter4DComponent)
@@ -51,7 +52,7 @@ type
     PasswordEditButton1: TPasswordEditButton;
     procedure btnLoginClick(Sender: TObject);
     private
-
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -63,8 +64,8 @@ var
 implementation
 
 uses
+  Providers.PrivateRoute,
   Services.User,
-  Router4D,
   ToastMessage;
 
 {$R *.fmx}
@@ -76,15 +77,20 @@ var
 begin
   LService := TServiceUser.Create(nil);
   try
-    try
-      if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
-        TRouter4d.Link.&To('Dashboard');
-    except
-      on E: Exception do
-        TToastmessage.show(E.Message, ttWarning);
-    end;
+    if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
+      NavegarPara('Dashboard');
   finally
     LService.Free;
+  end;
+end;
+
+procedure TPageLogin.NavegarPara(const ALocation: string; const AProps: TProps);
+begin
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastmessage.show(E.Message, ttDanger);
   end;
 end;
 

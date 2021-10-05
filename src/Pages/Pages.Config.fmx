@@ -250,7 +250,7 @@ object PageConfig: TPageConfig
                 TextSettings.Font.Size = 16.000000000000000000
                 TextSettings.FontColor = claDimgray
                 TextSettings.HorzAlign = Center
-                Text = 'Atualizar informa'#231#245'es de usu'#225'rio'
+                Text = 'Atualizar minhas informa'#231#245'es de usu'#225'rio'
                 TabOrder = 2
               end
               object ColorAnimation2: TColorAnimation

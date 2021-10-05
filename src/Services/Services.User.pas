@@ -66,16 +66,37 @@ var
   LRequest: IRequest;
   LResponse: IResponse;
 begin
-  qryUsuarioLocal.Close;
-  qryUsuarioLocal.Open;
+  try
+    qryUsuarioLocal.Close;
+    qryUsuarioLocal.Open;
 
-  LRequest := TRequest.New.BaseURL(Config.BaseURL).TokenBearer(qryUsuarioLocalToken.Value).Resource('register')
-    .addbody(mtUsuario.ToJSONObject);
+    LRequest := TRequest.New.BaseURL(Config.BaseURL).TokenBearer(qryUsuarioLocalToken.Value).Resource('register')
+      .addbody(mtUsuario.ToJSONObject);
 
-  if (mtUsuarioid.AsInteger > 0) then
-    LResponse := LRequest.ResourceSuffix(mtUsuarioid.AsString).Put
-  else
-    LResponse := LRequest.Post;
+    if (mtUsuarioid.AsInteger > 0) then
+      begin
+        LResponse := LRequest.ResourceSuffix(mtUsuarioid.AsString).Put;
+        qryUsuarioLocal.MergeFromJSONObject(LResponse.JSONValue.ToJSON);
+      end
+    else
+      LResponse := LRequest.Post;
+  finally
+    if LResponse.StatusCode in [200, 201, 204] then
+      begin
+        Result := true;
+      end
+    else if LResponse.StatusCode = 401 then
+      begin
+        Result := false;
+        raise Exception.Create('Atualmente você não possui autorização para gravar os dados.')
+      end
+    else
+      begin
+        Result := false;
+        raise Exception.Create('Erro durante gravação dos dados do usuário - Erro #' + LResponse.StatusCode.ToString +
+            ', ' + LResponse.JSONValue.GetValue<string>('error'));
+      end;
+  end;
 
 end;
 

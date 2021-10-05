@@ -7,7 +7,6 @@ object PageNewUser: TPageNewUser
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnCreate = FormCreate
   DesignerMasterStyle = 0
   object lytNewUser: TLayout
     Align = Client
@@ -69,8 +68,6 @@ object PageNewUser: TPageNewUser
           Size.PlatformDefault = False
           TextPrompt = 'email@exemplo.com'
           StyledSettings = [Size, Style, FontColor]
-          CharCase = ecUpperCase
-          OnExit = edtEmailExit
           object ClearEditButton3: TClearEditButton
             CanFocus = False
             Cursor = crArrow
@@ -342,13 +339,6 @@ object PageNewUser: TPageNewUser
           TriggerInverse = 'IsMouseOver=false'
         end
       end
-    end
-    object FloatAnimation: TFloatAnimation
-      Duration = 0.200000002980232200
-      PropertyName = 'Position.X'
-      StartValue = 0.000000000000000000
-      StartFromCurrent = True
-      StopValue = -1.000000000000000000
     end
     object retBtnSalvar: TRectangle
       Align = Bottom

@@ -24,7 +24,7 @@ uses
   FMX.Edit,
   FMX.DateTimeCtrls,
   FMX.Ani,
-  FMX.Effects;
+  FMX.Effects, Router4D.Props;
 
 type
   TPageNew = class(TForm, iRouter4DComponent)
@@ -85,7 +85,7 @@ type
     private
       LServiceCard: TServiceCard;
       procedure LimparCampos;
-
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
     public
       function Render: TFmxObject;
       procedure UnRender;
@@ -100,21 +100,14 @@ uses
   Providers.PrivateRoute,
   Utils.Tools,
   Pages.Dashboard,
-  ToastMessage,
-  Router4D.Props;
+  ToastMessage;
 
 {$R *.fmx}
 { TPageNew }
 
 procedure TPageNew.btnVoltarClick(Sender: TObject);
 begin
-  try
-    OpenPrivateRoute('Dashboard');
-  except
-    on E: Exception do
-      TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
-  end;
-
+  NavegarPara('Dashboard');
 end;
 
 procedure TPageNew.cbResponsavelChange(Sender: TObject);
@@ -182,6 +175,16 @@ begin
   edtNumeroContato.Text := EmptyStr;
 end;
 
+procedure TPageNew.NavegarPara(const ALocation: string; const AProps: TProps);
+begin
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
+end;
+
 function TPageNew.Render: TFmxObject;
 begin
   Result := lytNew;
@@ -211,7 +214,7 @@ begin
     finally
       try
         if not(LServiceCard.mtCadastroCarteiraPTEAid.IsNull) then
-          OpenPrivateRoute('Update', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
+          NavegarPara('Update', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
               .Key('IdCarteiraToUpdate'));
       except
         on E: Exception do

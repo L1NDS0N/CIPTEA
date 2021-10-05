@@ -16,7 +16,6 @@ uses
   Services.Connection,
   Router4D,
   FireDAC.Comp.Client,
-  ToastMessage,
   System.SysUtils;
 
 var
@@ -61,50 +60,47 @@ begin
                       TRouter4D.Link.&To(ARoute);
                   except
                     on E: Exception do
-                      TToastMessage.show('Erro durante navegação para a página #' + ARoute + '. ' + E.Message,
-                        ttDanger);
+                      raise Exception.Create('Erro durante navegação para a página #' + ARoute + '. ' + E.Message);
                   end;
 
                 end
               else if LResponse.StatusCode = 401 then
                 begin
-                  TToastMessage.show
-                    ('Não foi possível validar as suas credenciais de acesso. Suas credenciais expiraram ou são inválidas.',
-                    ttWarning);
                   try
                     TRouter4D.Link.&To('Login');
                   except
                     on E: Exception do
-                      TToastMessage.show('Erro durante navegação para a página de login. ' + E.Message, ttDanger);
+                      raise Exception.Create('Erro durante navegação para a página de login. ' + E.Message);
                   end;
+                  raise Exception.Create
+                    ('Não foi possível validar as suas credenciais de acesso. Suas credenciais expiraram ou são inválidas.');
                 end;
             end
           else
             begin
-              TToastMessage.show('Não foi possível encontrar as suas credenciais de acesso.', ttWarning);
               try
                 TRouter4D.Link.&To('Login');
               except
                 on E: Exception do
-                  TToastMessage.show('Erro durante navegação para a página de login. ' + E.Message, ttDanger);
+                  raise Exception.Create('Erro durante navegação para a página de login. ' + E.Message);
               end;
+              raise Exception.Create('Não foi possível encontrar as suas credenciais de acesso.');
             end;
         end
       else
         begin
-          TToastMessage.show('Não foi possível encontrar nenhuma credencial de acesso, por favor, efetue login.',
-            ttWarning);
           try
             TRouter4D.Link.&To('Login');
           except
             on E: Exception do
-              TToastMessage.show('Erro durante navegação para a página de login. ' + E.Message, ttDanger);
+              raise Exception.Create('Erro durante navegação para a página de login. ' + E.Message);
           end;
+          raise Exception.Create('Não foi possível encontrar nenhuma credencial de acesso, por favor, efetue login.');
         end;
 
     except
       on E: Exception do
-        TToastMessage.show(E.Message, ttDanger);
+        raise Exception.Create(E.Message);
     end;
   finally
     qryConsultaUsuario.Free;

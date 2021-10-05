@@ -70,13 +70,19 @@ uses
   Pages.Print,
   Pages.NewUser,
   Services.User,
-  Pages.Config;
+  Pages.Config,
+  ToastMessage;
 
 {$R *.fmx}
 
 procedure TPagePrincipal.btnConfigClick(Sender: TObject);
 begin
-  TRouter4D.Link.&To('Config');
+  try
+    TRouter4D.Link.&To('Config');
+  except
+    on E: Exception do
+      TToastmessage.show(E.Message, ttDanger);
+  end;
 end;
 
 procedure TPagePrincipal.btnDeslogarClick(Sender: TObject);

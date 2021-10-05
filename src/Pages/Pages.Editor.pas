@@ -68,6 +68,7 @@ type
       AId: string;
       MouseIsDown: Boolean;
       PX, PY: Single;
+      procedure NavegarPara(const ALocation: string; const AProps: TProps = nil);
     public
       [Subscribe]
       procedure Props(aValue: TProps);
@@ -88,14 +89,7 @@ uses
 
 procedure TPageEditor.btnVoltarClick(Sender: TObject);
 begin
-  try
-    OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
-  except
-    on E: Exception do
-      begin
-        TToastMessage.show('Erro durante navegação para página de edição - ' + E.Message, ttDanger);
-      end;
-  end;
+  NavegarPara('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
 end;
 
 procedure TPageEditor.Button1Click(Sender: TObject);
@@ -132,6 +126,16 @@ begin
   track_zoom.Value := ImageViewer1.BitmapScale;
 end;
 
+procedure TPageEditor.NavegarPara(const ALocation: string; const AProps: TProps);
+begin
+  try
+    OpenPrivateRoute(ALocation, AProps);
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
+end;
+
 procedure TPageEditor.Props(aValue: TProps);
 begin
   try
@@ -155,7 +159,7 @@ begin
         end;
     end;
   finally
-    FreeAndNil(aValue);
+    aValue.Free;
   end;
 end;
 
@@ -192,12 +196,9 @@ begin
         end;
 
       LServiceCard.PostStreamFoto(AId);
-      try
-        OpenPrivateRoute('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
-      except
-        on E: Exception do
-          TToastMessage.show('Erro durante navegação para página de edição -' + E.Message, ttDanger);
-      end;
+
+      NavegarPara('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+
       TToastMessage.show('A imagem foi salva com sucesso', ttSuccess);
 
     except

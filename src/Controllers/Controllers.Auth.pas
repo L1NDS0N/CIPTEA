@@ -52,14 +52,44 @@ var
   email: string;
   nome: string;
   LHash: string;
+  senha: string;
 begin
   LService := TServiceUser.Create(nil);
   try
     LData := Req.Body<TJsonObject>;
 
     email := LData.GetValue<string>('email').Trim;
-    nome := LData.GetValue<string>('nome').Trim;
-    LHash := TBCrypt.GenerateHash(LData.GetValue<string>('senha'));
+
+    if LData.TryGetValue('nome', nome) then
+      begin
+        nome := nome.Trim;
+
+        if nome = EmptyStr then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
+
+        if (Length(nome) < 3) then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Nome muito curto, mínimo 3 caracteres');
+      end
+    else
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
+
+    if LData.TryGetValue('senha', senha) then
+      begin
+        if senha = EmptyStr then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Senha não encontrada');
+
+        if (Length(senha) < 5) then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Senha muito curta, mínimo 5 caracteres');
+
+        LHash := TBCrypt.GenerateHash(senha);
+        LData.RemovePair('senha');
+        LData.AddPair('senha', LHash);
+      end
+    else
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Senha não encontrada');
+
+    if NOT(LService.GetByFieldValue('nome', nome).IsEmpty) then
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Usuário com esse nome já existe ');
 
     LData.RemovePair('nome');
     LData.RemovePair('email');
@@ -68,12 +98,6 @@ begin
     LData.AddPair('nome', nome);
     LData.AddPair('email', email);
     LData.AddPair('senha', LHash);
-
-    if NOT(LService.GetByFieldValue('nome', nome).IsEmpty) then
-      raise EHorseException.Create(THTTPStatus.BadRequest, 'Usuário com esse nome já existe ');
-
-    if NOT(LService.GetByFieldValue('email', email).IsEmpty) then
-      raise EHorseException.Create(THTTPStatus.BadRequest, 'Usuário com esse e-mail já existe');
 
     if LService.Append(LData) then
       begin
@@ -102,6 +126,7 @@ begin
 
     nome := LData.GetValue<string>('nome').Trim;
     senha := LData.GetValue<string>('senha');
+
     //valida campos
     if not(LService.GetByFieldValue('nome', nome).IsEmpty) then
       begin
@@ -135,6 +160,7 @@ var
   Aid: integer;
   nome: string;
   LHash: string;
+  senha: string;
 label
   CanUpdate;
 begin
@@ -143,18 +169,38 @@ begin
     LData := Req.Body<TJsonObject>;
     Aid := Req.Params.Items['id'].ToInteger;
 
-    LHash := TBCrypt.GenerateHash(LData.GetValue<string>('senha'));
-    LData.RemovePair('senha');
-    LData.AddPair('senha', LHash);
+    if LData.TryGetValue('nome', nome) then
+      begin
+        nome := nome.Trim;
 
-    if not(LData.TryGetValue('nome', nome)) then
-      EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
+        if nome = EmptyStr then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
+
+        if (Length(nome) < 3) then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Nome muito curto, mínimo 3 caracteres');
+      end
+    else
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Nome não encontrado');
+
+    if LData.TryGetValue('senha', senha) then
+      begin
+        if senha = EmptyStr then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Senha não encontrada');
+
+        if (Length(senha) < 5) then
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Senha muito curta, mínimo 5 caracteres');
+
+        LHash := TBCrypt.GenerateHash(senha);
+        LData.RemovePair('senha');
+        LData.AddPair('senha', LHash);
+      end
+    else
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Senha não encontrada');
 
     if not(LService.GetByFieldValue('nome', nome).IsEmpty) then
       begin
         if (LService.qryPesquisaUsuario.FieldByName('id').AsInteger <> Aid) then
-          EHorseException.Create(THTTPStatus.BadRequest,
-            'Não foi possível gravar estes dados devido a uma possível duplicata do nome de usuário')
+          raise EHorseException.Create(THTTPStatus.BadRequest, 'Este nome de usuário já existe')
         else
           goto CanUpdate;
       end
@@ -164,7 +210,7 @@ begin
     CanUpdate:
     begin
       if LService.Update(LData, Aid) then
-        Res.Send(LService.qryCadastroUsuario.ToJSONObject).Status(200);
+        Res.Send(LService.qryCadastroUsuario.ToJSONObject).Status(THTTPStatus.OK);
     end;
 
   finally

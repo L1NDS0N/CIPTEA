@@ -417,13 +417,10 @@ begin
 end;
 
 procedure TPageUpdate.VerificacoesUX;
-var
-  qryResult: TFDQuery;
 begin
   try
-    qryResult := LServiceCard.GetFileById(LServiceCard.mtCadastroCarteiraPTEAid.Value);
-    if not(qryResult.IsEmpty) then
-      if qryResult.FieldByName('hasDoc').AsBoolean then
+    if not(LServiceCard.GetFileById(LServiceCard.mtCadastroCarteiraPTEAid.Value).IsEmpty) then
+      if LServiceCard.qryArquivosCarteiraPTEA.FieldByName('hasDoc').AsBoolean then
         begin
           LayoutZoom.Visible := true;
           lblSelecioneLaudo.Text := 'Este registro contém um laudo salvo, clique no 👁 para visualizar no navegador';

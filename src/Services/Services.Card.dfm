@@ -1,14 +1,18 @@
 object ServiceCard: TServiceCard
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 358
-  Width = 154
+  Height = 198
+  Width = 303
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.AssignedValues = [rvStoreVersion, rvStoreItems, rvSilentMode, rvStoreMergeData, rvStoreMergeMeta]
+    ResourceOptions.StoreVersion = 1
+    ResourceOptions.StoreItems = [siMeta, siData, siDelta, siVisible]
+    ResourceOptions.StoreMergeData = dmDataAppend
+    ResourceOptions.StoreMergeMeta = mmUpdate
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvUpdateChngFields, uvUpdateMode, uvLockMode, uvLockPoint, uvLockWait, uvRefreshMode, uvFetchGeneratorsPoint, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable, uvAutoCommitUpdates]
     UpdateOptions.LockWait = True
@@ -159,7 +163,7 @@ object ServiceCard: TServiceCard
     SQL.Strings = (
       'select * from ArquivosCarteiraPTEA'
       'where IDCarteira = :IDCARTEIRA')
-    Left = 56
+    Left = 216
     Top = 136
     ParamData = <
       item
@@ -192,8 +196,8 @@ object ServiceCard: TServiceCard
   object qryTemp: TFDQuery
     SQL.Strings = (
       'select * from temp')
-    Left = 56
-    Top = 200
+    Left = 216
+    Top = 8
     object qryTempid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -215,8 +219,8 @@ object ServiceCard: TServiceCard
     Connection = ServiceLocalConnection.LocalConnection
     SQL.Strings = (
       'select * from usuario limit 1')
-    Left = 53
-    Top = 272
+    Left = 213
+    Top = 72
     object qryUsuarioLocalid: TIntegerField
       FieldName = 'id'
       Origin = 'id'
@@ -244,6 +248,29 @@ object ServiceCard: TServiceCard
     object qryUsuarioLocalTokenExpires: TIntegerField
       FieldName = 'TokenExpires'
       Origin = 'TokenExpires'
+    end
+  end
+  object mtPaginadorCarteiraPTEA: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvStoreVersion, rvStoreItems, rvSilentMode, rvStorePrettyPrint, rvStoreMergeData, rvStoreMergeMeta]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 56
+    Top = 136
+    object mtPaginadorCarteiraPTEAtotal: TIntegerField
+      FieldName = 'total'
+    end
+    object mtPaginadorCarteiraPTEAlimit: TIntegerField
+      FieldName = 'limit'
+    end
+    object mtPaginadorCarteiraPTEApage: TIntegerField
+      FieldName = 'page'
+    end
+    object mtPaginadorCarteiraPTEApages: TIntegerField
+      FieldName = 'pages'
     end
   end
 end

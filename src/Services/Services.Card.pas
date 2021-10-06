@@ -65,6 +65,11 @@ type
     qryUsuarioLocalStayConected: TBooleanField;
     qryUsuarioLocalTokenCreatedAt: TIntegerField;
     qryUsuarioLocalTokenExpires: TIntegerField;
+    mtPaginadorCarteiraPTEA: TFDMemTable;
+    mtPaginadorCarteiraPTEAtotal: TIntegerField;
+    mtPaginadorCarteiraPTEAlimit: TIntegerField;
+    mtPaginadorCarteiraPTEApage: TIntegerField;
+    mtPaginadorCarteiraPTEApages: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -72,6 +77,7 @@ type
     public
       procedure Salvar;
       procedure Listar;
+      procedure ListarPagina;
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
       procedure PostStreamDoc;
@@ -89,7 +95,8 @@ implementation
 uses
   Services.Connection,
   DataSet.Serialize,
-  RESTRequest4D;
+  RESTRequest4D,
+  System.JSON;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -286,6 +293,7 @@ begin
       LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
         .TokenBearer(qryUsuarioLocalToken.Value).DataSetAdapter(mtPesquisaCarteiraPTEA)
         .AddHeader('If-None-Match', mtPesquisaCarteiraPTEAIfNoneMatch.Value).Get;
+
     finally
       mtPesquisaCarteiraPTEA.First;
       mtPesquisaCarteiraPTEAIfNoneMatch.Value := LResponse.Headers.Values['ETag'];
@@ -385,6 +393,47 @@ begin
         raise Exception.Create(E.Message);
       end;
   end;
+end;
+
+procedure TServiceCard.ListarPagina;
+var
+  LResponse: IResponse;
+  Page: string;
+begin
+  try
+
+    if (mtPaginadorCarteiraPTEApage.Value > 0) AND
+      (mtPaginadorCarteiraPTEApage.Value = mtPaginadorCarteiraPTEApages.Value) then
+      exit
+    else
+      begin
+        qryUsuarioLocal.Close;
+        qryUsuarioLocal.Open;
+
+        LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').AddHeader('Accept-Encoding', 'gzip')
+          .AddParam('limit', '5').AddParam('page', (mtPaginadorCarteiraPTEApage.Value + 1).ToString)
+          .TokenBearer(qryUsuarioLocalToken.Value).AddHeader('X-Paginate', 'true').Get;
+
+        if LResponse.StatusCode in [200, 201, 204] then
+          begin
+            mtPaginadorCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.ToJSON);
+            mtPesquisaCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.GetValue<TJSONArray>('docs').ToJSON);
+          end;
+
+        if LResponse.StatusCode = 401 then
+          raise Exception.Create('Atualmente você não possui autorização para listar os dados.')
+        else if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
+          raise Exception.Create('Não foi possível listar os dados - Erro #' + LResponse.StatusCode.ToString + ', ' +
+              LResponse.JSONValue.GetValue<string>('error'));
+      end;
+
+  except
+    on E: Exception do
+      begin
+        raise Exception.Create(E.Message);
+      end;
+  end;
+
 end;
 
 procedure TServiceCard.PostStreamDoc;

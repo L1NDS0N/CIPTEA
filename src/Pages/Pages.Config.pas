@@ -28,7 +28,6 @@ type
     lytModal: TLayout;
     Line1: TLine;
     ShadowEffect1: TShadowEffect;
-    rect_fundo: TRectangle;
     rect_modal: TRectangle;
     IconUser: TPath;
     lblNovoUsuario: TLabel;

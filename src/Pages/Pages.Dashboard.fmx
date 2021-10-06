@@ -40,6 +40,13 @@ object PageDashboard: TPageDashboard
           Text = 'Carteirinhas cadastradas'
           TabOrder = 0
         end
+        object Paginar: TButton
+          Position.X = 576.000000000000000000
+          Position.Y = 8.000000000000000000
+          TabOrder = 1
+          Text = 'Paginar'
+          OnClick = PaginarClick
+        end
       end
       object lytSearchBox: TLayout
         Align = Client
@@ -191,6 +198,8 @@ object PageDashboard: TPageDashboard
       Size.Height = 420.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
+      OnMouseWheel = vsbCarteirasMouseWheel
+      OnViewportPositionChange = vsbCarteirasViewportPositionChange
       Viewport.Width = 688.000000000000000000
       Viewport.Height = 420.000000000000000000
     end

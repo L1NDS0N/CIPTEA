@@ -6,7 +6,6 @@ uses
   Services.Card,
   Router4D.Interfaces,
   System.SysUtils,
-  System.Types,
   FMX.DialogService,
   FMX.Dialogs,
   System.UITypes,
@@ -16,7 +15,6 @@ uses
   FMX.Controls,
   FMX.Forms,
   FMX.Graphics,
-  FMX.Layouts,
   FMX.Controls.Presentation,
   FMX.StdCtrls,
   System.Rtti,
@@ -39,7 +37,9 @@ uses
   FMX.Effects,
   FMX.Edit,
   FMX.ComboEdit,
-  Router4D.Props;
+  Router4D.Props,
+  FMX.Layouts,
+  System.Types;
 
 type
   TPageDashboard = class(TForm, iRouter4DComponent)
@@ -62,12 +62,17 @@ type
     ColorAnimation2: TColorAnimation;
     SpeedButton1: TSpeedButton;
     ShadowEffect4: TShadowEffect;
+    Paginar: TButton;
     procedure retBtnNewClick(Sender: TObject);
     procedure ComboEditClick(Sender: TObject);
     procedure ComboEditTyping(Sender: TObject);
     procedure rectLupaClick(Sender: TObject);
     procedure ComboEditChangeTracking(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure PaginarClick(Sender: TObject);
+    procedure vsbCarteirasMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
+    procedure vsbCarteirasViewportPositionChange(Sender: TObject;
+      const OldViewportPosition, NewViewportPosition: TPointF; const ContentSizeChanged: Boolean);
     private
       LServiceCard: TServiceCard;
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
@@ -95,7 +100,9 @@ uses
   Frames.DashboardDetail,
   Pages.Update,
   ToastMessage,
-  Data.DB;
+  Data.DB,
+  Math,
+  Winapi.Windows;
 
 function TPageDashboard.Render: TFMXObject;
 begin
@@ -107,6 +114,22 @@ end;
 procedure TPageDashboard.UnRender;
 begin
   LServiceCard.Free;
+end;
+
+procedure TPageDashboard.vsbCarteirasMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer;
+  var Handled: Boolean);
+begin
+  //showmessage(vsbCarteiras.ViewportPosition.Y.ToString + ' ' + vsbCarteiras.ViewportPosition.Length.ToString);
+  //showmessage(vsbCarteiras.ClientHeight.ToString);
+
+  //showmessage(vsbCarteiras.Content.Children.Items[vsbCarteiras.Content.ChildrenCount]);
+end;
+
+procedure TPageDashboard.vsbCarteirasViewportPositionChange(Sender: TObject;
+  const OldViewportPosition, NewViewportPosition: TPointF; const ContentSizeChanged: Boolean);
+begin
+  if CompareValue(NewViewportPosition.Y, vsbCarteiras.Content.Height) = EqualsValue then
+    showmessage('chegou');
 end;
 
 procedure TPageDashboard.ComboEditChangeTracking(Sender: TObject);
@@ -149,7 +172,7 @@ begin
       for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
         vsbCarteiras.Content.Controls[I].DisposeOf;
 
-      LServiceCard.Listar;
+      LServiceCard.ListarPagina;
       LServiceCard.GetFiles;
       ComboEdit.Clear;
 
@@ -236,6 +259,12 @@ end;
 procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
 begin
   NavegarPara('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
+end;
+
+procedure TPageDashboard.PaginarClick(Sender: TObject);
+begin
+  //
+  ListarCarteiras;
 end;
 
 procedure TPageDashboard.rectLupaClick(Sender: TObject);

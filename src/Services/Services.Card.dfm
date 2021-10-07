@@ -1,7 +1,7 @@
 object ServiceCard: TServiceCard
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 198
+  Height = 264
   Width = 303
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
@@ -259,7 +259,7 @@ object ServiceCard: TServiceCard
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     Left = 56
-    Top = 136
+    Top = 200
     object mtPaginadorCarteiraPTEAtotal: TIntegerField
       FieldName = 'total'
     end
@@ -271,6 +271,96 @@ object ServiceCard: TServiceCard
     end
     object mtPaginadorCarteiraPTEApages: TIntegerField
       FieldName = 'pages'
+    end
+  end
+  object mtFiltrarCarteiraPTEA: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvStoreVersion, rvStoreItems, rvSilentMode, rvStoreMergeData, rvStoreMergeMeta]
+    ResourceOptions.StoreVersion = 1
+    ResourceOptions.StoreItems = [siMeta, siData, siDelta, siVisible]
+    ResourceOptions.StoreMergeData = dmDataAppend
+    ResourceOptions.StoreMergeMeta = mmUpdate
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvUpdateChngFields, uvUpdateMode, uvLockMode, uvLockPoint, uvLockWait, uvRefreshMode, uvFetchGeneratorsPoint, uvCheckRequired, uvCheckReadOnly, uvCheckUpdatable, uvAutoCommitUpdates]
+    UpdateOptions.LockWait = True
+    UpdateOptions.RefreshMode = rmAll
+    UpdateOptions.FetchGeneratorsPoint = gpNone
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.CheckReadOnly = False
+    UpdateOptions.CheckUpdatable = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 56
+    Top = 136
+    object mtFiltrarCarteiraPTEANomeResponsavel: TStringField
+      FieldName = 'NomeResponsavel'
+      Origin = 'NomeResponsavel'
+      Required = True
+      Size = 80
+    end
+    object mtFiltrarCarteiraPTEACpfResponsavel: TStringField
+      FieldName = 'CpfResponsavel'
+      Origin = 'CpfResponsavel'
+      Required = True
+      Size = 14
+    end
+    object mtFiltrarCarteiraPTEARgResponsavel: TStringField
+      FieldName = 'RgResponsavel'
+      Origin = 'RgResponsavel'
+      Required = True
+    end
+    object mtFiltrarCarteiraPTEANomeTitular: TStringField
+      FieldName = 'NomeTitular'
+      Origin = 'NomeTitular'
+      Required = True
+      Size = 80
+    end
+    object mtFiltrarCarteiraPTEACpfTitular: TStringField
+      FieldName = 'CpfTitular'
+      Origin = 'CpfTitular'
+      Required = True
+      Size = 14
+    end
+    object mtFiltrarCarteiraPTEARgTitular: TStringField
+      FieldName = 'RgTitular'
+      Origin = 'RgTitular'
+      Required = True
+    end
+    object mtFiltrarCarteiraPTEADataNascimento: TDateField
+      FieldName = 'DataNascimento'
+      Origin = 'DataNascimento'
+      Required = True
+    end
+    object mtFiltrarCarteiraPTEAEmailContato: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'EmailContato'
+      Origin = 'EmailContato'
+      Size = 100
+    end
+    object mtFiltrarCarteiraPTEANumeroContato: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NumeroContato'
+      Origin = 'NumeroContato'
+      Size = 10
+    end
+    object mtFiltrarCarteiraPTEACriadoEm: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'CriadoEm'
+      Origin = 'CriadoEm'
+    end
+    object mtFiltrarCarteiraPTEAAlteradoEm: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'AlteradoEm'
+      Origin = 'AlteradoEm'
+    end
+    object mtFiltrarCarteiraPTEAid: TIntegerField
+      FieldName = 'id'
+    end
+    object mtFiltrarCarteiraPTEAFotoStream: TBlobField
+      FieldName = 'FotoStream'
     end
   end
 end

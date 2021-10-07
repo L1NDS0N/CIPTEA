@@ -70,6 +70,20 @@ type
     mtPaginadorCarteiraPTEAlimit: TIntegerField;
     mtPaginadorCarteiraPTEApage: TIntegerField;
     mtPaginadorCarteiraPTEApages: TIntegerField;
+    mtFiltrarCarteiraPTEA: TFDMemTable;
+    mtFiltrarCarteiraPTEANomeResponsavel: TStringField;
+    mtFiltrarCarteiraPTEACpfResponsavel: TStringField;
+    mtFiltrarCarteiraPTEARgResponsavel: TStringField;
+    mtFiltrarCarteiraPTEANomeTitular: TStringField;
+    mtFiltrarCarteiraPTEACpfTitular: TStringField;
+    mtFiltrarCarteiraPTEARgTitular: TStringField;
+    mtFiltrarCarteiraPTEADataNascimento: TDateField;
+    mtFiltrarCarteiraPTEAEmailContato: TStringField;
+    mtFiltrarCarteiraPTEANumeroContato: TStringField;
+    mtFiltrarCarteiraPTEACriadoEm: TSQLTimeStampField;
+    mtFiltrarCarteiraPTEAAlteradoEm: TSQLTimeStampField;
+    mtFiltrarCarteiraPTEAid: TIntegerField;
+    mtFiltrarCarteiraPTEAFotoStream: TBlobField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -78,6 +92,7 @@ type
       procedure Salvar;
       procedure Listar;
       function ListarPagina: boolean;
+      function Filtrar(AFilter: string): boolean;
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
       procedure PostStreamDoc;
@@ -85,6 +100,7 @@ type
       procedure GetFiles;
       function GetImageStreamById(AId: integer): TStream;
       function GetFileById(AId: integer): TFDQuery;
+
   end;
 
 var
@@ -135,6 +151,41 @@ begin
     else
       raise Exception.Create('Não foi possível deletar os dados da carteirinha #' + AId + '. Erro #' +
           LResponse.StatusCode.ToString + ' - ' + LResponse.JSONValue.GetValue<string>('error'));
+  except
+    on E: Exception do
+      begin
+        raise Exception.Create(E.Message);
+      end;
+  end;
+end;
+
+function TServiceCard.Filtrar(AFilter: string): boolean;
+var
+  LResponse: IResponse;
+begin
+  Result := false;
+  try
+    try
+      qryUsuarioLocal.Close;
+      qryUsuarioLocal.Open;
+
+      LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('carteiras').ResourceSuffix('filter')
+        .DataSetAdapter(mtFiltrarCarteiraPTEA).AddParam('value', AFilter).AddHeader('Accept-Encoding', 'gzip')
+        .TokenBearer(qryUsuarioLocalToken.Value).Get;
+
+    finally
+      if LResponse.StatusCode = 200 then
+        Result := true
+      else if LResponse.StatusCode = 204 then
+        begin
+          raise Exception.Create('Valor não encontrado no servidor');
+        end
+      else if LResponse.StatusCode = 401 then
+        raise Exception.Create('Atualmente você não possui autorização para listar os dados.')
+      else if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
+        raise Exception.Create('Não foi possível listar os dados - Erro #' + LResponse.StatusCode.ToString + ', ' +
+            LResponse.JSONValue.GetValue<string>('error'));
+    end;
   except
     on E: Exception do
       begin

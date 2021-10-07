@@ -79,6 +79,7 @@ type
 
     public
       procedure ListarCarteiras;
+      procedure ListagemFiltrada(AFilter: string);
       function Render: TFMXObject;
       procedure UnRender;
 
@@ -138,18 +139,68 @@ end;
 
 procedure TPageDashboard.ComboEditTyping(Sender: TObject);
 begin
-  FloatAnimation1.Start;
-  with LServiceCard do
-    begin
-      mtPesquisaCarteiraPTEA.Filtered := false;
-      mtPesquisaCarteiraPTEA.FilterOptions := [foCaseInsensitive];
+  if not(FloatAnimation1.Running) then
+    FloatAnimation1.Start;
 
-      mtPesquisaCarteiraPTEA.Filter := 'NomeTitular like ' + QuotedStr('%' + ComboEdit.Text + '%') +
-        'or CpfTitular like' + QuotedStr('%' + ComboEdit.Text + '%');
-      mtPesquisaCarteiraPTEA.Filtered := true;
-      ListarCarteiras;
-      mtPesquisaCarteiraPTEA.Filtered := false;
+  if ComboEdit.Text = EmptyStr then
+    ListarCarteiras
+  else
+    ListagemFiltrada(ComboEdit.Text);
+
+end;
+
+procedure TPageDashboard.ListagemFiltrada(AFilter: string);
+var
+  LFrame: TFrameDashboardDetail;
+  I: Integer;
+  LStream: TStream;
+begin
+
+  vsbCarteiras.BeginUpdate;
+  try
+    try
+      if LServiceCard.Filtrar(AFilter) then
+        begin
+          for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
+            vsbCarteiras.Content.Controls[I].DisposeOf;
+
+          ComboEdit.Clear;
+          LServiceCard.GetFiles;
+
+          LServiceCard.mtFiltrarCarteiraPTEA.First;
+          while not LServiceCard.mtFiltrarCarteiraPTEA.Eof do
+            begin
+              LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
+              LFrame.Parent := vsbCarteiras;
+              LFrame.Align := TAlignLayout.Top;
+              LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
+
+              LFrame.Id := LServiceCard.mtFiltrarCarteiraPTEAid.AsString;
+              LFrame.Name := LFrame.ClassName + LServiceCard.mtFiltrarCarteiraPTEAid.AsString;
+              LFrame.lblNomeTitular.Text := LServiceCard.mtFiltrarCarteiraPTEANomeTitular.AsString;
+              LFrame.lblCPFTitular.Text := LServiceCard.mtFiltrarCarteiraPTEACpfTitular.AsString;
+              LFrame.lblID.Text := '#' + LServiceCard.mtFiltrarCarteiraPTEAid.AsString;
+
+              LStream := LServiceCard.GetImageStreamById(LServiceCard.mtFiltrarCarteiraPTEAid.Value);
+              if LStream.Size > 0 then
+                LFrame.Imagem.Bitmap.LoadFromStream(LStream);
+
+              LFrame.OnDelete := self.OnDeleteCarteira;
+              LFrame.OnUpdate := self.OnUpdateCarteira;
+              LFrame.OnPrint := self.OnPrintCarteira;
+
+              ComboEdit.Items.Add(LServiceCard.mtFiltrarCarteiraPTEANomeTitular.AsString);
+              LServiceCard.mtFiltrarCarteiraPTEA.Next;
+            end;
+        end;
+
+    except
+      on E: Exception do
+        TToastMessage.show(E.Message, ttDanger);
     end;
+  finally
+    vsbCarteiras.EndUpdate;
+  end;
 end;
 
 procedure TPageDashboard.ListarCarteiras;
@@ -269,6 +320,7 @@ end;
 procedure TPageDashboard.SpeedButton1Click(Sender: TObject);
 begin
   ComboEdit.Text := EmptyStr;
+  ListarCarteiras;
 end;
 
 end.

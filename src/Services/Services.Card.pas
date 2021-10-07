@@ -77,7 +77,7 @@ type
     public
       procedure Salvar;
       procedure Listar;
-      procedure ListarPagina;
+      function ListarPagina: boolean;
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
       procedure PostStreamDoc;
@@ -395,16 +395,17 @@ begin
   end;
 end;
 
-procedure TServiceCard.ListarPagina;
+function TServiceCard.ListarPagina: boolean;
 var
   LResponse: IResponse;
-  Page: string;
 begin
   try
-
     if (mtPaginadorCarteiraPTEApage.Value > 0) AND
       (mtPaginadorCarteiraPTEApage.Value = mtPaginadorCarteiraPTEApages.Value) then
-      exit
+      begin
+        Result := false;
+        exit;
+      end
     else
       begin
         qryUsuarioLocal.Close;
@@ -416,6 +417,7 @@ begin
 
         if LResponse.StatusCode in [200, 201, 204] then
           begin
+            Result := true;
             mtPaginadorCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.ToJSON);
             mtPesquisaCarteiraPTEA.LoadFromJSON(LResponse.JSONValue.GetValue<TJSONArray>('docs').ToJSON);
           end;

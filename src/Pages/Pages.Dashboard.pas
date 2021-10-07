@@ -62,15 +62,12 @@ type
     ColorAnimation2: TColorAnimation;
     SpeedButton1: TSpeedButton;
     ShadowEffect4: TShadowEffect;
-    Paginar: TButton;
     procedure retBtnNewClick(Sender: TObject);
     procedure ComboEditClick(Sender: TObject);
     procedure ComboEditTyping(Sender: TObject);
     procedure rectLupaClick(Sender: TObject);
     procedure ComboEditChangeTracking(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
-    procedure PaginarClick(Sender: TObject);
-    procedure vsbCarteirasMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     procedure vsbCarteirasViewportPositionChange(Sender: TObject;
       const OldViewportPosition, NewViewportPosition: TPointF; const ContentSizeChanged: Boolean);
     private
@@ -116,20 +113,16 @@ begin
   LServiceCard.Free;
 end;
 
-procedure TPageDashboard.vsbCarteirasMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer;
-  var Handled: Boolean);
-begin
-  //showmessage(vsbCarteiras.ViewportPosition.Y.ToString + ' ' + vsbCarteiras.ViewportPosition.Length.ToString);
-  //showmessage(vsbCarteiras.ClientHeight.ToString);
-
-  //showmessage(vsbCarteiras.Content.Children.Items[vsbCarteiras.Content.ChildrenCount]);
-end;
-
 procedure TPageDashboard.vsbCarteirasViewportPositionChange(Sender: TObject;
   const OldViewportPosition, NewViewportPosition: TPointF; const ContentSizeChanged: Boolean);
 begin
-  if CompareValue(NewViewportPosition.Y, vsbCarteiras.Content.Height) = EqualsValue then
-    showmessage('chegou');
+  with vsbCarteiras do
+    begin
+      if (NewViewportPosition.Y) >= ((ContentBounds.Height - Height) / 1.2) then
+        begin
+          ListarCarteiras;
+        end;
+    end;
 end;
 
 procedure TPageDashboard.ComboEditChangeTracking(Sender: TObject);
@@ -169,37 +162,39 @@ begin
   vsbCarteiras.BeginUpdate;
   try
     try
-      for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
-        vsbCarteiras.Content.Controls[I].DisposeOf;
-
-      LServiceCard.ListarPagina;
-      LServiceCard.GetFiles;
-      ComboEdit.Clear;
-
-      LServiceCard.mtPesquisaCarteiraPTEA.First;
-      while not LServiceCard.mtPesquisaCarteiraPTEA.Eof do
+      if LServiceCard.ListarPagina then
         begin
-          LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
-          LFrame.Parent := vsbCarteiras;
-          LFrame.Align := TAlignLayout.Top;
-          LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
+          for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
+            vsbCarteiras.Content.Controls[I].DisposeOf;
+          ComboEdit.Clear;
 
-          LFrame.Id := LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
-          LFrame.Name := LFrame.ClassName + LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
-          LFrame.lblNomeTitular.Text := LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString;
-          LFrame.lblCPFTitular.Text := LServiceCard.mtPesquisaCarteiraPTEACpfTitular.AsString;
-          LFrame.lblID.Text := '#' + LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
+          LServiceCard.GetFiles;
 
-          LStream := LServiceCard.GetImageStreamById(LServiceCard.mtPesquisaCarteiraPTEAid.Value);
-          if LStream.Size > 0 then
-            LFrame.Imagem.Bitmap.LoadFromStream(LStream);
+          LServiceCard.mtPesquisaCarteiraPTEA.First;
+          while not LServiceCard.mtPesquisaCarteiraPTEA.Eof do
+            begin
+              LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
+              LFrame.Parent := vsbCarteiras;
+              LFrame.Align := TAlignLayout.Top;
+              LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
-          LFrame.OnDelete := self.OnDeleteCarteira;
-          LFrame.OnUpdate := self.OnUpdateCarteira;
-          LFrame.OnPrint := self.OnPrintCarteira;
+              LFrame.Id := LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
+              LFrame.Name := LFrame.ClassName + LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
+              LFrame.lblNomeTitular.Text := LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString;
+              LFrame.lblCPFTitular.Text := LServiceCard.mtPesquisaCarteiraPTEACpfTitular.AsString;
+              LFrame.lblID.Text := '#' + LServiceCard.mtPesquisaCarteiraPTEAid.AsString;
 
-          ComboEdit.Items.Add(LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString);
-          LServiceCard.mtPesquisaCarteiraPTEA.Next;
+              LStream := LServiceCard.GetImageStreamById(LServiceCard.mtPesquisaCarteiraPTEAid.Value);
+              if LStream.Size > 0 then
+                LFrame.Imagem.Bitmap.LoadFromStream(LStream);
+
+              LFrame.OnDelete := self.OnDeleteCarteira;
+              LFrame.OnUpdate := self.OnUpdateCarteira;
+              LFrame.OnPrint := self.OnPrintCarteira;
+
+              ComboEdit.Items.Add(LServiceCard.mtPesquisaCarteiraPTEANomeTitular.AsString);
+              LServiceCard.mtPesquisaCarteiraPTEA.Next;
+            end;
         end;
     except
       on E: Exception do
@@ -259,12 +254,6 @@ end;
 procedure TPageDashboard.OnUpdateCarteira(const ASender: TFrame; const AId: string);
 begin
   NavegarPara('Update', TProps.Create.PropString(AId).Key('IdCarteiraToUpdate'));
-end;
-
-procedure TPageDashboard.PaginarClick(Sender: TObject);
-begin
-  //
-  ListarCarteiras;
 end;
 
 procedure TPageDashboard.rectLupaClick(Sender: TObject);

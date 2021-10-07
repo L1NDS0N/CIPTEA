@@ -1,6 +1,6 @@
 object FrameDashboardDetail: TFrameDashboardDetail
   Size.Width = 692.000000000000000000
-  Size.Height = 209.000000000000000000
+  Size.Height = 210.000000000000000000
   Size.PlatformDefault = False
   object retTop: TRectangle
     Align = Top

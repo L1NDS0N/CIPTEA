@@ -62,6 +62,8 @@ type
     ColorAnimation2: TColorAnimation;
     SpeedButton1: TSpeedButton;
     ShadowEffect4: TShadowEffect;
+    lytProgress: TLayout;
+    ProgressBar: TProgressBar;
     procedure retBtnNewClick(Sender: TObject);
     procedure ComboEditClick(Sender: TObject);
     procedure ComboEditTyping(Sender: TObject);
@@ -70,6 +72,7 @@ type
     procedure SpeedButton1Click(Sender: TObject);
     procedure vsbCarteirasViewportPositionChange(Sender: TObject;
       const OldViewportPosition, NewViewportPosition: TPointF; const ContentSizeChanged: Boolean);
+    procedure FormCreate(Sender: TObject);
     private
       LServiceCard: TServiceCard;
       procedure OnDeleteCarteira(const ASender: TFrame; const AId: string);
@@ -124,6 +127,14 @@ begin
           ListarCarteiras;
         end;
     end;
+  if not(vsbCarteiras.ViewportPosition.IsZero) then
+    begin
+      ProgressBar.Visible := true;
+      ProgressBar.Max := vsbCarteiras.ContentBounds.Height - Height;
+      ProgressBar.Value := NewViewportPosition.Y;
+    end
+  else
+    ProgressBar.Visible := false;
 end;
 
 procedure TPageDashboard.ComboEditChangeTracking(Sender: TObject);
@@ -147,6 +158,11 @@ begin
   else
     ListagemFiltrada(ComboEdit.Text);
 
+end;
+
+procedure TPageDashboard.FormCreate(Sender: TObject);
+begin
+  ProgressBar.Visible := false;
 end;
 
 procedure TPageDashboard.ListagemFiltrada(AFilter: string);

@@ -70,6 +70,7 @@ type
       function GetById(const AId: string): TFDQuery;
       function GetAFieldById(const AField: string; const AId: string): string;
       function GetByFieldValue(const AField: string; const AValue: string): TFDQuery;
+      function GetByHandleSQL(const ASQL: string): TFDQuery;
       procedure ConnectionConfig;
 
   end;
@@ -134,6 +135,14 @@ function TServiceCarteiraPTEA.GetByFieldValue(const AField: string; const AValue
 begin
   qryPesquisaCarteiraPTEA.SQL.Clear;
   qryPesquisaCarteiraPTEA.SQL.Add('select * from carteiraptea where ' + AField + ' = ' + AValue);
+  qryPesquisaCarteiraPTEA.Open;
+  Result := qryPesquisaCarteiraPTEA;
+end;
+
+function TServiceCarteiraPTEA.GetByHandleSQL(const ASQL: string): TFDQuery;
+begin
+  qryPesquisaCarteiraPTEA.SQL.Clear;
+  qryPesquisaCarteiraPTEA.SQL.Add(ASQL);
   qryPesquisaCarteiraPTEA.Open;
   Result := qryPesquisaCarteiraPTEA;
 end;

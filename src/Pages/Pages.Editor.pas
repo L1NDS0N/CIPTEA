@@ -47,13 +47,13 @@ type
     lblTitle: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation2: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     Button1: TButton;
     rect_fundo_foto: TRectangle;
     rect_fundo: TRectangle;
     ShadowEffect2: TShadowEffect;
     FloatAnimation4: TFloatAnimation;
+    iconVoltar: TPath;
     procedure retBtnSalvarClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure ImageViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);

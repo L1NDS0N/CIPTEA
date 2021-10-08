@@ -46,7 +46,6 @@ type
     lblTitle: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation2: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     retBtnSalvar: TRectangle;
     ColorAnimation1: TColorAnimation;
@@ -62,6 +61,7 @@ type
     cbAlterarSenha: TCheckBox;
     lytNovasSenhas: TLayout;
     lytSenhaAtual: TLayout;
+    iconVoltar: TPath;
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     procedure cbAlterarSenhaChange(Sender: TObject);

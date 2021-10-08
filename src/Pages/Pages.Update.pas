@@ -70,7 +70,6 @@ type
     lblTitle: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation2: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     IconLaudoMedico: TImage;
     IconFotoRosto: TImage;
@@ -89,6 +88,7 @@ type
     ColorAnimation5: TColorAnimation;
     imgPrint: TPath;
     FloatAnimation4: TFloatAnimation;
+    iconVoltar: TPath;
     procedure ValidarCampos(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
@@ -125,10 +125,10 @@ implementation
 uses
   Providers.PrivateRoute,
   Utils.Tools,
-  FireDAC.Comp.Client,
   ToastMessage,
   System.MaskUtils,
   System.StrUtils;
+
 {$R *.fmx}
 { TPageUpdate }
 

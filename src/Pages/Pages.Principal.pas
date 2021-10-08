@@ -32,7 +32,6 @@ type
     lytProgress: TLayout;
     btnDeslogar: TRectangle;
     ColorAnimation2: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     lytFooter: TLayout;
     btnConfig: TRoundRect;
@@ -41,6 +40,7 @@ type
     FloatAnimation1: TFloatAnimation;
     lytHeader: TLayout;
     FloatAnimation4: TFloatAnimation;
+    iconVoltar: TPath;
     procedure FormCreate(Sender: TObject);
     procedure btnDeslogarClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);

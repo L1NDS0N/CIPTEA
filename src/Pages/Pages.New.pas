@@ -58,7 +58,6 @@ type
     Label1: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation2: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     ClearEditButton1: TClearEditButton;
     ClearEditButton2: TClearEditButton;
@@ -71,6 +70,7 @@ type
     cbTitular: TCheckBox;
     cbResponsavel: TCheckBox;
     FloatAnimation4: TFloatAnimation;
+    iconVoltar: TPath;
     procedure ValidarCampos(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);

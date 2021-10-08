@@ -43,7 +43,6 @@ type
     lblTitle: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation2: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation3: TColorAnimation;
     VertScrollBox: TVertScrollBox;
     lytInterno: TLayout;
@@ -54,6 +53,7 @@ type
     ShadowEffect1: TShadowEffect;
     lblImprimir: TLabel;
     FloatAnimation4: TFloatAnimation;
+    iconVoltar: TPath;
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     private
@@ -111,7 +111,8 @@ begin
   lblRG.Text := EmptyStr;
   lblCPF.Text := EmptyStr;
   lblID.Text := EmptyStr;
-  imgFotoRosto.Bitmap := nil;
+  if not(imgFotoRosto.Bitmap.IsEmpty) then
+    imgFotoRosto.Bitmap := nil;
 end;
 
 procedure TPagePrint.NavegarPara(const ALocation: string; const AProps: TProps);
@@ -161,6 +162,8 @@ var
   rectPage, rectContent: TRectF;
   image1, image2: TBitmap;
 begin
+  image1 := TBitmap.Create;
+  image2 := TBitmap.Create;
   try
     try
       VertScrollBox.ScrollBy(0, 1000);
@@ -169,6 +172,7 @@ begin
           with Printer do
             begin
               BeginDoc;
+
               image1 := rect_frente.MakeScreenshot;
               image2 := rect_costas.MakeScreenshot;
               rectPage := RectF(0, 0, 1004, 591);

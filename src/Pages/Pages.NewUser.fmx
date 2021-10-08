@@ -304,22 +304,6 @@ object PageNewUser: TPageNewUser
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
         end
-        object lblBtnVoltar: TLabel
-          Align = VertCenter
-          AutoSize = True
-          StyledSettings = []
-          Position.Y = 17.000000000000000000
-          Size.Width = 90.000000000000000000
-          Size.Height = 23.000000000000000000
-          Size.PlatformDefault = False
-          TextSettings.Font.Family = 'Fira Code Retina'
-          TextSettings.Font.Size = 18.000000000000000000
-          TextSettings.Font.StyleExt = {00070000000000000004000000}
-          TextSettings.FontColor = xFF202225
-          TextSettings.HorzAlign = Center
-          Text = '<--'
-          TabOrder = 0
-        end
         object ColorAnimation3: TColorAnimation
           Duration = 0.200000002980232200
           PropertyName = 'Stroke.Color'
@@ -337,6 +321,24 @@ object PageNewUser: TPageNewUser
           StopValue = 1.049999952316284000
           Trigger = 'IsMouseOver=true'
           TriggerInverse = 'IsMouseOver=false'
+        end
+        object iconVoltar: TPath
+          Align = VertCenter
+          Data.Path = {
+            0B000000000000000000A04100003041010000005C8FFA400000304101000000
+            52B85641B81EAD40010000000000404100008040010000000000804000004041
+            01000000000040410000A041010000005C8F564152B89441010000005C8FFA40
+            00005041010000000000A04100005041010000000000A0410000304103000000
+            0000A04100003041}
+          EnableDragHighlight = False
+          Fill.Color = xB4000000
+          HitTest = False
+          Position.Y = 13.000000000000000000
+          Size.Width = 90.000000000000000000
+          Size.Height = 31.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
         end
       end
     end

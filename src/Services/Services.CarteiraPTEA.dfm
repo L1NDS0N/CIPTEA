@@ -2,14 +2,21 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 145
+  Height = 190
   Width = 144
   object qryCadastroCarteiraPTEA: TFDQuery
     CachedUpdates = True
     SQL.Strings = (
-      'select * from carteiraptea')
+      'select * from carteiraptea where id = :id')
     Left = 56
     Top = 16
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qryCadastroCarteiraPTEAid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -86,9 +93,16 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
   end
   object qryPesquisaCarteiraPTEA: TFDQuery
     SQL.Strings = (
-      'select * from carteiraptea')
+      'select * from carteiraptea where id = :id')
     Left = 56
     Top = 72
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qryPesquisaCarteiraPTEAid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -98,41 +112,34 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
     object qryPesquisaCarteiraPTEANomeResponsavel: TStringField
       FieldName = 'NomeResponsavel'
       Origin = 'NomeResponsavel'
-      Required = True
       Size = 80
     end
     object qryPesquisaCarteiraPTEACpfResponsavel: TStringField
       FieldName = 'CpfResponsavel'
       Origin = 'CpfResponsavel'
-      Required = True
       Size = 14
     end
     object qryPesquisaCarteiraPTEARgResponsavel: TStringField
       FieldName = 'RgResponsavel'
       Origin = 'RgResponsavel'
-      Required = True
     end
     object qryPesquisaCarteiraPTEANomeTitular: TStringField
       FieldName = 'NomeTitular'
       Origin = 'NomeTitular'
-      Required = True
       Size = 80
     end
     object qryPesquisaCarteiraPTEACpfTitular: TStringField
       FieldName = 'CpfTitular'
       Origin = 'CpfTitular'
-      Required = True
       Size = 14
     end
     object qryPesquisaCarteiraPTEARgTitular: TStringField
       FieldName = 'RgTitular'
       Origin = 'RgTitular'
-      Required = True
     end
     object qryPesquisaCarteiraPTEADataNascimento: TDateField
       FieldName = 'DataNascimento'
       Origin = 'DataNascimento'
-      Required = True
     end
     object qryPesquisaCarteiraPTEAfotoRostoPath: TStringField
       AutoGenerateValue = arDefault
@@ -162,5 +169,18 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
       FieldName = 'AlteradoEm'
       Origin = 'AlteradoEm'
     end
+  end
+  object qryFiltrarCarteiraPTEA: TFDQuery
+    SQL.Strings = (
+      'select * from carteiraptea where id = :id')
+    Left = 56
+    Top = 136
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
   end
 end

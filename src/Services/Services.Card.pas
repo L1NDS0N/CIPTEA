@@ -84,6 +84,10 @@ type
     mtFiltrarCarteiraPTEAAlteradoEm: TSQLTimeStampField;
     mtFiltrarCarteiraPTEAid: TIntegerField;
     mtFiltrarCarteiraPTEAFotoStream: TBlobField;
+    mtFiltrarNomes: TFDMemTable;
+    mtNomesFiltrados: TFDMemTable;
+    mtFiltrarNomesnomes: TDataSetField;
+    mtNomesFiltradosnome: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -93,6 +97,7 @@ type
       procedure Listar;
       function ListarPagina: boolean;
       function Filtrar(AFilter: string): boolean;
+      function FiltrarNomes(AFilter: string): boolean;
       procedure Delete(const AId: string);
       procedure GetById(const AId: string);
       procedure PostStreamDoc;
@@ -192,6 +197,44 @@ begin
         raise Exception.Create(E.Message);
       end;
   end;
+end;
+
+function TServiceCard.FiltrarNomes(AFilter: string): boolean;
+var
+  LResponse: IResponse;
+begin
+  Result := false;
+  try
+    try
+      if AFilter = EmptyStr then
+        abort;
+      qryUsuarioLocal.Close;
+      qryUsuarioLocal.Open;
+
+      LResponse := TRequest.New.BaseURL(Config.BaseURL).Resource('nomes').ResourceSuffix('filter')
+        .DataSetAdapter(mtFiltrarNomes).AddParam('value', AFilter).AddHeader('Accept-Encoding', 'gzip')
+        .TokenBearer(qryUsuarioLocalToken.Value).Get;
+
+    finally
+      if LResponse.StatusCode = 200 then
+        Result := true
+      else if LResponse.StatusCode = 204 then
+        begin
+          raise Exception.Create('Nome para filtrar não encontrado no banco de dados');
+        end
+      else if LResponse.StatusCode = 401 then
+        raise Exception.Create('Atualmente você não possui autorização para listar os dados.')
+      else if not(LResponse.StatusCode = 200) and not(LResponse.StatusCode = 304) then
+        raise Exception.Create('Não foi possível listar os dados - Erro #' + LResponse.StatusCode.ToString + ', ' +
+            LResponse.JSONValue.GetValue<string>('error'));
+    end;
+  except
+    on E: Exception do
+      begin
+        raise Exception.Create(E.Message);
+      end;
+  end;
+
 end;
 
 procedure TServiceCard.GetById(const AId: string);

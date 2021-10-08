@@ -1,7 +1,7 @@
 object ServiceCard: TServiceCard
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 264
+  Height = 301
   Width = 303
   object mtPesquisaCarteiraPTEA: TFDMemTable
     FieldDefs = <>
@@ -24,7 +24,7 @@ object ServiceCard: TServiceCard
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 56
-    Top = 72
+    Top = 128
     object mtPesquisaCarteiraPTEANomeResponsavel: TStringField
       FieldName = 'NomeResponsavel'
       Origin = 'NomeResponsavel'
@@ -259,7 +259,7 @@ object ServiceCard: TServiceCard
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     Left = 56
-    Top = 200
+    Top = 72
     object mtPaginadorCarteiraPTEAtotal: TIntegerField
       FieldName = 'total'
     end
@@ -294,7 +294,7 @@ object ServiceCard: TServiceCard
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 56
-    Top = 136
+    Top = 192
     object mtFiltrarCarteiraPTEANomeResponsavel: TStringField
       FieldName = 'NomeResponsavel'
       Origin = 'NomeResponsavel'
@@ -361,6 +361,38 @@ object ServiceCard: TServiceCard
     end
     object mtFiltrarCarteiraPTEAFotoStream: TBlobField
       FieldName = 'FotoStream'
+    end
+  end
+  object mtFiltrarNomes: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 56
+    Top = 248
+    object mtFiltrarNomesnomes: TDataSetField
+      FieldName = 'nomes'
+    end
+  end
+  object mtNomesFiltrados: TFDMemTable
+    DataSetField = mtFiltrarNomesnomes
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 168
+    Top = 248
+    object mtNomesFiltradosnome: TStringField
+      DisplayWidth = 80
+      FieldName = 'nome'
+      LookupCache = True
+      Size = 254
     end
   end
 end

@@ -7,7 +7,6 @@ object PageDashboard: TPageDashboard
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnCreate = FormCreate
   DesignerMasterStyle = 0
   object lytDashboard: TLayout
     Align = Client
@@ -83,6 +82,7 @@ object PageDashboard: TPageDashboard
             Size.Height = 37.000000000000000000
             Size.PlatformDefault = False
             Caret.Color = claWhite
+            OnChange = ComboEditChange
             OnChangeTracking = ComboEditChangeTracking
             OnTyping = ComboEditTyping
             OnClick = ComboEditClick
@@ -188,13 +188,12 @@ object PageDashboard: TPageDashboard
     end
     object vsbCarteiras: TVertScrollBox
       Align = Client
-      Size.Width = 684.000000000000000000
+      Size.Width = 688.000000000000000000
       Size.Height = 420.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
-      ShowScrollBars = False
       OnViewportPositionChange = vsbCarteirasViewportPositionChange
-      Viewport.Width = 684.000000000000000000
+      Viewport.Width = 688.000000000000000000
       Viewport.Height = 420.000000000000000000
     end
     object retBtnNew: TRectangle
@@ -243,25 +242,6 @@ object PageDashboard: TPageDashboard
         Softness = 0.200000002980232200
         Opacity = 0.600000023841857900
         ShadowColor = claBlack
-      end
-    end
-    object lytProgress: TLayout
-      Align = Right
-      Position.X = 684.000000000000000000
-      Position.Y = 121.000000000000000000
-      Size.Width = 4.000000000000000000
-      Size.Height = 420.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 3
-      object ProgressBar: TProgressBar
-        Align = Right
-        ClipParent = True
-        Orientation = Vertical
-        RotationAngle = 180.000000000000000000
-        Size.Width = 4.000000000000000000
-        Size.Height = 420.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'progressbarstyle'
       end
     end
   end

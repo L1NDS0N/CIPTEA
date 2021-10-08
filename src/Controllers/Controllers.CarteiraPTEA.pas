@@ -49,7 +49,7 @@ begin
   LService := TServiceCarteiraPTEA.Create(nil);
   try
     LId := Req.Params.Items['id'];
-    if LService.GetById(LId).IsEmpty then
+    if LService.GetById(LId.ToInteger).IsEmpty then
       raise EHorseException.Create(THTTPStatus.NotFound, 'Not Found');
     //não devolver o path
     LService.qryPesquisaCarteiraPTEAfotoRostoPath.Visible := false;
@@ -130,7 +130,7 @@ var
 begin
   LService := TServiceCarteiraPTEA.Create(nil);
   try
-    vImgDir := LService.GetAFieldById('fotoRostoPath', AID.ToString);
+    vImgDir := LService.GetAFieldById('fotoRostoPath', AID);
     vImgPath := ExtractFileDir(ParamStr(0)) + vImgDir;
     if vImgDir <> EmptyStr then
       begin
@@ -169,7 +169,7 @@ begin
   LService := TServiceCarteiraPTEA.Create(nil);
   try
     LId := Req.Params.Items['id'];
-    if LService.GetById(LId).IsEmpty then
+    if LService.GetById(LId.ToInteger).IsEmpty then
       raise EHorseException.Create(THTTPStatus.NotFound, 'Not Found');
 
     Res.Send(TJsonObject.Create.AddPair('AlteradoEm', LService.qryPesquisaCarteiraPTEAAlteradoEm.AsString).AddPair('ID',
@@ -190,7 +190,7 @@ var
 begin
   LService := TServiceCarteiraPTEA.Create(nil);
   try
-    vImgDir := LService.GetAFieldById('fotoRostoPath', Req.Params['id']);
+    vImgDir := LService.GetAFieldById('fotoRostoPath', Req.Params['id'].ToInteger);
 
     FullPath := ExtractFileDir(ParamStr(0)) + vImgDir;
     try
@@ -263,7 +263,7 @@ begin
     FileName := '\static\' + Req.Params['id'] + '\' + FileName;
 
     try
-      if LService.UpdateAField('fotoRostoPath', FileName, Req.Params['id'].ToInteger) then
+      if LService.UpdateAField('fotoRostoPath', FileName, Req.Params['id'].ToInteger()) then
         LStream.SaveToFile(FullPath);
     except
       on E: Exception do
@@ -326,8 +326,8 @@ begin
     LService.GetByHandleSQL('select * from carteiraptea where cpftitular LIKE ' + QuotedStr('%' + FilterValue + '%') +
         ' OR nometitular LIKE ' + QuotedStr('%' + FilterValue + '%'));
 
-    if not(LService.qryPesquisaCarteiraPTEA.IsEmpty) then
-      Res.Send(LService.qryPesquisaCarteiraPTEA.ToJSONArray).Status(THTTPStatus.OK)
+    if not(LService.qryFiltrarCarteiraPTEA.IsEmpty) then
+      Res.Send(LService.qryFiltrarCarteiraPTEA.ToJSONArray).Status(THTTPStatus.OK)
     else
       Res.Status(THTTPStatus.NoContent);
   finally
@@ -335,11 +335,38 @@ begin
   end;
 end;
 
+procedure DoFilterNames(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LService: TServiceCarteiraPTEA;
+  FilterValue: String;
+begin
+  LService := TServiceCarteiraPTEA.Create(nil);
+  try
+    if not(Req.Query.TryGetValue('value', FilterValue)) then
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Valor para filtragem não encontrado');
+
+    if FilterValue = EmptyStr then
+      raise EHorseException.Create(THTTPStatus.BadRequest, 'Valor para filtragem não pode estar vazio');
+
+    LService.GetByHandleSQL('select nometitular from carteiraptea where cpftitular LIKE ' +
+        QuotedStr('%' + FilterValue + '%') + ' OR nometitular LIKE ' + QuotedStr('%' + FilterValue + '%'));
+
+    if not(LService.qryFiltrarCarteiraPTEA.IsEmpty) then
+      Res.Send(TJsonObject.Create.AddPair('nomes', LService.qryFiltrarCarteiraPTEA.ToJSONArray)).Status(THTTPStatus.OK)
+    else
+      Res.Status(THTTPStatus.NoContent);
+  finally
+    LService.Free;
+  end;
+
+end;
+
 procedure Registry;
 begin
   THorse.Get('/carteiras', Authorization(), DoList);
   THorse.Get('/carteiras/:id', Authorization(), DoGet);
   THorse.Get('/carteiras/filter', Authorization(), DoFilter);
+  THorse.Get('/nomes/filter', Authorization(), DoFilterNames);
   THorse.Post('/carteiras', Authorization(), DoPost);
   THorse.Put('/carteiras/:id', Authorization(), DoUpdate);
   THorse.Delete('/carteiras/:id', Authorization(), DoDelete);

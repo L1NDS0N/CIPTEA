@@ -43,7 +43,6 @@ type
     Label1: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation3: TColorAnimation;
-    lblBtnVoltar: TLabel;
     ColorAnimation4: TColorAnimation;
     rect_configlocal: TRectangle;
     Line3: TLine;
@@ -55,6 +54,14 @@ type
     FloatAnimation2: TFloatAnimation;
     FloatAnimation3: TFloatAnimation;
     FloatAnimation4: TFloatAnimation;
+    iconVoltar: TPath;
+    rect_excluircache: TRectangle;
+    Line4: TLine;
+    Path2: TPath;
+    ShadowEffect4: TShadowEffect;
+    Label3: TLabel;
+    ColorAnimation6: TColorAnimation;
+    FloatAnimation5: TFloatAnimation;
     procedure rect_novousuarioClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure rect_atualizarusuarioClick(Sender: TObject);

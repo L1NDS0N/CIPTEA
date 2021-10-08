@@ -57,6 +57,7 @@ type
     qryPesquisaCarteiraPTEANumeroContato: TStringField;
     qryPesquisaCarteiraPTEACriadoEm: TSQLTimeStampField;
     qryPesquisaCarteiraPTEAAlteradoEm: TSQLTimeStampField;
+    qryFiltrarCarteiraPTEA: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     private
@@ -67,8 +68,8 @@ type
       procedure Delete(AId: integer);
       function Update(const AJson: TJSONObject; AId: integer): Boolean;
       function UpdateAField(const AField: string; AValue: Variant; AId: integer): Boolean;
-      function GetById(const AId: string): TFDQuery;
-      function GetAFieldById(const AField: string; const AId: string): string;
+      function GetById(const AId: integer): TFDQuery;
+      function GetAFieldById(const AField: string; const AId: integer): string;
       function GetByFieldValue(const AField: string; const AValue: string): TFDQuery;
       function GetByHandleSQL(const ASQL: string): TFDQuery;
       procedure ConnectionConfig;
@@ -87,7 +88,6 @@ uses
 
 function TServiceCarteiraPTEA.Append(const AJson: TJSONObject): Boolean;
 begin
-  qryCadastroCarteiraPTEA.SQL.Add('where 1<>1');
   qryCadastroCarteiraPTEA.Open();
   qryCadastroCarteiraPTEA.LoadFromJSON(AJson, False);
   Result := qryCadastroCarteiraPTEA.ApplyUpdates(0) = 0;
@@ -99,9 +99,11 @@ begin
 
   qryCadastroCarteiraPTEA.Connection := ServiceConnection.FDConnection;
   qryPesquisaCarteiraPTEA.Connection := ServiceConnection.FDConnection;
+  qryFiltrarCarteiraPTEA.Connection := ServiceConnection.FDConnection;
 
   qryCadastroCarteiraPTEA.Active := True;
   qryPesquisaCarteiraPTEA.Active := True;
+  qryFiltrarCarteiraPTEA.Active := True;
 end;
 
 procedure TServiceCarteiraPTEA.DataModuleCreate(Sender: TObject);
@@ -122,17 +124,17 @@ begin
   qryCadastroCarteiraPTEA.ExecSQL;
 end;
 
-function TServiceCarteiraPTEA.GetAFieldById(const AField: string; const AId: string): string;
+function TServiceCarteiraPTEA.GetAFieldById(const AField: string; const AId: integer): string;
 begin
-  qryPesquisaCarteiraPTEA.SQL.Clear;
-  qryPesquisaCarteiraPTEA.SQL.Add('select * from carteiraptea where id = :id');
-  qryPesquisaCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
+  qryPesquisaCarteiraPTEA.Close;
+  qryPesquisaCarteiraPTEA.ParamByName('id').Value := AId;
   qryPesquisaCarteiraPTEA.Open();
-  Result := qryPesquisaCarteiraPTEA.FieldByName(AField).AsString;
+  Result := qryPesquisaCarteiraPTEA.FieldByName(AField).Asstring;
 end;
 
 function TServiceCarteiraPTEA.GetByFieldValue(const AField: string; const AValue: string): TFDQuery;
 begin
+  qryPesquisaCarteiraPTEA.Close;
   qryPesquisaCarteiraPTEA.SQL.Clear;
   qryPesquisaCarteiraPTEA.SQL.Add('select * from carteiraptea where ' + AField + ' = ' + AValue);
   qryPesquisaCarteiraPTEA.Open;
@@ -141,22 +143,26 @@ end;
 
 function TServiceCarteiraPTEA.GetByHandleSQL(const ASQL: string): TFDQuery;
 begin
-  qryPesquisaCarteiraPTEA.SQL.Clear;
-  qryPesquisaCarteiraPTEA.SQL.Add(ASQL);
-  qryPesquisaCarteiraPTEA.Open;
-  Result := qryPesquisaCarteiraPTEA;
+  qryFiltrarCarteiraPTEA.Close;
+  qryFiltrarCarteiraPTEA.SQL.Clear;
+  qryFiltrarCarteiraPTEA.SQL.Add(ASQL);
+  qryFiltrarCarteiraPTEA.Open;
+  Result := qryFiltrarCarteiraPTEA;
 end;
 
-function TServiceCarteiraPTEA.GetById(const AId: string): TFDQuery;
+function TServiceCarteiraPTEA.GetById(const AId: integer): TFDQuery;
 begin
-  qryPesquisaCarteiraPTEA.SQL.Add('where id = :id');
-  qryPesquisaCarteiraPTEA.ParamByName('id').AsInteger := AId.ToInteger;
+  qryPesquisaCarteiraPTEA.Close;
+  qryPesquisaCarteiraPTEA.ParamByName('id').Value := AId;
   qryPesquisaCarteiraPTEA.Open();
   Result := qryPesquisaCarteiraPTEA;
 end;
 
 function TServiceCarteiraPTEA.ListAll: TFDQuery;
 begin
+  qryPesquisaCarteiraPTEA.Close;
+  qryPesquisaCarteiraPTEA.SQL.Clear;
+  qryPesquisaCarteiraPTEA.SQL.Add('select * from carteiraptea');
   qryPesquisaCarteiraPTEA.Open();
   Result := qryPesquisaCarteiraPTEA;
 end;
@@ -164,7 +170,6 @@ end;
 function TServiceCarteiraPTEA.Update(const AJson: TJSONObject; AId: integer): Boolean;
 begin
   qryCadastroCarteiraPTEA.Close;
-  qryCadastroCarteiraPTEA.SQL.Add('where id = :id');
   qryCadastroCarteiraPTEA.ParamByName('ID').Value := AId;
   qryCadastroCarteiraPTEA.Open();
   qryCadastroCarteiraPTEA.MergeFromJSONObject(AJson, False);
@@ -174,8 +179,6 @@ end;
 function TServiceCarteiraPTEA.UpdateAField(const AField: string; AValue: Variant; AId: integer): Boolean;
 begin
   qryCadastroCarteiraPTEA.Close;
-  qryCadastroCarteiraPTEA.SQL.Clear;
-  qryCadastroCarteiraPTEA.SQL.Add('select * from carteiraptea where id = :id');
   qryCadastroCarteiraPTEA.ParamByName('ID').Value := AId;
   qryCadastroCarteiraPTEA.Open();
   qryCadastroCarteiraPTEA.Edit;

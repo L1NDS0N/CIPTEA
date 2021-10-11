@@ -11,7 +11,6 @@ uses
   FMX.Types,
   FMX.Controls,
   FMX.Forms,
-  FMX.Graphics,
   FMX.Dialogs,
   FMX.Filter.Effects,
   FMX.Effects,
@@ -28,7 +27,6 @@ uses
   FMX.Edit,
   FMX.EditBox,
   FMX.ComboTrackBar,
-  FMX.Colors,
   FMX.Printer;
 
 type
@@ -83,7 +81,10 @@ implementation
 
 uses
   Providers.PrivateRoute,
-  ToastMessage;
+  ToastMessage,
+  FMX.Graphics,
+  FMX.Surfaces,
+  System.Generics.Collections;
 
 {$R *.fmx}
 
@@ -137,29 +138,34 @@ begin
 end;
 
 procedure TPageEditor.Props(aValue: TProps);
+var
+  vPropValue: TDictionary<String, String>;
+  vFilename: string;
 begin
   try
     try
-      if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToFotoEdit') then
+      if not(aValue.PropValue.IsEmpty) and (aValue.Key = 'DataToPhotoEdit') then
         begin
-          AId := aValue.PropString;
+          vPropValue := aValue.PropValue.AsType<TDictionary<String, String>>;
+
+          AId := vPropValue.Items['CardIdToEditPhoto'];
+          vFilename := vPropValue.Items['Filename'];
           lblID.Text := '#' + AId;
-          //verificar se contém arquivos na nuvem.
-          //ServiceNew.GetFiles;
+
+          rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(vFilename);
+          ImageViewer1.Bitmap.LoadFromFile(vFilename);
         end;
-      LServiceCard.qryTemp.Close;
-      LServiceCard.qryTemp.Open;
-      LServiceCard.qryTemp.First;
-      rect_fundo_foto.Fill.Bitmap.Bitmap.LoadFromFile(LServiceCard.qryTempFotoRostoPath.Value);
-      ImageViewer1.Bitmap.LoadFromFile(LServiceCard.qryTempFotoRostoPath.Value);
+
     except
       on E: Exception do
         begin
-          TToastMessage.show('Erro durante transferência de dados para a página de edição - ' + E.Message, ttDanger);
+          TToastMessage.show('Erro durante transferência de dados para a página de edição de fotos - ' + E.Message,
+            ttDanger);
         end;
     end;
   finally
     aValue.Free;
+    vPropValue.Free;
   end;
 end;
 
@@ -172,11 +178,15 @@ end;
 procedure TPageEditor.retBtnSalvarClick(Sender: TObject);
 var
   vFotoStream: TMemoryStream;
+  BitSurf: TBitmapSurface;
 begin
+  BitSurf := TBitmapSurface.Create;
+  vFotoStream := TMemoryStream.Create;
   try
     try
-      vFotoStream := TMemoryStream.Create;
-      ImageViewer1.MakeScreenshot.SaveToStream(vFotoStream);
+
+      BitSurf.Assign(ImageViewer1.MakeScreenshot.CreateThumbnail(354, 472));
+      TBitmapCodecManager.SaveToStream(vFotoStream, BitSurf, 'jpg', nil);
 
       //abrir a query arquivos carteira
       qryFiles := LServiceCard.GetFileById(AId.ToInteger);
@@ -207,6 +217,7 @@ begin
     end;
   finally
     vFotoStream.Free;
+    BitSurf.Free;
   end;
 end;
 
@@ -218,8 +229,9 @@ end;
 procedure TPageEditor.UnRender;
 begin
   LServiceCard.Free;
-  rect_fundo_foto.Fill.Bitmap.Bitmap := (nil);
-  ImageViewer1.Bitmap := (nil);
+  rect_fundo_foto.Fill.Bitmap.Bitmap := nil;
+  ImageViewer1.Bitmap := nil;
+
 end;
 
 end.

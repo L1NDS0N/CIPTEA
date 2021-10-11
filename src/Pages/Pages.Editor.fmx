@@ -84,6 +84,69 @@ object PageEditor: TPageEditor
             end
           end
         end
+        object rect_foto: TRectangle
+          Align = Center
+          Fill.Kind = None
+          Margins.Top = 20.000000000000000000
+          Size.Width = 728.000000000000000000
+          Size.Height = 437.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          object ImageViewer1: TImageViewer
+            Align = Scale
+            Cursor = crSizeAll
+            Position.X = 198.000000000000000000
+            Position.Y = -40.000000000000000000
+            Size.Width = 354.000000000000000000
+            Size.Height = 472.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            OnMouseDown = ImageViewer1MouseDown
+            OnMouseMove = ImageViewer1MouseMove
+            OnMouseUp = ImageViewer1MouseUp
+            OnMouseWheel = ImageViewer1MouseWheel
+            BackgroundFill.Kind = None
+            ShowScrollBars = False
+            Viewport.Width = 354.000000000000000000
+            Viewport.Height = 472.000000000000000000
+            object ShadowEffect2: TShadowEffect
+              Distance = 2.000000000000000000
+              Direction = 90.000000000000000000
+              Softness = 0.200000002980232200
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+          object Button1: TButton
+            Align = Scale
+            HelpType = htKeyword
+            Position.X = 483.000000000000000000
+            Position.Y = -39.000000000000000000
+            Size.Width = 67.000000000000000000
+            Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'refreshtoolbutton'
+            TabOrder = 1
+            Text = 'Button1'
+            OnClick = Button1Click
+          end
+          object track_zoom: TTrackBar
+            Align = Scale
+            CanParentFocus = True
+            Max = 3.000000000000000000
+            Min = 0.500000000000000000
+            Orientation = Horizontal
+            Margins.Right = 80.000000000000000000
+            Position.X = 243.000000000000000000
+            Position.Y = 400.000000000000000000
+            Size.Width = 270.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Value = 0.500000000000000000
+            OnChange = track_zoomChange
+          end
+        end
         object lytHeader: TLayout
           Align = MostTop
           Size.Width = 947.000000000000000000
@@ -179,69 +242,6 @@ object PageEditor: TPageEditor
               Stroke.Kind = None
               WrapMode = Fit
             end
-          end
-        end
-        object rect_foto: TRectangle
-          Align = Center
-          Fill.Kind = None
-          Margins.Top = 20.000000000000000000
-          Size.Width = 728.000000000000000000
-          Size.Height = 437.000000000000000000
-          Size.PlatformDefault = False
-          Stroke.Kind = None
-          object ImageViewer1: TImageViewer
-            Align = Scale
-            Cursor = crSizeAll
-            Position.X = 198.000000000000000000
-            Position.Y = -40.000000000000000000
-            Size.Width = 354.000000000000000000
-            Size.Height = 472.000000000000000000
-            Size.PlatformDefault = False
-            TabOrder = 0
-            OnMouseDown = ImageViewer1MouseDown
-            OnMouseMove = ImageViewer1MouseMove
-            OnMouseUp = ImageViewer1MouseUp
-            OnMouseWheel = ImageViewer1MouseWheel
-            BackgroundFill.Kind = None
-            ShowScrollBars = False
-            Viewport.Width = 354.000000000000000000
-            Viewport.Height = 472.000000000000000000
-            object ShadowEffect2: TShadowEffect
-              Distance = 2.000000000000000000
-              Direction = 90.000000000000000000
-              Softness = 0.200000002980232200
-              Opacity = 0.600000023841857900
-              ShadowColor = claBlack
-            end
-          end
-          object Button1: TButton
-            Align = Scale
-            HelpType = htKeyword
-            Position.X = 483.000000000000000000
-            Position.Y = -39.000000000000000000
-            Size.Width = 67.000000000000000000
-            Size.Height = 40.000000000000000000
-            Size.PlatformDefault = False
-            StyleLookup = 'refreshtoolbutton'
-            TabOrder = 1
-            Text = 'Button1'
-            OnClick = Button1Click
-          end
-          object track_zoom: TTrackBar
-            Align = Scale
-            CanParentFocus = True
-            Max = 3.000000000000000000
-            Min = 0.500000000000000000
-            Orientation = Horizontal
-            Margins.Right = 80.000000000000000000
-            Position.X = 243.000000000000000000
-            Position.Y = 400.000000000000000000
-            Size.Width = 270.000000000000000000
-            Size.Height = 19.000000000000000000
-            Size.PlatformDefault = False
-            TabOrder = 2
-            Value = 0.500000000000000000
-            OnChange = track_zoomChange
           end
         end
       end

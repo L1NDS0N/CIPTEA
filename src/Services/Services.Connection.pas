@@ -17,9 +17,9 @@ uses
   FireDAC.FMXUI.Wait,
   Data.DB,
   FireDAC.Comp.Client,
+  FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLite,
-  FireDAC.Phys.SQLiteDef,
-  FireDAC.Stan.ExprFuncs;
+  FireDAC.Phys.SQLiteDef;
 
 type
   TServiceConnection = class(TDataModule)

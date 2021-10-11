@@ -144,7 +144,7 @@ begin
       lblRG.Text := LServiceCard.mtCadastroCarteiraPTEARgTitular.AsString;
       lblCPF.Text := LServiceCard.mtCadastroCarteiraPTEACpfTitular.AsString;
 
-      imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString.ToInteger));
+      imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString));
 
     except
       on E: Exception do

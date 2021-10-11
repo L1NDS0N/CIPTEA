@@ -103,7 +103,7 @@ type
       procedure PostStreamDoc;
       procedure PostStreamFoto(AId: string);
       procedure GetFiles;
-      function GetImageStreamById(AId: integer): TStream;
+      function GetImageStreamById(AId: string): TStream;
       function GetFileById(AId: integer): TFDQuery;
 
   end;
@@ -352,12 +352,12 @@ begin
   end;
 end;
 
-function TServiceCard.GetImageStreamById(AId: integer): TStream;
+function TServiceCard.GetImageStreamById(AId: string): TStream;
 begin
   try
     Result := TMemoryStream.Create;
     qryArquivosCarteiraPTEA.Close;
-    qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId.ToString;
+    qryArquivosCarteiraPTEA.ParamByName('IDCARTEIRA').Value := AId;
     qryArquivosCarteiraPTEA.Open;
     if not(qryArquivosCarteiraPTEA.IsEmpty) then
       begin
@@ -369,7 +369,7 @@ begin
   except
     on E: Exception do
       begin
-        raise Exception.Create('Erro durante obtenção da imagem #' + AId.ToString + ' - ' + E.Message);
+        raise Exception.Create('Erro durante obtenção da imagem #' + AId + ' - ' + E.Message);
       end;
   end;
 end;

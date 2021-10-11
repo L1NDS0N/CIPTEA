@@ -127,7 +127,8 @@ uses
   Utils.Tools,
   ToastMessage,
   System.MaskUtils,
-  System.StrUtils;
+  System.StrUtils,
+  System.Generics.Collections;
 
 {$R *.fmx}
 { TPageUpdate }
@@ -180,14 +181,14 @@ begin
       edtNumeroContato.Text := LServiceCard.mtCadastroCarteiraPTEANumeroContato.AsString;
       edtRgResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEARgResponsavel.AsString;
       edtRgTitular.Text := LServiceCard.mtCadastroCarteiraPTEARgTitular.AsString;
-      imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString.ToInteger));
+      imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString));
       LServiceCard.GetFiles;
 
     except
       on E: Exception do
         begin
-          TToastMessage.show('Erro durante transferência dos dados da carteirinha #' + aValue.PropString +
-              ' na página de edição - ' + E.Message, ttDanger);
+          TToastMessage.show('Erro durante transferência dos dados da carteirinha na página de edição - ' + E.Message,
+            ttDanger);
         end;
     end;
   finally
@@ -207,19 +208,20 @@ begin
 end;
 
 procedure TPageUpdate.rctFotoRostoClick(Sender: TObject);
+var
+  vProps: TDictionary<String, String>;
 begin
+  vProps := TDictionary<String, String>.Create;
   try
+
     if dlgFotoRosto.Execute then
       if dlgFotoRosto.FileName <> EmptyStr then
         begin
-          LServiceCard.qryTemp.Open;
-          LServiceCard.qryTemp.First;
-          LServiceCard.qryTemp.Edit;
-          LServiceCard.qryTempFotoRostoPath.Value := dlgFotoRosto.FileName;
-          LServiceCard.qryTemp.Post;
 
-          NavegarPara('Editor', TProps.Create.PropString(LServiceCard.mtCadastroCarteiraPTEAid.AsString)
-              .Key('IdCarteiraToFotoEdit'));
+          vProps.Add('CardIdToEditPhoto', LServiceCard.mtCadastroCarteiraPTEAid.AsString);
+          vProps.Add('Filename', dlgFotoRosto.FileName);
+
+          NavegarPara('Editor', TProps.Create.PropValue(vProps).Key('DataToPhotoEdit'));
         end;
   finally
     VerificacoesUX;

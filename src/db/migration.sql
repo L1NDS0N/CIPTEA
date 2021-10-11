@@ -8,13 +8,6 @@ CREATE TABLE ArquivosCarteiraPTEA (
 , hasDoc boolean);
 
 
--- "Temp" definition
-
-CREATE TABLE "Temp" (
-	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
-, FotoRostoPath VARCHAR(254), LaudoMedicoPath VARCHAR(254));
-
-
 -- Usuario definition
 
 CREATE TABLE Usuario (
@@ -23,6 +16,6 @@ CREATE TABLE Usuario (
 	Token VARCHAR,
 	StayConected BOOLEAN DEFAULT false NOT NULL,
 	TokenCreatedAt INTEGER,
-	TokenExpires INTEGER,
+	TokenExpires INTEGER, Email VARCHAR,
 	CONSTRAINT Usuario_PK PRIMARY KEY (id)
 );

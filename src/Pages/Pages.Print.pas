@@ -54,6 +54,7 @@ type
     lblImprimir: TLabel;
     FloatAnimation4: TFloatAnimation;
     iconVoltar: TPath;
+    lblCipteaId: TLabel;
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
     private
@@ -143,6 +144,7 @@ begin
       lblDataNascimento.Text := LServiceCard.mtCadastroCarteiraPTEADataNascimento.AsString;
       lblRG.Text := LServiceCard.mtCadastroCarteiraPTEARgTitular.AsString;
       lblCPF.Text := LServiceCard.mtCadastroCarteiraPTEACpfTitular.AsString;
+      lblCipteaId.Text := LServiceCard.mtCadastroCarteiraPTEACipteaId.AsString;
 
       imgFotoRosto.Bitmap.LoadFromStream(LServiceCard.GetImageStreamById(aValue.PropString));
 

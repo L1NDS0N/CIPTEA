@@ -49,6 +49,7 @@ type
     imgPrint: TPath;
     ColorAnimation3: TColorAnimation;
     ShadowEffect4: TShadowEffect;
+    lblCipteaID: TLabel;
     procedure crlEditClick(Sender: TObject);
     procedure crlDeleteClick(Sender: TObject);
     procedure crlPrintClick(Sender: TObject);

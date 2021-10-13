@@ -17,7 +17,7 @@ object PageDashboard: TPageDashboard
     object lytHeader: TLayout
       Align = Top
       Size.Width = 688.000000000000000000
-      Size.Height = 121.000000000000000000
+      Size.Height = 120.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object lytTitle: TLayout
@@ -41,147 +41,153 @@ object PageDashboard: TPageDashboard
           TabOrder = 0
         end
       end
-      object lytSearchBox: TLayout
-        Align = Client
-        Size.Width = 688.000000000000000000
-        Size.Height = 64.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 1
-        object rectSearchBox: TRoundRect
-          Align = Scale
-          Fill.Color = xFF286496
-          Position.X = 44.000003814697270000
-          Position.Y = 5.000000000000000000
-          Size.Width = 600.000000000000000000
-          Size.Height = 50.000000000000000000
-          Size.PlatformDefault = False
-          Stroke.Color = claGray
-          Stroke.Thickness = 0.500000000000000000
-          Stroke.Cap = Round
-          object ComboEdit: TComboEdit
-            Touch.InteractiveGestures = [LongTap, DoubleTap]
-            Align = Scale
-            StyleLookup = 'transparentedit'
-            TabOrder = 0
-            DropDownCount = 12
-            DropDownKind = Custom
-            ItemHeight = 36.000000000000000000
-            ItemIndex = -1
-            Text = 'Pesquise por nome ou cpf'
-            TextSettings.Font.Family = 'Roboto'
-            TextSettings.Font.Size = 14.000000000000000000
-            TextSettings.Font.StyleExt = {00070000000000000004000000}
-            TextSettings.FontColor = claWhite
-            TextSettings.HorzAlign = Center
-            Position.X = 16.000000000000000000
-            Position.Y = 8.000000000000000000
-            HelpType = htKeyword
-            Hint = 'Busque por cpf ou nome'
-            StyledSettings = []
-            Size.Width = 537.000000000000000000
-            Size.Height = 37.000000000000000000
-            Size.PlatformDefault = False
-            Caret.Color = claWhite
-            OnChange = ComboEditChange
-            OnChangeTracking = ComboEditChangeTracking
-            OnTyping = ComboEditTyping
-            OnClick = ComboEditClick
-            object Line2: TLine
-              Align = Bottom
-              Locked = True
-              LineType = Diagonal
-              Position.Y = 36.000000000000000000
-              Size.Width = 537.000000000000000000
-              Size.Height = 1.000000000000000000
-              Size.PlatformDefault = False
-              Stroke.Color = claWhitesmoke
-              Stroke.Thickness = 0.200000002980232200
-              Stroke.Cap = Round
-            end
-            object SpeedButton1: TSpeedButton
-              Align = Right
-              StyledSettings = [Family]
-              Position.X = 488.000000000000000000
-              Size.Width = 49.000000000000000000
-              Size.Height = 36.000000000000000000
-              Size.PlatformDefault = False
-              StyleLookup = 'SpeedButton1Style1'
-              Text = #10761
-              TextSettings.Font.Size = 18.000000000000000000
-              TextSettings.FontColor = claWhite
-              OnClick = SpeedButton1Click
-            end
+      object rectSearchBox: TRoundRect
+        Align = Scale
+        Fill.Kind = Gradient
+        Fill.Gradient.Points = <
+          item
+            Color = xFF0B4C82
+            Offset = 0.000000000000000000
           end
-          object rectLupa: TRoundRect
-            Align = FitRight
-            Cursor = crHandPoint
-            Fill.Color = xFF286496
-            Position.X = 550.000000000000000000
-            Size.Width = 50.000000000000000000
-            Size.Height = 50.000000000000000000
+          item
+            Color = xC00A3B63
+            Offset = 1.000000000000000000
+          end>
+        Fill.Gradient.StartPosition.X = 0.500000000000000000
+        Fill.Gradient.StartPosition.Y = 1.000000000000000000
+        Fill.Gradient.StopPosition.X = 0.499999970197677600
+        Fill.Gradient.StopPosition.Y = 0.000000000000000000
+        Position.X = 52.000000000000000000
+        Position.Y = 68.000000000000000000
+        Size.Width = 600.000000000000000000
+        Size.Height = 52.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claGray
+        Stroke.Thickness = 0.500000000000000000
+        Stroke.Cap = Round
+        object ComboEdit: TComboEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Scale
+          StyleLookup = 'transparentedit'
+          TabOrder = 0
+          DropDownCount = 12
+          DropDownKind = Custom
+          ItemHeight = 36.000000000000000000
+          ItemIndex = -1
+          Text = 'Pesquise por nome ou cpf'
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 14.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Position.X = 16.000000000000000000
+          Position.Y = 9.000000000000000000
+          HelpType = htKeyword
+          Hint = 'Busque por cpf ou nome'
+          StyledSettings = []
+          Size.Width = 537.000000000000000000
+          Size.Height = 39.000000000000000000
+          Size.PlatformDefault = False
+          Caret.Color = claWhite
+          OnChange = ComboEditChange
+          OnChangeTracking = ComboEditChangeTracking
+          OnTyping = ComboEditTyping
+          OnClick = ComboEditClick
+          object Line2: TLine
+            Align = Bottom
+            Locked = True
+            LineType = Diagonal
+            Position.Y = 38.000000000000000000
+            Size.Width = 537.000000000000000000
+            Size.Height = 1.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Color = claWhitesmoke
+            Stroke.Thickness = 0.200000002980232200
+            Stroke.Cap = Round
+          end
+          object SpeedButton1: TSpeedButton
+            Align = Right
+            StyledSettings = [Family]
+            Position.X = 488.000000000000000000
+            Size.Width = 49.000000000000000000
+            Size.Height = 38.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'SpeedButton1Style1'
+            Text = #10761
+            TextSettings.Font.Size = 18.000000000000000000
+            TextSettings.FontColor = claWhite
+            OnClick = SpeedButton1Click
+          end
+        end
+        object rectLupa: TRoundRect
+          Align = FitRight
+          Cursor = crHandPoint
+          Fill.Color = claNull
+          Position.X = 547.999938964843800000
+          Size.Width = 52.000061035156250000
+          Size.Height = 52.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          OnClick = rectLupaClick
+          object Path1: TPath
+            Align = Scale
+            Data.Path = {
+              320000000000000000002041000090410200000037893D410000904102000000
+              21B0584185EB8A41020000001C5A6E41FA7E82410100000010589A41FCA9A541
+              01000000EFA7A5411D5A9A4101000000ED7C8241365E6E410200000085EB8A41
+              21B05841020000000000904137893D4102000000000090410000204102000000
+              0000904117D9B240020000007593664100000040020000000000204100000040
+              0200000016D9B24000000040020000000000004016D9B2400200000000000040
+              000020410200000000000040759366410200000017D9B2400000904102000000
+              0000204100009041030000000000204100009041000000000000204100008040
+              02000000AAF15441000080400200000000008041AC1CD6400200000000008041
+              000020410200000000008041AAF1544102000000AAF154410000804102000000
+              000020410000804102000000AC1CD640000080410200000000008040AAF15441
+              0200000000008040000020410200000000008040AC1CD64002000000AC1CD640
+              0000804002000000000020410000804003000000000020410000804000000000
+              8D9736414260094102000000F0A73C41BC740F410200000000004041EE7C1741
+              0200000000004041000020410100000000006041000020410200000000006041
+              C2F50E410200000010585941C0CAFD40020000004C374D410681E54002000000
+              F4FD3441B81EB54002000000F4FD0A41B81EB540020000006991E5400681E540
+              01000000426009417368094102000000378915415C8FFA4002000000FA7E2A41
+              BE9FFA40020000008D97364142600941030000008D97364142600941}
+            EnableDragHighlight = False
+            Fill.Color = claWhite
+            Locked = True
+            HitTest = False
+            Position.X = 12.480010986328130000
+            Position.Y = 11.439997673034670000
+            Size.Width = 29.120029449462890000
+            Size.Height = 29.119995117187500000
             Size.PlatformDefault = False
             Stroke.Kind = None
-            OnClick = rectLupaClick
-            object Path1: TPath
-              Align = Scale
-              Data.Path = {
-                320000000000000000002041000090410200000037893D410000904102000000
-                21B0584185EB8A41020000001C5A6E41FA7E82410100000010589A41FCA9A541
-                01000000EFA7A5411D5A9A4101000000ED7C8241365E6E410200000085EB8A41
-                21B05841020000000000904137893D4102000000000090410000204102000000
-                0000904117D9B240020000007593664100000040020000000000204100000040
-                0200000016D9B24000000040020000000000004016D9B2400200000000000040
-                000020410200000000000040759366410200000017D9B2400000904102000000
-                0000204100009041030000000000204100009041000000000000204100008040
-                02000000AAF15441000080400200000000008041AC1CD6400200000000008041
-                000020410200000000008041AAF1544102000000AAF154410000804102000000
-                000020410000804102000000AC1CD640000080410200000000008040AAF15441
-                0200000000008040000020410200000000008040AC1CD64002000000AC1CD640
-                0000804002000000000020410000804003000000000020410000804000000000
-                8D9736414260094102000000F0A73C41BC740F410200000000004041EE7C1741
-                0200000000004041000020410100000000006041000020410200000000006041
-                C2F50E410200000010585941C0CAFD40020000004C374D410681E54002000000
-                F4FD3441B81EB54002000000F4FD0A41B81EB540020000006991E5400681E540
-                01000000426009417368094102000000378915415C8FFA4002000000FA7E2A41
-                BE9FFA40020000008D97364142600941030000008D97364142600941}
-              EnableDragHighlight = False
-              Fill.Color = claWhite
-              Locked = True
-              HitTest = False
-              Position.X = 11.999998092651370000
-              Position.Y = 10.999999046325680000
-              Size.Width = 27.999998092651370000
-              Size.Height = 28.000000000000000000
-              Size.PlatformDefault = False
-              Stroke.Kind = None
-              WrapMode = Fit
-              object ShadowEffect4: TShadowEffect
-                Distance = 1.000000000000000000
-                Direction = 90.000000000000000000
-                Softness = 0.200000002980232200
-                Opacity = 0.300000011920929000
-                ShadowColor = claBlack
-              end
+            WrapMode = Fit
+            object ShadowEffect4: TShadowEffect
+              Distance = 1.000000000000000000
+              Direction = 90.000000000000000000
+              Softness = 0.200000002980232200
+              Opacity = 0.300000011920929000
+              ShadowColor = claBlack
             end
-            object FloatAnimation1: TFloatAnimation
-              AnimationType = InOut
-              Duration = 0.699999988079071000
-              PropertyName = 'RotationAngle'
-              StartValue = -360.000000000000000000
-              StopValue = 0.000000000000000000
-              Trigger = 'IsMouseOver=true'
-              TriggerInverse = 'IsMouseOver=false'
-            end
-            object ColorAnimation2: TColorAnimation
-              AnimationType = InOut
-              Duration = 0.500000000000000000
-              Interpolation = Quintic
-              PropertyName = 'Fill.Color'
-              StartValue = xFF286496
-              StopValue = xC84682B4
-              Trigger = 'IsMouseOver=true'
-              TriggerInverse = 'IsMouseOver=false'
-            end
+          end
+          object FloatAnimation1: TFloatAnimation
+            AnimationType = InOut
+            Duration = 0.699999988079071000
+            PropertyName = 'RotationAngle'
+            StartValue = -360.000000000000000000
+            StopValue = 0.000000000000000000
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
+          end
+          object ColorAnimation2: TColorAnimation
+            AnimationType = InOut
+            Duration = 0.699999988079071000
+            Interpolation = Quintic
+            PropertyName = 'Fill.Color'
+            StartValue = claNull
+            StopValue = xC84682B4
+            Trigger = 'IsMouseOver=true'
+            TriggerInverse = 'IsMouseOver=false'
           end
         end
       end
@@ -189,12 +195,12 @@ object PageDashboard: TPageDashboard
     object vsbCarteiras: TVertScrollBox
       Align = Client
       Size.Width = 688.000000000000000000
-      Size.Height = 420.000000000000000000
+      Size.Height = 421.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
       OnViewportPositionChange = vsbCarteirasViewportPositionChange
       Viewport.Width = 688.000000000000000000
-      Viewport.Height = 420.000000000000000000
+      Viewport.Height = 421.000000000000000000
     end
     object retBtnNew: TRectangle
       Align = Bottom

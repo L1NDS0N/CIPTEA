@@ -39,7 +39,6 @@ type
     lblCPF: TLabel;
     imgFotoRosto: TImage;
     lytHeader: TLayout;
-    lblID: TLabel;
     lblTitle: TLabel;
     btnVoltar: TRectangle;
     ColorAnimation2: TColorAnimation;
@@ -55,8 +54,15 @@ type
     FloatAnimation4: TFloatAnimation;
     iconVoltar: TPath;
     lblCipteaId: TLabel;
+    lblID: TLabel;
+    btnCopy: TRectangle;
+    ColorAnimation7: TColorAnimation;
+    ColorAnimation8: TColorAnimation;
+    FloatAnimation1: TFloatAnimation;
+    iconCopy: TPath;
     procedure btnVoltarClick(Sender: TObject);
     procedure retBtnSalvarClick(Sender: TObject);
+    procedure btnCopyClick(Sender: TObject);
     private
       PropsKeyValue: string;
       PropsValue: string;
@@ -77,7 +83,8 @@ implementation
 
 uses
   Providers.PrivateRoute,
-  ToastMessage;
+  ToastMessage,
+  FMX.Platform;
 
 {$R *.fmx}
 { TPagePrint }
@@ -92,6 +99,23 @@ procedure TPagePrint.UnRender;
 begin
   Self.LimparCampos;
   LServiceCard.Free;
+end;
+
+procedure TPagePrint.btnCopyClick(Sender: TObject);
+var
+  Svc: IFMXClipboardService;
+  CipteaId: string;
+begin
+  if not(LServiceCard.mtCadastroCarteiraPTEACipteaId.IsNull) then
+    begin
+      CipteaId := LServiceCard.mtCadastroCarteiraPTEACipteaId.AsString;
+      if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then
+        begin
+          Svc.SetClipboard(CipteaId);
+          TToastMessage.show('Identificador de registro da CIPTEA (' + CipteaId +
+              ') copiado para a área de transferência');
+        end;
+    end;
 end;
 
 procedure TPagePrint.btnVoltarClick(Sender: TObject);
@@ -136,7 +160,7 @@ begin
           (PropsKeyValue = 'IdCarteiraToPrintFromUpdate')) then
         LServiceCard.GetById(aValue.PropString);
 
-      lblID.Text := '#' + PropsValue;
+      lblID.Text := '#' + LServiceCard.mtCadastroCarteiraPTEACipteaId.AsString;
 
       lblNome.Text := LServiceCard.mtCadastroCarteiraPTEANomeTitular.AsString;
       lblResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString;

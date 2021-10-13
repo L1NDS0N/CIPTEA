@@ -24,7 +24,8 @@ uses
   FMX.Edit,
   FMX.DateTimeCtrls,
   FMX.Ani,
-  FMX.Effects, Router4D.Props;
+  FMX.Effects,
+  Router4D.Props;
 
 type
   TPageNew = class(TForm, iRouter4DComponent)
@@ -210,6 +211,7 @@ begin
       LServiceCard.mtCadastroCarteiraPTEANomeTitular.Value := edtNomeTitular.Text;
       LServiceCard.mtCadastroCarteiraPTEACpfTitular.Value := edtCpfTitular.Text;
       LServiceCard.mtCadastroCarteiraPTEARgTitular.Value := edtRgTitular.Text;
+      LServiceCard.mtCadastroCarteiraPTEACipteaId.Visible := false;
       LServiceCard.Salvar;
     finally
       try

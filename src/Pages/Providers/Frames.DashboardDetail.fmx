@@ -199,9 +199,9 @@ object FrameDashboardDetail: TFrameDashboardDetail
         object lytLabelsCenter: TLayout
           Align = VertCenter
           EnableDragHighlight = False
-          Position.Y = 50.000000000000000000
+          Position.Y = 34.000000000000000000
           Size.Width = 367.750000000000000000
-          Size.Height = 50.000000000000000000
+          Size.Height = 82.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           object lblCPFTitular: TLabel
@@ -219,7 +219,7 @@ object FrameDashboardDetail: TFrameDashboardDetail
             TextSettings.Font.Size = 14.000000000000000000
             TextSettings.FontColor = xFF2A2F32
             Text = 'CPF do Titular'
-            TabOrder = 0
+            TabOrder = 1
           end
           object lblNomeTitular: TLabel
             Align = Top
@@ -236,7 +236,24 @@ object FrameDashboardDetail: TFrameDashboardDetail
             TextSettings.Font.StyleExt = {00070000000000000004000000}
             TextSettings.FontColor = xFF131C21
             Text = 'Nome do Titular'
-            TabOrder = 1
+            TabOrder = 2
+          end
+          object lblCipteaID: TLabel
+            Align = Top
+            EnableDragHighlight = False
+            StyledSettings = []
+            Margins.Left = 10.000000000000000000
+            Margins.Right = 10.000000000000000000
+            Position.X = 10.000000000000000000
+            Position.Y = 50.000000000000000000
+            Size.Width = 347.750000000000000000
+            Size.Height = 25.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Family = 'Roboto'
+            TextSettings.Font.Size = 14.000000000000000000
+            TextSettings.FontColor = xFF2A2F32
+            Text = 'CIPTEA ID'
+            TabOrder = 0
           end
         end
       end

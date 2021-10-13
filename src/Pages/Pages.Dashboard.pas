@@ -38,7 +38,6 @@ type
     ColorAnimation1: TColorAnimation;
     ShadowEffect1: TShadowEffect;
     lytTitle: TLayout;
-    lytSearchBox: TLayout;
     ComboEdit: TComboEdit;
     rectSearchBox: TRoundRect;
     Line2: TLine;
@@ -177,6 +176,7 @@ begin
           LFrame.lblNomeTitular.Text := AQuery.fieldbyname('NomeTitular').AsString;
           LFrame.lblCPFTitular.Text := AQuery.fieldbyname('CpfTitular').AsString;
           LFrame.lblID.Text := '#' + AQuery.fieldbyname('id').AsString;
+          LFrame.lblCipteaID.Text := AQuery.fieldbyname('cipteaid').AsString;
 
           LStream := LServiceCard.GetImageStreamById(AQuery.fieldbyname('id').Value);
           if LStream.Size > 0 then

@@ -25,7 +25,8 @@ uses
   Router4D.Props,
   FMX.ExtCtrls,
   FMX.Effects,
-  Configs.GLOBAL;
+  Configs.GLOBAL,
+  FMX.Platform;
 
 type
   TPageUpdate = class(TForm, iRouter4DComponent)
@@ -89,6 +90,11 @@ type
     imgPrint: TPath;
     FloatAnimation4: TFloatAnimation;
     iconVoltar: TPath;
+    iconCopy: TPath;
+    btnCopy: TRectangle;
+    ColorAnimation7: TColorAnimation;
+    ColorAnimation8: TColorAnimation;
+    FloatAnimation1: TFloatAnimation;
     procedure ValidarCampos(Sender: TObject);
     procedure rctFotoRostoClick(Sender: TObject);
     procedure rctLaudoMedicoClick(Sender: TObject);
@@ -104,6 +110,7 @@ type
     procedure edtRgTitularKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure btnPrintClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnCopyClick(Sender: TObject);
     private
       LServiceCard: TServiceCard;
       Config: TConfigGlobal;
@@ -171,7 +178,7 @@ begin
       if (aValue.PropString <> '') and (aValue.Key = 'IdCarteiraToUpdate') then
         LServiceCard.GetById(aValue.PropString);
 
-      lblID.Text := '#' + aValue.PropString;
+      lblID.Text := '#' + LServiceCard.mtCadastroCarteiraPTEACipteaId.AsString;
       edtNomeResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEANomeResponsavel.AsString;
       edtCpfResponsavel.Text := LServiceCard.mtCadastroCarteiraPTEACpfResponsavel.AsString;
       edtCpfTitular.Text := LServiceCard.mtCadastroCarteiraPTEACpfTitular.AsString;
@@ -258,6 +265,23 @@ begin
     begin
       AbrirLinkNavegador(Config.BaseURL + '/carteiras/' + LServiceCard.mtCadastroCarteiraPTEAid.AsString +
           '/static/doc');
+    end;
+end;
+
+procedure TPageUpdate.btnCopyClick(Sender: TObject);
+var
+  Svc: IFMXClipboardService;
+  CipteaId: string;
+begin
+  if not(LServiceCard.mtCadastroCarteiraPTEACipteaId.IsNull) then
+    begin
+      CipteaId := LServiceCard.mtCadastroCarteiraPTEACipteaId.AsString;
+      if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then
+        begin
+          Svc.SetClipboard(CipteaId);
+          TToastMessage.show('Identificador de registro da CIPTEA (' + CipteaId +
+              ') copiado para a área de transferência');
+        end;
     end;
 end;
 

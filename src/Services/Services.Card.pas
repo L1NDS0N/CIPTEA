@@ -54,10 +54,6 @@ type
     qryArquivosCarteiraPTEADocStream: TBlobField;
     qryArquivosCarteiraPTEAIfNoneMatch: TStringField;
     qryArquivosCarteiraPTEAhasDoc: TBooleanField;
-    qryTemp: TFDQuery;
-    qryTempid: TFDAutoIncField;
-    qryTempFotoRostoPath: TStringField;
-    qryTempLaudoMedicoPath: TStringField;
     qryUsuarioLocal: TFDQuery;
     qryUsuarioLocalid: TIntegerField;
     qryUsuarioLocalNome: TStringField;
@@ -88,6 +84,9 @@ type
     mtNomesFiltrados: TFDMemTable;
     mtFiltrarNomesnomes: TDataSetField;
     mtNomesFiltradosnome: TStringField;
+    mtCadastroCarteiraPTEACipteaId: TStringField;
+    mtPesquisaCarteiraPTEACipteaId: TStringField;
+    mtFiltrarCarteiraPTEACipteaId: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     private
     var
@@ -132,7 +131,6 @@ begin
 
   Connection := TServiceConnection.Create(Self);
   qryArquivosCarteiraPTEA.Connection := Connection.LocalConnection;
-  qryTemp.Connection := Connection.LocalConnection;
   qryUsuarioLocal.Connection := Connection.LocalConnection;
 end;
 

@@ -96,6 +96,10 @@ object ServiceCard: TServiceCard
     object mtPesquisaCarteiraPTEAFotoStream: TBlobField
       FieldName = 'FotoStream'
     end
+    object mtPesquisaCarteiraPTEACipteaId: TStringField
+      FieldName = 'CipteaId'
+      Size = 11
+    end
   end
   object mtCadastroCarteiraPTEA: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -158,6 +162,10 @@ object ServiceCard: TServiceCard
       FieldName = 'LaudoMedicoPath'
       Size = 254
     end
+    object mtCadastroCarteiraPTEACipteaId: TStringField
+      FieldName = 'CipteaId'
+      Size = 11
+    end
   end
   object qryArquivosCarteiraPTEA: TFDQuery
     SQL.Strings = (
@@ -191,28 +199,6 @@ object ServiceCard: TServiceCard
     end
     object qryArquivosCarteiraPTEAhasDoc: TBooleanField
       FieldName = 'hasDoc'
-    end
-  end
-  object qryTemp: TFDQuery
-    SQL.Strings = (
-      'select * from temp')
-    Left = 216
-    Top = 8
-    object qryTempid: TFDAutoIncField
-      FieldName = 'id'
-      Origin = 'id'
-      ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
-    end
-    object qryTempFotoRostoPath: TStringField
-      FieldName = 'FotoRostoPath'
-      Origin = 'FotoRostoPath'
-      Size = 254
-    end
-    object qryTempLaudoMedicoPath: TStringField
-      FieldName = 'LaudoMedicoPath'
-      Origin = 'LaudoMedicoPath'
-      Size = 254
     end
   end
   object qryUsuarioLocal: TFDQuery
@@ -361,6 +347,10 @@ object ServiceCard: TServiceCard
     end
     object mtFiltrarCarteiraPTEAFotoStream: TBlobField
       FieldName = 'FotoStream'
+    end
+    object mtFiltrarCarteiraPTEACipteaId: TStringField
+      FieldName = 'CipteaId'
+      Size = 11
     end
   end
   object mtFiltrarNomes: TFDMemTable

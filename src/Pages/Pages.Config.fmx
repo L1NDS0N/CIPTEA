@@ -475,6 +475,7 @@ object PageConfig: TPageConfig
             Size.Height = 300.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
+            OnClick = rect_excluircacheClick
             object Line4: TLine
               Align = Right
               LineType = Right

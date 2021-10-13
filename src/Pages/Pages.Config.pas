@@ -65,6 +65,7 @@ type
     procedure rect_novousuarioClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure rect_atualizarusuarioClick(Sender: TObject);
+    procedure rect_excluircacheClick(Sender: TObject);
     private
       { Private declarations }
     public
@@ -81,7 +82,9 @@ uses
   Router4D.Props,
   Providers.PrivateRoute,
   ToastMessage,
-  Router4D;
+  Router4D,
+  Services.Card,
+  FMX.DialogService;
 
 {$R *.fmx}
 { TPageConfig }
@@ -103,6 +106,48 @@ begin
   except
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página de edição de usuário - ' + E.Message, ttDanger);
+  end;
+end;
+
+procedure TPageConfig.rect_excluircacheClick(Sender: TObject);
+var
+  LService: TServiceCard;
+begin
+  LService := TServiceCard.create(nil);
+  try
+    try
+      TDialogService.MessageDialog
+        ('Tem certeza que deseja limpar os arquivos em cache? Será necessário logar novamente após a operação.',
+        TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
+          procedure(const AResult: TModalResult)
+        begin
+          if AResult <> mrYes then
+            TToastMessage.show('Limpeza de cache cancelada.')
+          else
+            begin
+              with LService do
+                begin
+                  qryArquivosCarteiraPTEA.SQL.Clear;
+                  qryArquivosCarteiraPTEA.SQL.Add('DELETE FROM ArquivosCarteiraPTEA');
+                  qryArquivosCarteiraPTEA.ExecSQL;
+
+                  qryUsuarioLocal.SQL.Clear;
+                  qryUsuarioLocal.SQL.Add('delete from usuario');
+                  qryUsuarioLocal.ExecSQL;
+
+                  TToastMessage.show((qryUsuarioLocal.RowsAffected + qryArquivosCarteiraPTEA.RowsAffected).ToString +
+                      ' Registros de cache limpos no aplicativo ');
+
+                  TRouter4D.Link.&To('Login');
+                end;
+            end;
+        end);
+    except
+      on E: Exception do
+        TToastMessage.show('Erro durante exclusão de cache do aplicativo ' + E.Message, ttDanger);
+    end;
+  finally
+    LService.Free;
   end;
 end;
 

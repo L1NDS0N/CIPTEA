@@ -3,7 +3,7 @@ unit Controllers.Auth;
 interface
 
 uses
-  Configs.GLOBAL;
+  Configs.GLOBAL, Data.DB;
 
 procedure Registry;
 

@@ -2,6 +2,7 @@
 
 CREATE TABLE `carteiraptea` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `CipteaId` varchar(11) NOT NULL,
   `NomeResponsavel` varchar(80) NOT NULL,
   `CpfResponsavel` varchar(14) NOT NULL,
   `RgResponsavel` varchar(20) NOT NULL,
@@ -15,8 +16,9 @@ CREATE TABLE `carteiraptea` (
   `CriadoEm` timestamp NOT NULL DEFAULT current_timestamp(),
   `AlteradoEm` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `CpfTitular` (`CpfTitular`)
-) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `CpfTitular` (`CpfTitular`),
+  UNIQUE KEY `cipteaid_un` (`CipteaId`)
+) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8;
 
 
 -- ciptea.usuario definition
@@ -30,4 +32,4 @@ CREATE TABLE `usuario` (
   `alteradoem` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuario_un` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;

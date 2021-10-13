@@ -58,6 +58,8 @@ type
     qryPesquisaCarteiraPTEACriadoEm: TSQLTimeStampField;
     qryPesquisaCarteiraPTEAAlteradoEm: TSQLTimeStampField;
     qryFiltrarCarteiraPTEA: TFDQuery;
+    qryCadastroCarteiraPTEACipteaId: TStringField;
+    qryPesquisaCarteiraPTEACipteaId: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     private

@@ -6,6 +6,7 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
   Width = 144
   object qryCadastroCarteiraPTEA: TFDQuery
     CachedUpdates = True
+    Connection = ServiceConnection.FDConnection
     SQL.Strings = (
       'select * from carteiraptea where id = :id')
     Left = 56
@@ -90,8 +91,15 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
       FieldName = 'AlteradoEm'
       Origin = 'AlteradoEm'
     end
+    object qryCadastroCarteiraPTEACipteaId: TStringField
+      FieldName = 'CipteaId'
+      Origin = 'CipteaId'
+      Required = True
+      Size = 11
+    end
   end
   object qryPesquisaCarteiraPTEA: TFDQuery
+    Connection = ServiceConnection.FDConnection
     SQL.Strings = (
       'select * from carteiraptea where id = :id')
     Left = 56
@@ -169,8 +177,15 @@ object ServiceCarteiraPTEA: TServiceCarteiraPTEA
       FieldName = 'AlteradoEm'
       Origin = 'AlteradoEm'
     end
+    object qryPesquisaCarteiraPTEACipteaId: TStringField
+      FieldName = 'CipteaId'
+      Origin = 'CipteaId'
+      Required = True
+      Size = 11
+    end
   end
   object qryFiltrarCarteiraPTEA: TFDQuery
+    Connection = ServiceConnection.FDConnection
     SQL.Strings = (
       'select * from carteiraptea where id = :id')
     Left = 56

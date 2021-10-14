@@ -60,7 +60,8 @@ contains
   Services.User in '..\Services\Services.User.pas' {ServiceUser: TDataModule},
   Pages.Config in 'Pages.Config.pas' {PageConfig},
   Pages.New in 'Pages.New.pas' {PageNew},
-  Services.Card in '..\Services\Services.Card.pas' {ServiceCard: TDataModule};
+  Services.Card in '..\Services\Services.Card.pas' {ServiceCard: TDataModule},
+  Pages.NetConfig in 'Pages.NetConfig.pas' {PageNetConfig};
 
 end.
 

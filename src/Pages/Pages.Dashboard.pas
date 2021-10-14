@@ -146,6 +146,7 @@ begin
     ListarCarteiras
   else
     RelistarCarteiras;
+
 end;
 
 procedure TPageDashboard.RenderizarCarteiras(AQuery: TFDMemTable);

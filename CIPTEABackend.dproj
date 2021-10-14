@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <MainSource>CIPTEABackend.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -146,6 +146,8 @@
         <DCCReference Include="src\Providers\Providers.Authorization.pas"/>
         <DCCReference Include="src\Config\Configs.Global.pas"/>
         <DCCReference Include="src\Utils\Utils.Tools.pas"/>
+        <DCCReference Include="src\Providers\Providers.CipteaID.pas"/>
+        <DCCReference Include="src\Controllers\Controllers.Downloads.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -188,6 +190,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="CIPTEABackend.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>CIPTEABackend.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="CIPTEABackend.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>CIPTEABackend.exe</RemoteName>
                         <Overwrite>true</Overwrite>

@@ -21,7 +21,9 @@ uses
   Controllers.Auth in 'src\Controllers\Controllers.Auth.pas',
   Providers.Authorization in 'src\Providers\Providers.Authorization.pas',
   Configs.Global in 'src\Config\Configs.Global.pas',
-  Utils.Tools in 'src\Utils\Utils.Tools.pas';
+  Utils.Tools in 'src\Utils\Utils.Tools.pas',
+  Providers.CipteaID in 'src\Providers\Providers.CipteaID.pas',
+  Controllers.Downloads in 'src\Controllers\Controllers.Downloads.pas';
 
 begin
   ReportMemoryLeaksOnShutdown := True;
@@ -30,6 +32,7 @@ begin
 
   Controllers.CarteiraPTEA.Registry;
   Controllers.Auth.Registry;
+  Controllers.Downloads.Registry;
 
   THorse.Listen(9000,
       procedure(Horse: THorse)

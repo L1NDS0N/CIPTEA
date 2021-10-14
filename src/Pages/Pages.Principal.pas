@@ -71,7 +71,7 @@ uses
   Pages.NewUser,
   Services.User,
   Pages.Config,
-  ToastMessage;
+  ToastMessage, Pages.NetConfig;
 
 {$R *.fmx}
 
@@ -142,6 +142,7 @@ begin
   TRouter4D.Switch.Router('Config', TPageConfig);
   TRouter4D.Switch.Router('Dashboard', TPageDashboard);
   TRouter4D.Switch.Router('NewUser', TPageNewUser);
+  TRouter4D.Switch.Router('NetConfig', TPageNetConfig);
   TRouter4D.Switch.Router('Update', TPageUpdate);
   TRouter4D.Switch.Router('New', TPageNew);
   TRouter4D.Switch.Router('Editor', TPageEditor);

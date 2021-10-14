@@ -17,7 +17,8 @@ uses
   Data.DB,
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
-  Configs.GLOBAL;
+  Configs.GLOBAL,
+  Services.Connection;
 
 type
   TServiceUser = class(TDataModule)
@@ -40,13 +41,13 @@ type
     public
       function SalvarNovoUsuario: boolean;
       function EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
+      procedure DownloadDatabase;
   end;
 
 implementation
 
 uses
   Restrequest4d,
-  Services.Connection,
   DataSet.serialize,
   System.JSON;
 
@@ -98,6 +99,41 @@ begin
       end;
   end;
 
+end;
+
+procedure TServiceUser.DownloadDatabase;
+var
+  LResponse: IResponse;
+  LStream: TMemoryStream;
+  err: string;
+  fileExistsName: string;
+  counter: integer;
+begin
+  counter := 1;
+  LStream := TMemoryStream.Create;
+  try
+    LResponse := TRequest.New.BaseURL(Config.BaseURL).RaiseExceptionOn500(true).Resource('download/db').Get;
+    if LResponse.StatusCode = 200 then
+      begin
+        LStream.LoadFromStream(LResponse.ContentStream);
+
+        fileExistsName := ExtractFileDir(ParamStr(0)) + '\db\CIPTEA.db3';
+        while FileExists(fileExistsName) do
+          begin
+            counter := counter + 1;
+            fileExistsName := ExtractFileDir(ParamStr(0)) + '\db\CIPTEA' + counter.ToString + '.db3';
+          end;
+
+        LStream.SaveToFile(fileExistsName);
+      end
+    else
+      begin
+        if LResponse.JSONValue.TryGetValue('error', err) then
+          raise Exception.Create(err);
+      end;
+  finally
+    LStream.Free;
+  end;
 end;
 
 function TServiceUser.EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;

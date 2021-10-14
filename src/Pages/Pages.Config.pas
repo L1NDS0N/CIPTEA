@@ -25,10 +25,8 @@ type
   TPageConfig = class(TForm, iRouter4dcomponent)
     rect_novousuario: TRectangle;
     HorzScrollBox: THorzScrollBox;
-    lytModal: TLayout;
     Line1: TLine;
     ShadowEffect1: TShadowEffect;
-    rect_modal: TRectangle;
     IconUser: TPath;
     lblNovoUsuario: TLabel;
     lytPageConfig: TLayout;
@@ -62,10 +60,23 @@ type
     Label3: TLabel;
     ColorAnimation6: TColorAnimation;
     FloatAnimation5: TFloatAnimation;
+    rect_downloaddb: TRectangle;
+    Line5: TLine;
+    Path3: TPath;
+    ShadowEffect5: TShadowEffect;
+    Label4: TLabel;
+    ColorAnimation7: TColorAnimation;
+    FloatAnimation6: TFloatAnimation;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
     procedure rect_novousuarioClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure rect_atualizarusuarioClick(Sender: TObject);
     procedure rect_excluircacheClick(Sender: TObject);
+    procedure rect_configlocalClick(Sender: TObject);
+    procedure rect_downloaddbClick(Sender: TObject);
     private
       { Private declarations }
     public
@@ -84,7 +95,8 @@ uses
   ToastMessage,
   Router4D,
   Services.Card,
-  FMX.DialogService;
+  FMX.DialogService,
+  Services.User;
 
 {$R *.fmx}
 { TPageConfig }
@@ -109,6 +121,51 @@ begin
   end;
 end;
 
+procedure TPageConfig.rect_configlocalClick(Sender: TObject);
+begin
+  try
+    TRouter4D.Link.&To('NetConfig');
+
+  except
+    on E: Exception do
+      TToastMessage.show('Erro durante navegação para página de configurações locais' + E.Message, ttDanger);
+  end;
+end;
+
+procedure TPageConfig.rect_downloaddbClick(Sender: TObject);
+var
+  LService: TServiceUser;
+begin
+  LService := TServiceUser.create(nil);
+  try
+    try
+      TDialogService.MessageDialog
+        ('Tem certeza que deseja baixar um novo banco de dados local? Será necessário logar novamente após a operação.',
+        TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
+          procedure(const AResult: TModalResult)
+        begin
+          if AResult <> mrYes then
+            TToastMessage.show('Limpeza de cache cancelada.')
+          else
+            begin
+              with LService do
+                begin
+                  LService.DownloadDatabase;
+                  TToastMessage.show('O novo banco de dados local baixado com sucesso!', ttSuccess);
+                  //TRouter4D.Link.&To('Login');
+                end;
+            end;
+        end);
+
+    except
+      on E: Exception do
+        TToastMessage.show('Erro durante download do banco de dados ' + E.Message, ttDanger);
+    end;
+  finally
+    LService.Free;
+  end;
+end;
+
 procedure TPageConfig.rect_excluircacheClick(Sender: TObject);
 var
   LService: TServiceCard;
@@ -119,7 +176,7 @@ begin
       TDialogService.MessageDialog
         ('Tem certeza que deseja limpar os arquivos em cache? Será necessário logar novamente após a operação.',
         TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
-          procedure(const AResult: TModalResult)
+        procedure(const AResult: TModalResult)
         begin
           if AResult <> mrYes then
             TToastMessage.show('Limpeza de cache cancelada.')
@@ -133,6 +190,10 @@ begin
 
                   qryUsuarioLocal.SQL.Clear;
                   qryUsuarioLocal.SQL.Add('delete from usuario');
+                  qryUsuarioLocal.ExecSQL;
+
+                  qryUsuarioLocal.SQL.Clear;
+                  qryUsuarioLocal.SQL.Add('VACUUM');
                   qryUsuarioLocal.ExecSQL;
 
                   TToastMessage.show((qryUsuarioLocal.RowsAffected + qryArquivosCarteiraPTEA.RowsAffected).ToString +

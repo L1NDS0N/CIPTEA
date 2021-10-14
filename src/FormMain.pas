@@ -3,7 +3,6 @@ unit FormMain;
 interface
 
 uses
-  System.SysUtils,
   System.Types,
   System.UITypes,
   System.Classes,
@@ -64,7 +63,9 @@ var
 implementation
 
 uses
-  Services.Auth;
+  System.StrUtils,
+  Services.Auth,
+  System.SysUtils;
 
 {$R *.fmx}
 
@@ -74,10 +75,18 @@ var
 begin
   LService := TServiceAuth.Create(nil);
   try
-    if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
-      InicializarMenuPrincipal;
-  finally
-    LService.Free;
+    try
+      if LService.EfetuarLogin(edtUser.Text, edtPass.Text, cbManterConectado.IsChecked) then
+        InicializarMenuPrincipal;
+    finally
+      LService.Free;
+    end;
+  except
+    on E: Exception do
+      if ContainsText(E.Message, '(12029)') then
+        InicializarMenuPrincipal
+      else
+        raise Exception.Create(E.Message);
   end;
 end;
 

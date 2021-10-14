@@ -223,12 +223,15 @@ begin
   Res.Status(THTTPStatus.NoContent);
 end;
 
+
+
 procedure Registry;
 begin
   THorse.Post('/register', DoCreate);
   THorse.Put('/register/:id', Authorization(), DoUpdate);
   THorse.Post('/authenticate', DoAuth);
   THorse.Get('/healthcheck', Authorization(), DoCheck);
+
 end;
 
 end.

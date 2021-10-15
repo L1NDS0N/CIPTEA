@@ -1,4 +1,4 @@
-unit Controllers.Downloads;
+﻿unit Controllers.Downloads;
 
 interface
 
@@ -41,9 +41,15 @@ begin
 
 end;
 
+procedure DoGetConnection(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+begin
+  Res.Status(THTTPStatus.NoContent);
+end;
+
 procedure Registry;
 begin
   THorse.Get('/downloads/db', DoDownloadDB);
+  THorse.Get('/connectivity', DoGetConnection);
 end;
 
 end.

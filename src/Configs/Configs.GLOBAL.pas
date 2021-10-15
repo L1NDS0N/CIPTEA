@@ -5,27 +5,27 @@ interface
 type
   TConfigGlobal = record
     private
-      function GetExpires: Integer;
-      function GetSecret: string;
       function GetBaseURL: string;
       function GetBasePort: string;
       function GetBaseHost: string;
       function GetDBDir: string;
 
     public
-      property Expires: Integer read GetExpires;
-      property Secret: string read GetSecret;
       property BaseURL: string read GetBaseURL;
       property BasePort: string read GetBasePort;
       property BaseHost: string read GetBaseHost;
       property DBDir: string read GetDBDir;
-
   end;
+
+procedure SetEnvironmentVar(aEnvVar, aValue: string);
 
 implementation
 
 uses
-  System.SysUtils;
+  Winapi.ShellAPI,
+  Winapi.Messages,
+  System.SysUtils,
+  Winapi.Windows;
 
 function TConfigGlobal.GetBaseHost: string;
 begin
@@ -47,14 +47,13 @@ begin
   Result := GetEnvironmentVariable('CIPTEA_DBDIR');
 end;
 
-function TConfigGlobal.GetExpires: Integer;
+procedure SetEnvironmentVar(aEnvVar, aValue: string);
+var
+  cmdline: string;
 begin
-  Result := GetEnvironmentVariable('LOGIN_EXPIRE').ToInteger('1');
-end;
-
-function TConfigGlobal.GetSecret: string;
-begin
-  Result := GetEnvironmentVariable('LOGIN_SECRET');
+  cmdline := '/C setx ' + aEnvVar + ' "' + aValue + '"';
+  ShellExecute(0, nil, 'cmd.exe', PWideChar(cmdline), nil, SW_HIDE);
+  SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, NativeInt(PChar('Environment')), SMTO_ABORTIFHUNG, 5000, nil);
 end;
 
 end.

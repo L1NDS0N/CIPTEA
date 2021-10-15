@@ -19,14 +19,16 @@ uses
   FireDAC.Comp.Client,
   FireDAC.Phys.SQLite,
   FireDAC.Phys.SQLiteDef,
-  FireDAC.Stan.ExprFuncs;
+  FireDAC.Stan.ExprFuncs,
+  FireDAC.VCLUI.Wait,
+  Configs.GLOBAL;
 
 type
   TServiceLocalConnection = class(TDataModule)
     LocalConnection: TFDConnection;
     procedure LocalConnectionBeforeConnect(Sender: TObject);
     private
-      { Private declarations }
+      Config: TConfigGlobal;
     public
       { Public declarations }
   end;
@@ -42,7 +44,7 @@ implementation
 procedure TServiceLocalConnection.LocalConnectionBeforeConnect(Sender: TObject);
 begin
   {$IFDEF MSWINDOWS}
-  LocalConnection.Params.Values['Database'] := System.SysUtils.ExtractFilePath(ParamStr(0)) + 'db\CIPTEA.db3';
+  LocalConnection.Params.Values['Database'] := Config.DbDir;
   {$ENDIF}
 end;
 

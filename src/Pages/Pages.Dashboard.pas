@@ -97,44 +97,28 @@ end;
 
 procedure TPageDashboard.ListagemFiltrada(AFilter: string);
 begin
-  TTask.Run(
-      procedure
-    begin
-      TThread.Synchronize(TThread.Current,
-          procedure
-        begin
-          try
-            if LServiceCard.Filtrar(AFilter) then
-              begin
-                RenderizarCarteiras(LServiceCard.mtFiltrarCarteiraPTEA);
-              end;
-          except
-            on E: Exception do
-              TToastMessage.show(E.Message, ttDanger);
-          end;
-        end);
-    end);
+  try
+    if LServiceCard.Filtrar(AFilter) then
+      begin
+        RenderizarCarteiras(LServiceCard.mtFiltrarCarteiraPTEA);
+      end;
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
 end;
 
 procedure TPageDashboard.ListarCarteiras;
 begin
-  TTask.Run(
-    procedure
-    begin
-      TThread.Synchronize(TThread.Current,
-          procedure
-        begin
-          try
-            if LServiceCard.ListarPagina then
-              begin
-                RenderizarCarteiras(LServiceCard.mtPesquisaCarteiraPTEA);
-              end;
-          except
-            on E: Exception do
-              TToastMessage.show(E.Message, ttDanger);
-          end;
-        end);
-    end);
+  try
+    if LServiceCard.ListarPagina then
+      begin
+        RenderizarCarteiras(LServiceCard.mtPesquisaCarteiraPTEA);
+      end;
+  except
+    on E: Exception do
+      TToastMessage.show(E.Message, ttDanger);
+  end;
 end;
 
 function TPageDashboard.Render: TFMXObject;
@@ -150,56 +134,63 @@ begin
 end;
 
 procedure TPageDashboard.RenderizarCarteiras(AQuery: TFDMemTable);
-var
-  LFrame: TFrameDashboardDetail;
-  I: Integer;
-  LStream: TStream;
 begin
-  vsbCarteiras.BeginUpdate;
-  try
-    try
-      for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
-        vsbCarteiras.Content.Controls[I].DisposeOf;
-
-      ComboEdit.Clear;
-      LServiceCard.GetFiles;
-
-      AQuery.First;
-      while not AQuery.Eof do
+  TTask.Run(
+      procedure
+    begin
+      TThread.Synchronize(TThread.Current,
+          procedure
+        var
+          LFrame: TFrameDashboardDetail;
+          LStream: TStream;
+          I: Integer;
         begin
-          LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
-          LFrame.Parent := vsbCarteiras;
-          LFrame.Align := TAlignLayout.Top;
-          LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
+          vsbCarteiras.BeginUpdate;
+          try
+            try
+              for I := Pred(vsbCarteiras.Content.ControlsCount) downto 0 do
+                vsbCarteiras.Content.Controls[I].DisposeOf;
 
-          LFrame.Id := AQuery.fieldbyname('id').AsString;
-          LFrame.Name := LFrame.ClassName + AQuery.fieldbyname('id').AsString;
-          LFrame.lblNomeTitular.Text := AQuery.fieldbyname('NomeTitular').AsString;
-          LFrame.lblCPFTitular.Text := AQuery.fieldbyname('CpfTitular').AsString;
-          LFrame.lblID.Text := '#' + AQuery.fieldbyname('id').AsString;
-          LFrame.lblCipteaID.Text := AQuery.fieldbyname('cipteaid').AsString;
+              ComboEdit.Clear;
+              LServiceCard.GetFiles;
 
-          LStream := LServiceCard.GetImageStreamById(AQuery.fieldbyname('id').Value);
-          if LStream.Size > 0 then
-            LFrame.Imagem.Bitmap.LoadFromStream(LStream);
+              AQuery.First;
+              while not AQuery.Eof do
+                begin
+                  LFrame := TFrameDashboardDetail.Create(vsbCarteiras);
+                  LFrame.Parent := vsbCarteiras;
+                  LFrame.Align := TAlignLayout.Top;
+                  LFrame.Position.x := vsbCarteiras.Content.ControlsCount * LFrame.Height;
 
-          LFrame.OnDelete := self.OnDeleteCarteira;
-          LFrame.OnUpdate := self.OnUpdateCarteira;
-          LFrame.OnPrint := self.OnPrintCarteira;
+                  LFrame.Id := AQuery.fieldbyname('id').AsString;
+                  LFrame.Name := LFrame.ClassName + AQuery.fieldbyname('id').AsString;
+                  LFrame.lblNomeTitular.Text := AQuery.fieldbyname('NomeTitular').AsString;
+                  LFrame.lblCPFTitular.Text := AQuery.fieldbyname('CpfTitular').AsString;
+                  LFrame.lblID.Text := '#' + AQuery.fieldbyname('id').AsString;
+                  LFrame.lblCipteaID.Text := AQuery.fieldbyname('cipteaid').AsString;
 
-          ComboEdit.Items.Add(AQuery.fieldbyname('NomeTitular').AsString);
-          AQuery.Next;
-        end;
+                  LStream := LServiceCard.GetImageStreamById(AQuery.fieldbyname('id').Value);
+                  if LStream.Size > 0 then
+                    LFrame.Imagem.Bitmap.LoadFromStream(LStream);
 
-    except
-      on E: Exception do
-        Exception.Create(E.Message);
-    end;
-  finally
-    vsbCarteiras.EndUpdate;
-    LStream := nil;
-  end;
+                  LFrame.OnDelete := self.OnDeleteCarteira;
+                  LFrame.OnUpdate := self.OnUpdateCarteira;
+                  LFrame.OnPrint := self.OnPrintCarteira;
 
+                  ComboEdit.Items.Add(AQuery.fieldbyname('NomeTitular').AsString);
+                  AQuery.Next;
+                end;
+
+            except
+              on E: Exception do
+                Exception.Create(E.Message);
+            end;
+          finally
+            vsbCarteiras.EndUpdate;
+            LStream := nil;
+          end;
+        end);
+    end);
 end;
 
 procedure TPageDashboard.UnRender;

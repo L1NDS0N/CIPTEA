@@ -18,7 +18,8 @@ uses
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
   Configs.GLOBAL,
-  Services.Connection;
+  Services.Connection,
+  RESTRequest4D;
 
 type
   TServiceUser = class(TDataModule)
@@ -41,15 +42,16 @@ type
     public
       function SalvarNovoUsuario: boolean;
       function EfetuarLogin(Usuario, Senha: string; StayConected: boolean): boolean;
+      function EfetuarPing(aURL: string): IResponse;
       procedure DownloadDatabase;
   end;
 
 implementation
 
 uses
-  Restrequest4d,
   DataSet.serialize,
-  System.JSON;
+  System.JSON,
+  FMX.Dialogs;
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
@@ -112,25 +114,36 @@ begin
   counter := 1;
   LStream := TMemoryStream.Create;
   try
-    LResponse := TRequest.New.BaseURL(Config.BaseURL).RaiseExceptionOn500(true).Resource('download/db').Get;
-    if LResponse.StatusCode = 200 then
-      begin
-        LStream.LoadFromStream(LResponse.ContentStream);
+    try
 
-        fileExistsName := ExtractFileDir(ParamStr(0)) + '\db\CIPTEA.db3';
-        while FileExists(fileExistsName) do
-          begin
-            counter := counter + 1;
-            fileExistsName := ExtractFileDir(ParamStr(0)) + '\db\CIPTEA' + counter.ToString + '.db3';
-          end;
+      LResponse := TRequest.New.BaseURL(Config.BaseURL).RaiseExceptionOn500(true).Resource('downloads/db').Get;
+      if LResponse.StatusCode = 200 then
+        begin
+          LStream.LoadFromStream(LResponse.ContentStream);
 
-        LStream.SaveToFile(fileExistsName);
-      end
-    else
-      begin
-        if LResponse.JSONValue.TryGetValue('error', err) then
-          raise Exception.Create(err);
-      end;
+          fileExistsName := ExtractFileDir(ParamStr(0)) + '\db\CIPTEA.db3';
+          while FileExists(fileExistsName) do
+            begin
+              counter := counter + 1;
+              fileExistsName := ExtractFileDir(ParamStr(0)) + '\db\CIPTEA' + counter.ToString + '.db3';
+            end;
+
+          LStream.SaveToFile(fileExistsName);
+          if FileExists(fileExistsName) then
+            begin
+              showmessage(fileExistsName);
+              SetEnvironmentVar('CIPTEA_DBDIR', fileExistsName);
+            end;
+        end
+      else
+        begin
+          if LResponse.JSONValue.TryGetValue('error', err) then
+            raise Exception.Create(err);
+        end;
+    except
+      on E: Exception do
+        raise Exception.Create(E.Message);
+    end;
   finally
     LStream.Free;
   end;
@@ -160,6 +173,16 @@ begin
       raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
     end;
 
+end;
+
+function TServiceUser.EfetuarPing(aURL: string): IResponse;
+begin
+  try
+    Result := TRequest.New.BaseURL(aURL).Resource('connectivity').RaiseExceptionOn500(true).Get;
+  except
+    on E: Exception do
+      raise Exception.Create(E.Message);
+  end;
 end;
 
 end.

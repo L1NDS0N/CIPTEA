@@ -45,12 +45,22 @@ type
     ColorAnimation1: TColorAnimation;
     lblSalvar: TLabel;
     ShadowEffect1: TShadowEffect;
+    edtDB: TEdit;
+    ClearEditButton1: TClearEditButton;
+    lblDB: TLabel;
+    EllipsesEditButton1: TEllipsesEditButton;
+    dlgDB: TOpenDialog;
+    EditButton1: TEditButton;
+    EditButton2: TEditButton;
     procedure retBtnSalvarClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
+    procedure EllipsesEditButton1Click(Sender: TObject);
+    procedure EditButton2Click(Sender: TObject);
+    procedure EditButton1Click(Sender: TObject);
     private
       Config: TConfigGlobal;
       procedure SyncInfoFromEnvironment;
-      procedure SetEnvironmentVar(aEnvVar, aValue: string);
+      procedure EfetuarPing;
 
     public
       function Render: TFmxObject;
@@ -64,16 +74,34 @@ var
 implementation
 
 uses
-  Winapi.ShellAPI,
-  Winapi.Windows,
   Router4D,
-  Winapi.Messages, ToastMessage;
+  ToastMessage,
+  Services.User;
 {$R *.fmx}
 { TPageNetConfig }
 
 procedure TPageNetConfig.btnVoltarClick(Sender: TObject);
 begin
   TRouter4D.Link.&To('Config');
+end;
+
+procedure TPageNetConfig.EditButton1Click(Sender: TObject);
+begin
+  EfetuarPing;
+end;
+
+procedure TPageNetConfig.EditButton2Click(Sender: TObject);
+begin
+  EfetuarPing;
+end;
+
+procedure TPageNetConfig.EllipsesEditButton1Click(Sender: TObject);
+begin
+  dlgDB.InitialDir := ExtractFileDir(Config.DBDir);
+  if dlgDB.Execute then
+    begin
+      edtDB.Text := dlgDB.FileName;
+    end;
 end;
 
 function TPageNetConfig.Render: TFmxObject;
@@ -87,27 +115,40 @@ procedure TPageNetConfig.retBtnSalvarClick(Sender: TObject);
 begin
   SetEnvironmentVar('CIPTEA_HOST', edtHost.Text);
   SetEnvironmentVar('CIPTEA_PORT', edtPort.Text);
-end;
-
-procedure TPageNetConfig.SetEnvironmentVar(aEnvVar, aValue: string);
-var
-  cmdline: string;
-begin
-  cmdline := '/C setx ' + aEnvVar + ' ' + aValue;
-  ShellExecute(0, nil, 'cmd.exe', PChar(cmdline), nil, SW_HIDE);
-  SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, NativeInt(PChar('Environment')), SMTO_ABORTIFHUNG, 5000, nil);
-  TToastmessage.show('Feche e abra novamente o aplicativo para que as alterações tenham efeito', ttWarning);
+  if edtDB.Text <> EmptyStr then
+    if FileExists(edtDB.Text) then
+      SetEnvironmentVar('CIPTEA_DBDIR', edtDB.Text);
+  TToastMessage.show('Feche e abra novamente o aplicativo para que as alterações tenham efeito', ttWarning);
 end;
 
 procedure TPageNetConfig.SyncInfoFromEnvironment;
 begin
   edtHost.Text := Config.BaseHost;
   edtPort.Text := Config.BasePort;
+  edtDB.TextPrompt := Config.DBDir;
 end;
 
 procedure TPageNetConfig.UnRender;
 begin
 
+end;
+
+procedure TPageNetConfig.EfetuarPing;
+var
+  LService: TServiceUser;
+begin
+  LService := TServiceUser.Create(nil);
+  try
+    try
+      if LService.EfetuarPing('http://' + edtHost.Text + ':' + edtPort.Text).StatusCode = 204 then
+        TToastMessage.show('Conexão estabelecida com sucesso!', ttSuccess);
+    except
+      on E: Exception do
+        TToastMessage.show(E.Message, ttWarning);
+    end;
+  finally
+    LService.Free;
+  end;
 end;
 
 end.

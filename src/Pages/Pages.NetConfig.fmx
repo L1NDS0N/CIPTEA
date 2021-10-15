@@ -50,10 +50,24 @@ object PageNetConfig: TPageNetConfig
           object ClearEditButton8: TClearEditButton
             CanFocus = False
             Cursor = crArrow
+            Position.X = 28.000000000000000000
             Size.Width = 28.000000000000000000
             Size.Height = 23.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
+          end
+          object EditButton2: TEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Hint = 'Testar o endere'#231'o inserido'
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'playtoolbutton'
+            TabOrder = 1
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = EditButton2Click
           end
         end
         object edtPort: TEdit
@@ -71,10 +85,24 @@ object PageNetConfig: TPageNetConfig
           object ClearEditButton3: TClearEditButton
             CanFocus = False
             Cursor = crArrow
+            Position.X = 28.000000000000000000
             Size.Width = 28.000000000000000000
             Size.Height = 23.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
+          end
+          object EditButton1: TEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Hint = 'Testar o endere'#231'o inserido'
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'playtoolbutton'
+            TabOrder = 1
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = EditButton1Click
           end
         end
         object lblHost: TLabel
@@ -101,10 +129,61 @@ object PageNetConfig: TPageNetConfig
           Text = 'Porta de escuta do servidor'
           TabOrder = 2
         end
+        object edtDB: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Top
+          TabOrder = 4
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Position.Y = 190.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 705.000000000000000000
+          Size.Height = 27.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = 'Selecione o local do banco de dados'
+          StyledSettings = [Size, Style, FontColor]
+          object ClearEditButton1: TClearEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Position.X = 28.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object EllipsesEditButton1: TEllipsesEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Hint = 'Abrir o explorador de diret'#243'rios'
+            Size.Width = 28.000000000000000000
+            Size.Height = 23.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = EllipsesEditButton1Click
+          end
+        end
+        object lblDB: TLabel
+          Align = Top
+          StyledSettings = [Size, Style, FontColor]
+          Margins.Bottom = 5.000000000000000000
+          Position.Y = 168.000000000000000000
+          Size.Width = 705.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Fira Code Retina'
+          Text = 'Local do banco de dados'
+          TabOrder = 5
+        end
+        object dlgDB: TOpenDialog
+          Filter = 'Sqlite DB *.db3|*.db3'
+          Left = 768
+          Top = 342
+        end
       end
     end
     object lytHeader: TLayout
-      Align = MostTop
+      Align = Top
       Size.Width = 945.000000000000000000
       Size.Height = 63.000000000000000000
       Size.PlatformDefault = False

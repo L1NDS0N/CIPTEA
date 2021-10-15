@@ -3,10 +3,8 @@ unit Pages.Config;
 interface
 
 uses
-  System.SysUtils,
   System.Types,
   System.UITypes,
-  System.Classes,
   System.Variants,
   FMX.Types,
   FMX.Controls,
@@ -19,7 +17,9 @@ uses
   FMX.Controls.Presentation,
   FMX.StdCtrls,
   Router4D.Interfaces,
-  FMX.Ani;
+  FMX.Ani,
+  Configs.GLOBAL,
+  System.Classes;
 
 type
   TPageConfig = class(TForm, iRouter4dcomponent)
@@ -71,14 +71,24 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
+    rect_efetuarlogin: TRectangle;
+    Line6: TLine;
+    Path4: TPath;
+    ShadowEffect6: TShadowEffect;
+    Label9: TLabel;
+    ColorAnimation8: TColorAnimation;
+    FloatAnimation7: TFloatAnimation;
     procedure rect_novousuarioClick(Sender: TObject);
     procedure btnVoltarClick(Sender: TObject);
     procedure rect_atualizarusuarioClick(Sender: TObject);
     procedure rect_excluircacheClick(Sender: TObject);
     procedure rect_configlocalClick(Sender: TObject);
     procedure rect_downloaddbClick(Sender: TObject);
+    procedure rect_efetuarloginClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
     private
-      { Private declarations }
+      Config: TConfigGlobal;
+      procedure RemoverDBExcedente;
     public
       function Render: TFmxObject;
       procedure Unrender;
@@ -96,7 +106,8 @@ uses
   Router4D,
   Services.Card,
   FMX.DialogService,
-  Services.User;
+  Services.User,
+  System.SysUtils;
 
 {$R *.fmx}
 { TPageConfig }
@@ -109,6 +120,11 @@ begin
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página principal - ' + E.Message, ttDanger);
   end;
+end;
+
+procedure TPageConfig.Button1Click(Sender: TObject);
+begin
+  RemoverDBExcedente;
 end;
 
 procedure TPageConfig.rect_atualizarusuarioClick(Sender: TObject);
@@ -137,23 +153,23 @@ var
   LService: TServiceUser;
 begin
   LService := TServiceUser.create(nil);
+
   try
     try
       TDialogService.MessageDialog
-        ('Tem certeza que deseja baixar um novo banco de dados local? Será necessário logar novamente após a operação.',
+        ('Tem certeza que deseja baixar um novo banco de dados local? Será necessário fechar o aplicativo e logar novamente após a operação.',
         TMsgDlgType.mtConfirmation, FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
           procedure(const AResult: TModalResult)
         begin
           if AResult <> mrYes then
-            TToastMessage.show('Limpeza de cache cancelada.')
+            TToastMessage.show('Download do banco de dados cancelado.')
           else
             begin
-              with LService do
-                begin
-                  LService.DownloadDatabase;
-                  TToastMessage.show('O novo banco de dados local baixado com sucesso!', ttSuccess);
-                  //TRouter4D.Link.&To('Login');
-                end;
+              LService.DownloadDatabase;
+              rect_excluircache.Enabled := false;
+              TToastMessage.show
+                ('O novo banco de dados local foi baixado, feche e abra o aplicativo para que as alterações tenham efeito',
+                ttWarning);
             end;
         end);
 
@@ -164,6 +180,11 @@ begin
   finally
     LService.Free;
   end;
+end;
+
+procedure TPageConfig.rect_efetuarloginClick(Sender: TObject);
+begin
+  TRouter4D.Link.&To('Login');
 end;
 
 procedure TPageConfig.rect_excluircacheClick(Sender: TObject);
@@ -196,6 +217,8 @@ begin
                   qryUsuarioLocal.SQL.Add('VACUUM');
                   qryUsuarioLocal.ExecSQL;
 
+                  Self.RemoverDBExcedente;
+
                   TToastMessage.show((qryUsuarioLocal.RowsAffected + qryArquivosCarteiraPTEA.RowsAffected).ToString +
                       ' Registros de cache limpos no aplicativo ');
 
@@ -209,6 +232,7 @@ begin
     end;
   finally
     LService.Free;
+
   end;
 end;
 
@@ -220,6 +244,22 @@ begin
     on E: Exception do
       TToastMessage.show('Erro durante navegação para a página de novo usuário - ' + E.Message, ttDanger);
   end;
+end;
+
+procedure TPageConfig.RemoverDBExcedente;
+Var
+  Path: String;
+  SR: TSearchRec;
+begin
+  Path := ExtractFilePath(Config.DBDir);
+  if FindFirst(Path + '*.db3', faArchive, SR) = 0 then
+    begin
+      repeat
+        if Config.DBDir <> (Path + SR.Name) then
+          DeleteFile(Path + SR.Name);
+      until FindNext(SR) <> 0;
+      FindClose(SR);
+    end;
 end;
 
 function TPageConfig.Render: TFmxObject;

@@ -119,7 +119,7 @@ object PageConfig: TPageConfig
         Padding.Top = 3.000000000000000000
         Padding.Right = 3.000000000000000000
         Padding.Bottom = 3.000000000000000000
-        Position.X = 187.000000000000000000
+        Position.X = 374.000000000000000000
         Size.Width = 187.000000000000000000
         Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
@@ -269,7 +269,7 @@ object PageConfig: TPageConfig
         Padding.Top = 3.000000000000000000
         Padding.Right = 3.000000000000000000
         Padding.Bottom = 3.000000000000000000
-        Position.X = 374.000000000000000000
+        Position.X = 561.000000000000000000
         Size.Width = 187.000000000000000000
         Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
@@ -398,7 +398,7 @@ object PageConfig: TPageConfig
         Padding.Top = 3.000000000000000000
         Padding.Right = 3.000000000000000000
         Padding.Bottom = 3.000000000000000000
-        Position.X = 748.000000000000000000
+        Position.X = 935.000000000000000000
         Size.Width = 187.000000000000000000
         Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
@@ -503,7 +503,7 @@ object PageConfig: TPageConfig
         Padding.Top = 3.000000000000000000
         Padding.Right = 3.000000000000000000
         Padding.Bottom = 3.000000000000000000
-        Position.X = 561.000000000000000000
+        Position.X = 748.000000000000000000
         Size.Width = 187.000000000000000000
         Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
@@ -622,6 +622,7 @@ object PageConfig: TPageConfig
         Padding.Top = 3.000000000000000000
         Padding.Right = 3.000000000000000000
         Padding.Bottom = 3.000000000000000000
+        Position.X = 187.000000000000000000
         Size.Width = 187.000000000000000000
         Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
@@ -697,6 +698,105 @@ object PageConfig: TPageConfig
           TriggerInverse = 'IsMouseOver=false'
         end
         object FloatAnimation3: TFloatAnimation
+          AnimationType = InOut
+          Duration = 0.200000002980232200
+          PropertyName = 'Scale.X'
+          StartValue = 1.000000000000000000
+          StopValue = 1.049999952316284000
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+      end
+      object rect_efetuarlogin: TRectangle
+        Align = Left
+        Cursor = crHandPoint
+        Fill.Color = claNull
+        Padding.Left = 3.000000000000000000
+        Padding.Top = 3.000000000000000000
+        Padding.Right = 3.000000000000000000
+        Padding.Bottom = 3.000000000000000000
+        Size.Width = 187.000000000000000000
+        Size.Height = 300.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        OnClick = rect_efetuarloginClick
+        object Line6: TLine
+          Align = Right
+          LineType = Right
+          Position.X = 175.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 9.000000000000000000
+          Size.Height = 294.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claGray
+        end
+        object Path4: TPath
+          Align = Horizontal
+          Data.Path = {
+            3C00000000000000CDCC24416666F64001000000CDCC24416666F64002000000
+            5C8F1E41A4700141020000005C8F1E41295C0B4102000000CDCC244199991141
+            0100000033334341FFFF2F410100000000004040FFFF2F4102000000CDCC1C40
+            FFFF2F410200000000000040323337410200000000000040FFFF3F4101000000
+            00000040FFFF3F410200000000000040CCCC484102000000CDCC1C40FFFF4F41
+            0200000000004040FFFF4F410100000033334341FFFF4F4101000000CDCC2441
+            65666E41020000005C8F1E41D6A37441020000005C8F1E415B8F7E4102000000
+            CDCC24416666824101000000CDCC244166668241020000003E0A2B411E858541
+            02000000C3F534411E8585410200000033333B416666824101000000D7A37441
+            285C4B410200000048E17A41B71E45410200000048E17A413C0A3B4102000000
+            D7A37441CCCC34410100000033333B416666F64002000000C3F5344185EBE940
+            020000003D0A2B4185EBE94002000000CDCC24416666F64003000000CDCC2441
+            6666F640000000000000A0410000984101000000000050410000984102000000
+            333347410000984102000000000040419A999B4102000000000040410000A041
+            01000000000040410000A04102000000000040416666A4410200000033334741
+            0000A84102000000000050410000A841010000000000A0410000A84102000000
+            CDCCA8410000A841020000000000B041CDCCA041020000000000B04100009841
+            010000000000B0410000A040020000000000B0419A99794002000000CDCCA841
+            00004040020000000000A0410000404001000000000050410000404002000000
+            33334741000040400200000000004041CDCC5C40020000000000404100008040
+            01000000000040410000804002000000000040419A9991400200000033334741
+            0000A04002000000000050410000A040010000000000A0410000A04001000000
+            0000A04100009841030000000000A04100009841}
+          EnableDragHighlight = False
+          Fill.Color = xFF286496
+          HitTest = False
+          Position.X = 3.000000000000000000
+          Position.Y = 80.000000000000000000
+          Size.Width = 172.000000000000000000
+          Size.Height = 73.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claNull
+          WrapMode = Fit
+          object ShadowEffect6: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.200000002980232200
+            Opacity = 0.600000023841857900
+            ShadowColor = claDimgray
+          end
+        end
+        object Label9: TLabel
+          Align = Horizontal
+          StyledSettings = [Family, Style]
+          Position.X = 3.000000000000000000
+          Position.Y = 152.000000000000000000
+          Size.Width = 172.000000000000000000
+          Size.Height = 97.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.FontColor = claDimgray
+          TextSettings.HorzAlign = Center
+          Text = 'Re-efetuar login'
+          TabOrder = 2
+        end
+        object ColorAnimation8: TColorAnimation
+          Duration = 0.200000002980232200
+          PropertyName = 'Fill.Color'
+          StartValue = claNull
+          StopValue = x78286496
+          Trigger = 'IsMouseOver=true'
+          TriggerInverse = 'IsMouseOver=false'
+        end
+        object FloatAnimation7: TFloatAnimation
           AnimationType = InOut
           Duration = 0.200000002980232200
           PropertyName = 'Scale.X'

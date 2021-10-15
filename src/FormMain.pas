@@ -98,8 +98,10 @@ begin
   try
     LService.qryUsuario.Close;
     LService.qryUsuario.Open;
-    if LService.qryUsuarioStayConected.AsBoolean then
-      InicializarMenuPrincipal;
+    
+    if not(LService.qryUsuario.IsEmpty) then
+      if LService.qryUsuarioStayConected.AsBoolean then
+        InicializarMenuPrincipal;
   finally
     LService.Free;
   end;

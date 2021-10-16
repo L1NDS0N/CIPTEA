@@ -363,7 +363,8 @@ begin
       raise EHorseException.Create(THTTPStatus.BadRequest, 'Valor para filtragem não pode estar vazio');
 
     LService.GetByHandleSQL('select nometitular from carteiraptea where cpftitular LIKE ' +
-        QuotedStr('%' + FilterValue + '%') + ' OR nometitular LIKE ' + QuotedStr('%' + FilterValue + '%'));
+        QuotedStr('%' + FilterValue + '%') + ' OR nometitular LIKE ' + QuotedStr('%' + FilterValue + '%') +
+        'OR cipteaid LIKE ' + QuotedStr('%' + FilterValue + '%'));
 
     if not(LService.qryFiltrarCarteiraPTEA.IsEmpty) then
       Res.Send(TJsonObject.Create.AddPair('nomes', LService.qryFiltrarCarteiraPTEA.ToJSONArray)).Status(THTTPStatus.OK)

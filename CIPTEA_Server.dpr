@@ -1,4 +1,4 @@
-﻿program CIPTEABackend;
+﻿program CIPTEA_Server;
 
 {$APPTYPE CONSOLE}
 {$R *.res}
@@ -25,6 +25,9 @@ uses
   Providers.CipteaID in 'src\Providers\Providers.CipteaID.pas',
   Controllers.Downloads in 'src\Controllers\Controllers.Downloads.pas';
 
+var
+  Config: TConfigGlobal;
+
 begin
   ReportMemoryLeaksOnShutdown := True;
 
@@ -34,7 +37,7 @@ begin
   Controllers.Auth.Registry;
   Controllers.Downloads.Registry;
 
-  THorse.Listen(9000,
+  THorse.Listen(Config.BasePort,
       procedure(Horse: THorse)
     begin
       Writeln('O Servidor está rodando na porta ' + THorse.Port.ToString);

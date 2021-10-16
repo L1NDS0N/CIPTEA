@@ -46,10 +46,12 @@ begin
   Res.Status(THTTPStatus.NoContent);
 end;
 
+
 procedure Registry;
 begin
   THorse.Get('/downloads/db', DoDownloadDB);
   THorse.Get('/connectivity', DoGetConnection);
+
 end;
 
 end.

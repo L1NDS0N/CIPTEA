@@ -17,5 +17,6 @@
 		"github.com/paolo-rossi/delphi-jose-jwt": "^v3.0.2",
 		"github.com/viniciussanchez/bcrypt": "^1.0.5",
 		"github.com/viniciussanchez/dataset-serialize": "^v2.3.3"
+		
 	}
 }

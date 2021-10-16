@@ -3,7 +3,8 @@ unit Controllers.Auth;
 interface
 
 uses
-  Configs.GLOBAL, Data.DB;
+  Configs.GLOBAL,
+  Data.DB;
 
 procedure Registry;
 
@@ -222,8 +223,6 @@ procedure DoCheck(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 begin
   Res.Status(THTTPStatus.NoContent);
 end;
-
-
 
 procedure Registry;
 begin

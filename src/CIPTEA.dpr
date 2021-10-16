@@ -14,7 +14,5 @@ uses
 begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TServiceLocalConnection, ServiceLocalConnection);
-  Application.CreateForm(TServiceAuth, ServiceAuth);
   Application.Run;
 end.

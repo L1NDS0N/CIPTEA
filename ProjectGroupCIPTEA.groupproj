@@ -9,7 +9,7 @@
         <Projects Include="src\Pages\Pages.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\CIPTEABackend\CIPTEABackend.dproj">
+        <Projects Include="..\CIPTEABackend\CIPTEA_Server.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -38,23 +38,23 @@
     <Target Name="Pages:Make">
         <MSBuild Projects="src\Pages\Pages.dproj" Targets="Make"/>
     </Target>
-    <Target Name="CIPTEABackend">
-        <MSBuild Projects="..\CIPTEABackend\CIPTEABackend.dproj"/>
+    <Target Name="CIPTEA_Server">
+        <MSBuild Projects="..\CIPTEABackend\CIPTEA_Server.dproj"/>
     </Target>
-    <Target Name="CIPTEABackend:Clean">
-        <MSBuild Projects="..\CIPTEABackend\CIPTEABackend.dproj" Targets="Clean"/>
+    <Target Name="CIPTEA_Server:Clean">
+        <MSBuild Projects="..\CIPTEABackend\CIPTEA_Server.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="CIPTEABackend:Make">
-        <MSBuild Projects="..\CIPTEABackend\CIPTEABackend.dproj" Targets="Make"/>
+    <Target Name="CIPTEA_Server:Make">
+        <MSBuild Projects="..\CIPTEABackend\CIPTEA_Server.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="CIPTEA;Pages;CIPTEABackend"/>
+        <CallTarget Targets="CIPTEA;Pages;CIPTEA_Server"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="CIPTEA:Clean;Pages:Clean;CIPTEABackend:Clean"/>
+        <CallTarget Targets="CIPTEA:Clean;Pages:Clean;CIPTEA_Server:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="CIPTEA:Make;Pages:Make;CIPTEABackend:Make"/>
+        <CallTarget Targets="CIPTEA:Make;Pages:Make;CIPTEA_Server:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

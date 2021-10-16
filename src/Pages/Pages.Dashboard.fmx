@@ -74,7 +74,7 @@ object PageDashboard: TPageDashboard
           DropDownKind = Custom
           ItemHeight = 36.000000000000000000
           ItemIndex = -1
-          Text = 'Pesquise por nome ou cpf'
+          Text = 'Busque por Nome do Titular, CPF ou CipteaID'
           TextSettings.Font.Family = 'Roboto'
           TextSettings.Font.Size = 14.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}

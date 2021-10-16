@@ -1,0 +1,2 @@
+{$DEFINE HAS_FMX}
+

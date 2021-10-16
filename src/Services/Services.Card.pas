@@ -476,8 +476,7 @@ begin
       else if LResponse.StatusCode = 401 then
         raise Exception.Create('Atualmente você não possui autorização para gravar os dados.')
       else
-        raise Exception.Create('Erro durante gravação dos dados da carteirinha ' + mtCadastroCarteiraPTEAid.AsString +
-            ' - Erro #' + LResponse.StatusCode.ToString + ', ' + LResponse.JSONValue.GetValue<string>('error'));
+        raise Exception.Create(LResponse.JSONValue.GetValue<string>('error'));
     end;
   except
     on E: Exception do

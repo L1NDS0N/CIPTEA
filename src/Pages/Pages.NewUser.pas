@@ -143,12 +143,14 @@ procedure TPageNewUser.PropsNewUser(aValue: TProps);
 begin
   try
     try
-      if (aValue.PropString <> EmptyStr) AND (aValue.Key = 'IdUserToUpdate') then
+      if not(aValue.PropString = EmptyStr) AND (aValue.Key = 'IdUserToUpdate') then
         begin
           lytSenhaAtual.Visible := true;
           lytNovasSenhas.Visible := false;
 
+          LServiceUser.qryUsuarioLocal.Close;
           LServiceUser.qryUsuarioLocal.Open;
+
           LServiceUser.mtUsuario.Open;
           LServiceUser.mtUsuario.Edit;
           LServiceUser.mtUsuarioid.Value := LServiceUser.qryUsuarioLocalid.Value;
@@ -224,6 +226,5 @@ begin
     (edtNovaSenha.Text <> edtConfirmarNovaSenha.Text) then
     raise Exception.Create('As senhas inseridas não correspondem');
 end;
-
 
 end.

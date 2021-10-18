@@ -139,8 +139,8 @@
         <UsePackages>true</UsePackages>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=L1NDS0N;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.9;InternalName=;LegalCopyright=MIT 2021 Lindson França;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/L1NDS0N/CIPTEA</VerInfo_Keys>
-        <VerInfo_Build>9</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=L1NDS0N;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.26;InternalName=;LegalCopyright=MIT 2021 Lindson França;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/L1NDS0N/CIPTEA</VerInfo_Keys>
+        <VerInfo_Build>26</VerInfo_Build>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

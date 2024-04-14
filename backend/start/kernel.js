@@ -13,6 +13,7 @@ const Server = use('Server');
 const globalMiddleware = [
   'Adonis/Middleware/BodyParser',
   'App/Middleware/ConvertEmptyStringsToNull',
+  'Adonis/Middleware/Cors',
 ];
 
 /*
@@ -52,8 +53,7 @@ const serverMiddleware = [
   // 'Adonis/Middleware/Cors',
 ];
 
-Server
-  .use(['Adonis/Middleware/Cors'])
+Server.use(['Adonis/Middleware/Cors']);
 
 Server.registerGlobal(globalMiddleware)
   .registerNamed(namedMiddleware)

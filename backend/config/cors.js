@@ -14,9 +14,7 @@ module.exports = {
   | Function - Receives the current origin and should return one of the above values.
   |
   */
-  origin(currentOrigin) {
-    return currentOrigin === 'https://3000-b90ff000-4b6c-4aab-80e8-00aea86fe36b.ws-us03.gitpod.io';
-  },
+  origin: '*',
   /*
   |--------------------------------------------------------------------------
   | Methods

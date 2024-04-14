@@ -1,90 +1,94 @@
 .anexosCadastro {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: space-evenly;
 }
 
 .meio-a-meio {
-    flex-direction: row;
-    display: flex-box;
+  flex-direction: row;
+  display: flex-box;
 }
 
-label.dataNascimento, label.sexo {
-    position: absolute;
+label.dataNascimento,
+label.sexo {
+  position: absolute;
 }
 
-#dataNascimento, #sexo {
-    width: 45% !important;
-    margin-top: 20px;
-    margin-right: 10px;
+#dataNascimento,
+#sexo {
+  width: 45% !important;
+  margin-top: 20px;
+  margin-right: 10px;
 }
 
-label#foto3x4, label#laudoMedico {
-    margin-bottom: 20px;
-    border: 2px dashed #ddd;
-    border-radius: 5px;
-    background: no-repeat;
-    background-size: 100% 100%;
-    cursor: pointer;
-    height: 200px;
-    width: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
+label#foto3x4,
+label#laudoMedico {
+  margin-bottom: 20px;
+  border: 2px dashed #ddd;
+  border-radius: 5px;
+  background: no-repeat;
+  background-size: 100% 100%;
+  cursor: pointer;
+  height: 200px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
 
 label#foto3x4 input {
-    display: none;
+  display: none;
 }
 
 label#foto3x4 span {
-    font-weight: normal;
-    color: #999;
+  font-weight: normal;
+  color: #999;
 }
 
 label#foto3x4.has-fotoRosto {
-    border: 0;
+  border: 0;
 }
 
 label#foto3x4.has-fotoRosto span {
-    display: none;
+  display: none;
 }
 
 label#foto3x4.has-fotoRosto div {
-    display: none;
+  display: none;
 }
 
 label#laudoMedico input {
-    display: none;
+  display: none;
 }
 
 label#laudoMedico span {
-    font-weight: normal;
-    color: #999;
+  font-weight: normal;
+  color: #999;
 }
 
 label#laudoMedico.has-laudoMedico {
-    background-color: #fff45728;
+  background-color: #fff45728;
 }
 
 label#laudoMedico.has-laudoMedico span {
-    display: none;
+  display: none;
 }
 
 label#laudoMedico.has-laudoMedico div {
-    display: none;
+  display: none;
 }
 
 a.pathLink {
-    color: #999;
-    font-weight: 400;
+  color: #999;
+  font-weight: 400;
 }
 
 p.nomeDoArquivo {
-    color: #093b64;
-    font-weight: bold;
+  color: #093b64;
+  font-weight: bold;
 }
